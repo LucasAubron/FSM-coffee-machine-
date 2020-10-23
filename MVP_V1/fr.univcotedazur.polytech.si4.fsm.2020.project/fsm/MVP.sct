@@ -6,11 +6,11 @@
         <outgoingTransitions xmi:id="_23510AoOEeukM93hRv6Zlg" specification="" target="_1XSXoAoOEeukM93hRv6Zlg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_1XSXoAoOEeukM93hRv6Zlg" name="Choice and Payment" incomingTransitions="_23510AoOEeukM93hRv6Zlg">
-        <outgoingTransitions xmi:id="_ShLcQBUCEeuhSZx8TONrSg" specification="always [selected &amp;&amp; payedEnough]" target="_RuEkUBUCEeuhSZx8TONrSg"/>
+        <outgoingTransitions xmi:id="_ShLcQBUCEeuhSZx8TONrSg" specification="every 200ms [selected &amp;&amp; payedEnough]" target="_RuEkUBUCEeuhSZx8TONrSg"/>
         <regions xmi:id="_1XUz4goOEeukM93hRv6Zlg" name="Choice region">
           <vertices xsi:type="sgraph:State" xmi:id="_uEiRkA-GEeumgJZ1_RcaIg" name="Chosed or not" incomingTransitions="_g9uW4A-HEeumgJZ1_RcaIg _r2B9MA-HEeumgJZ1_RcaIg">
             <outgoingTransitions xmi:id="_82rQMA-GEeumgJZ1_RcaIg" specification="TeaButton, CoffeeButton, ExpressoButton" target="_2F9KUA-GEeumgJZ1_RcaIg"/>
-            <outgoingTransitions xmi:id="_r2B9MA-HEeumgJZ1_RcaIg" specification="after 10000ms" target="_uEiRkA-GEeumgJZ1_RcaIg"/>
+            <outgoingTransitions xmi:id="_r2B9MA-HEeumgJZ1_RcaIg" specification="after 5000ms" target="_uEiRkA-GEeumgJZ1_RcaIg"/>
             <outgoingTransitions xmi:id="_ikX5sA-JEeumgJZ1_RcaIg" specification="InsertCoin, NFC" target="_hgpL0A-JEeumgJZ1_RcaIg"/>
             <regions xmi:id="_uEiRkw-GEeumgJZ1_RcaIg" name="r1">
               <vertices xsi:type="sgraph:State" xmi:id="_2F9KUA-GEeumgJZ1_RcaIg" specification="entry/selected = true" name="Drink chosed" incomingTransitions="_82rQMA-GEeumgJZ1_RcaIg"/>
@@ -25,10 +25,10 @@
             <outgoingTransitions xmi:id="_g9uW4A-HEeumgJZ1_RcaIg" specification="" target="_uEiRkA-GEeumgJZ1_RcaIg"/>
           </vertices>
         </regions>
-        <regions xmi:id="_1XUz4woOEeukM93hRv6Zlg" name="r2">
+        <regions xmi:id="_1XUz4woOEeukM93hRv6Zlg" name="Payment region">
           <vertices xsi:type="sgraph:State" xmi:id="_hQ-_8BT_EeuhSZx8TONrSg" name="Payed or not" incomingTransitions="_-Kfh4BT_EeuhSZx8TONrSg _VmJUABUAEeuhSZx8TONrSg">
             <outgoingTransitions xmi:id="_Sqv54BUAEeuhSZx8TONrSg" specification="InsertCoin" target="_IT_hcBUAEeuhSZx8TONrSg"/>
-            <outgoingTransitions xmi:id="_VmJUABUAEeuhSZx8TONrSg" specification="after 10000ms/raise GiveBackMoney" target="_hQ-_8BT_EeuhSZx8TONrSg"/>
+            <outgoingTransitions xmi:id="_VmJUABUAEeuhSZx8TONrSg" specification="after 5000ms/raise GiveBackMoney" target="_hQ-_8BT_EeuhSZx8TONrSg"/>
             <outgoingTransitions xmi:id="_ysSjwBUAEeuhSZx8TONrSg" specification="EnoughMoneyInserted, NFC" target="_drK6YBUAEeuhSZx8TONrSg"/>
             <regions xmi:id="_hRAOEBT_EeuhSZx8TONrSg" name="r1">
               <vertices xsi:type="sgraph:State" xmi:id="_9kpaoAoOEeukM93hRv6Zlg" specification="entry/payedEnough=false" name="No money" incomingTransitions="_1x1N0BT_EeuhSZx8TONrSg"/>
