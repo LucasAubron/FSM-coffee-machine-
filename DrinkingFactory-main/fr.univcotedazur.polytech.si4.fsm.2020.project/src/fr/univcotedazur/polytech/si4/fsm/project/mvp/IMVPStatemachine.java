@@ -32,7 +32,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseEnoughMoneyInserted();
 		
-		public void raiseGobeletRecupere();
+		public void raiseCupPickedUp();
 		
 		public void raisePositionnerDosette();
 		
@@ -40,13 +40,35 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseBagPlacement();
 		
-		public boolean isRaisedBagPlaced();
+		public void raiseWaitingForWater();
 		
-		public boolean isRaisedSeedGrinded();
+		public void raiseEndWaterHeat();
 		
-		public boolean isRaisedPodPlaced();
+		public void raiseEndFirstStep();
 		
-		public boolean isRaisedWaterHeated();
+		public void raiseEndSecondStep();
+		
+		public void raiseStep2Expresso();
+		
+		public void raiseEndPackSeed();
+		
+		public void raiseWaterHeated();
+		
+		public boolean isRaisedAddSugar();
+		
+		public boolean isRaisedSeedPacking();
+		
+		public boolean isRaisedCupPlacing();
+		
+		public boolean isRaisedBagPlacing();
+		
+		public boolean isRaisedSeedGrinding();
+		
+		public boolean isRaisedPodPlacing();
+		
+		public boolean isRaisedWaitForWaterPoured();
+		
+		public boolean isRaisedWaitForWaterHeated();
 		
 		public boolean isRaisedCoffeeChosed();
 		
@@ -64,15 +86,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedNFCPayment();
 		
-		public boolean isRaisedNotHotEnough();
-		
-		public boolean isRaisedHotEnoughOut();
-		
 		public boolean isRaisedGiveBackMoney();
-		
-		public boolean isRaisedGobeletIsReady();
-		
-		public boolean isRaisedGobeletIsTaken();
 		
 		public boolean isRaisedDoTransaction();
 		
@@ -101,10 +115,14 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	
 	public interface SCInterfaceListener {
 	
-		public void onBagPlacedRaised();
-		public void onSeedGrindedRaised();
-		public void onPodPlacedRaised();
-		public void onWaterHeatedRaised();
+		public void onAddSugarRaised();
+		public void onSeedPackingRaised();
+		public void onCupPlacingRaised();
+		public void onBagPlacingRaised();
+		public void onSeedGrindingRaised();
+		public void onPodPlacingRaised();
+		public void onWaitForWaterPouredRaised();
+		public void onWaitForWaterHeatedRaised();
 		public void onCoffeeChosedRaised();
 		public void onTeaChosedRaised();
 		public void onExpressoChosedRaised();
@@ -113,11 +131,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
 		public void onNFCPaymentRaised();
-		public void onNotHotEnoughRaised();
-		public void onHotEnoughOutRaised();
 		public void onGiveBackMoneyRaised();
-		public void onGobeletIsReadyRaised();
-		public void onGobeletIsTakenRaised();
 		public void onDoTransactionRaised();
 		}
 	

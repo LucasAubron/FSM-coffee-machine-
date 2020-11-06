@@ -36,36 +36,39 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raisePositionnerDosette();
 		
-<<<<<<< HEAD
 		public void raiseSeedGrind();
 		
 		public void raiseBagPlacement();
 		
 		public void raiseWaitingForWater();
 		
-		public void raiseSeedPacking();
-		
 		public void raiseEndWaterHeat();
+		
+		public void raiseEndFirstStep();
+		
+		public void raiseEndSecondStep();
+		
+		public void raiseStep2Expresso();
+		
+		public void raiseEndPackSeed();
+		
+		public void raiseWaterHeated();
 		
 		public boolean isRaisedAddSugar();
 		
-		public boolean isRaisedEndFirstStep();
+		public boolean isRaisedSeedPacking();
 		
-		public boolean isRaisedEndSecondStep();
+		public boolean isRaisedCupPlacing();
 		
-		public boolean isRaisedPackSeed();
+		public boolean isRaisedBagPlacing();
 		
-		public boolean isRaisedWaitForWater();
+		public boolean isRaisedSeedGrinding();
 		
-		public boolean isRaisedCupPlacement();
+		public boolean isRaisedPodPlacing();
 		
-		public boolean isRaisedBagPlaced();
+		public boolean isRaisedWaitForWaterPoured();
 		
-		public boolean isRaisedSeedGrinded();
-		
-		public boolean isRaisedPodPlaced();
-		
-		public boolean isRaisedWaterHeated();
+		public boolean isRaisedWaitForWaterHeated();
 		
 		public boolean isRaisedCoffeeChosed();
 		
@@ -82,13 +85,6 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public boolean isRaisedCancel();
 		
 		public boolean isRaisedNFCPayment();
-=======
-		public boolean isRaisedCancel();
-		
-		public boolean isRaisedNotHotEnough();
-		
-		public boolean isRaisedHotEnoughOut();
->>>>>>> 68d868c1c4efdf8a22dfb9d5b0c54d4297ed849b
 		
 		public boolean isRaisedGiveBackMoney();
 		
@@ -119,17 +115,14 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	
 	public interface SCInterfaceListener {
 	
-<<<<<<< HEAD
 		public void onAddSugarRaised();
-		public void onEndFirstStepRaised();
-		public void onEndSecondStepRaised();
-		public void onPackSeedRaised();
-		public void onWaitForWaterRaised();
-		public void onCupPlacementRaised();
-		public void onBagPlacedRaised();
-		public void onSeedGrindedRaised();
-		public void onPodPlacedRaised();
-		public void onWaterHeatedRaised();
+		public void onSeedPackingRaised();
+		public void onCupPlacingRaised();
+		public void onBagPlacingRaised();
+		public void onSeedGrindingRaised();
+		public void onPodPlacingRaised();
+		public void onWaitForWaterPouredRaised();
+		public void onWaitForWaterHeatedRaised();
 		public void onCoffeeChosedRaised();
 		public void onTeaChosedRaised();
 		public void onExpressoChosedRaised();
@@ -138,11 +131,6 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
 		public void onNFCPaymentRaised();
-=======
-		public void onCancelRaised();
-		public void onNotHotEnoughRaised();
-		public void onHotEnoughOutRaised();
->>>>>>> 68d868c1c4efdf8a22dfb9d5b0c54d4297ed849b
 		public void onGiveBackMoneyRaised();
 		public void onDoTransactionRaised();
 		}

@@ -7,12 +7,14 @@ GeneratorModel for yakindu::java {
 			targetFolder = "src-gen"
 			libraryTargetFolder = "src"
 		}
-		feature GeneralFeatures { 
-			InterfaceObserverSupport = true
-			RuntimeService = true
-			inEventQueue = true 
-			synchronized = true
-			runnable = false
-		} 
+		feature GeneralFeatures {
+				InterfaceObserverSupport = true
+				RuntimeService = true
+				TimerService = true
+				inEventQueue = true
+				synchronized = true
+				runnable = false
+		}
+ 
 	}
 }

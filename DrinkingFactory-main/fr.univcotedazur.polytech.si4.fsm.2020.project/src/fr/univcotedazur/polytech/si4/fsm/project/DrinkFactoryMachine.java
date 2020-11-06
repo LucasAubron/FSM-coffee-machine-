@@ -40,33 +40,14 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	@Override
 	public void onCancelRaised() {
 		theMachine.cancel();
-		
 	}
-	@Override
-	public void onNotHotEnoughRaised() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onHotEnoughOutRaised() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public void onGiveBackMoneyRaised() {
 		// TODO Auto-generated method stub
-		
+		theMachine.giveBackMoney();
 	}
-	@Override
-	public void onGobeletIsReadyRaised() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onGobeletIsTakenRaised() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public void onDoTransactionRaised() {
 		this.theMachine.doTransaction();
@@ -108,23 +89,44 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 		theMachine.nfc();
 		
 	}
+
 	@Override
-	public void onBagPlacedRaised() {
+	public void onAddSugarRaised() {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void onSeedGrindedRaised() {
+	public void onSeedPackingRaised() {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void onPodPlacedRaised() {
+	public void onCupPlacingRaised() {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void onWaterHeatedRaised() {
+	public void onBagPlacingRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onSeedGrindingRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onPodPlacingRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onWaitForWaterPouredRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onWaitForWaterHeatedRaised() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -475,7 +477,11 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void nfc() {
-		insertMoney(50);
+		if (this.moneyInserted==0) {
+			insertMoney(50);
+		} else {
+			this.messagesToUser.setText("<html>Vous ne pouvez pas<br>utiliser le NFC<br>avec de l'argent<br>déjà inséré.");
+		}
 	}
 	
 	void chooseDrink(Drink drink){
@@ -491,11 +497,14 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void giveBackMoney(){
-		if (this.moneyInserted > this.moneyToReach) {
-		//physically give back money method here
+		if (this.moneyInserted>0) {
+			String mb = String.valueOf(this.moneyInserted*0.01);
+			if (mb.length()>4) mb = mb.substring(0,4);
+			if (mb.length()<4) mb+= "0";
+			this.moneyInserted = 0;
+			this.moneyToReach = 0;
+			this.messagesToUser.setText("Tiens, voilà: " + mb + "€");
 		}
-		this.moneyInserted = 0;
-		this.moneyToReach = 0;
 	}
 
 	
@@ -531,7 +540,6 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	void doTransaction() {
 		this.moneyInserted -= this.moneyToReach;
-		giveBackMoney();
 	}
 }
 
