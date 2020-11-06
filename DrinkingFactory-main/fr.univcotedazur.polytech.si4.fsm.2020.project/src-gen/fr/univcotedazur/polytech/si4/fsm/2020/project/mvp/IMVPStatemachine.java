@@ -36,6 +36,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raisePositionnerDosette();
 		
+<<<<<<< HEAD
 		public void raiseSeedGrind();
 		
 		public void raiseBagPlacement();
@@ -81,6 +82,13 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public boolean isRaisedCancel();
 		
 		public boolean isRaisedNFCPayment();
+=======
+		public boolean isRaisedCancel();
+		
+		public boolean isRaisedNotHotEnough();
+		
+		public boolean isRaisedHotEnoughOut();
+>>>>>>> 68d868c1c4efdf8a22dfb9d5b0c54d4297ed849b
 		
 		public boolean isRaisedGiveBackMoney();
 		
@@ -111,6 +119,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	
 	public interface SCInterfaceListener {
 	
+<<<<<<< HEAD
 		public void onAddSugarRaised();
 		public void onEndFirstStepRaised();
 		public void onEndSecondStepRaised();
@@ -129,6 +138,11 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
 		public void onNFCPaymentRaised();
+=======
+		public void onCancelRaised();
+		public void onNotHotEnoughRaised();
+		public void onHotEnoughOutRaised();
+>>>>>>> 68d868c1c4efdf8a22dfb9d5b0c54d4297ed849b
 		public void onGiveBackMoneyRaised();
 		public void onDoTransactionRaised();
 		}
