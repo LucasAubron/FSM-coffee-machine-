@@ -3,12 +3,15 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -23,13 +26,114 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
+import fr.univcotedazur.polytech.si4.fsm.project.mvp.IMVPStatemachine.SCInterface;
+import fr.univcotedazur.polytech.si4.fsm.project.mvp.IMVPStatemachine.SCInterfaceListener;
+import fr.univcotedazur.polytech.si4.fsm.project.mvp.MVPStatemachine;
+
+
+
+class MVPControlerInterfaceImplementation implements SCInterfaceListener{
+	DrinkFactoryMachine theMachine;
+	public MVPControlerInterfaceImplementation(DrinkFactoryMachine tm) {
+		this.theMachine = tm;
+	}
+	@Override
+	public void onCancelRaised() {
+		theMachine.cancel();
+		
+	}
+	@Override
+	public void onNotHotEnoughRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onHotEnoughOutRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onGiveBackMoneyRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onGobeletIsReadyRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onGobeletIsTakenRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onDoTransactionRaised() {
+		this.theMachine.doTransaction();
+		this.theMachine.startDrinkPrep();
+	}
+	@Override
+	public void onCoffeeChosedRaised() {
+		theMachine.chooseDrink(Drink.COFFEE);
+		theMachine.setMoneyGoal(35);
+	}
+	@Override
+	public void onTeaChosedRaised() {
+		theMachine.chooseDrink(Drink.TEA);
+		theMachine.setMoneyGoal(40);
+	}
+	@Override
+	public void onExpressoChosedRaised() {
+		theMachine.chooseDrink(Drink.EXPRESSO);
+		theMachine.setMoneyGoal(50);
+		
+	}
+	@Override
+	public void onCoin10InsertedRaised() {
+		theMachine.insertMoney(10);
+		
+	}
+	@Override
+	public void onCoin25InsertedRaised() {
+		theMachine.insertMoney(25);
+		
+	}
+	@Override
+	public void onCoin50InsertedRaised() {
+		theMachine.insertMoney(50);
+		
+	}
+	@Override
+	public void onNFCPaymentRaised() {
+		theMachine.nfc();
+		
+	}
+
+}
+
+enum Drink{
+	NONE,
+	COFFEE,
+	TEA,
+	EXPRESSO
+}
+
+
 public class DrinkFactoryMachine extends JFrame {
+	
+	
+	private Drink drinkSelected = Drink.NONE;
+	private JLabel messagesToUser;
+	private String welcomeMessage = "<html>Welcome<br>chose your drink <br>or insert money";
+	private int moneyInserted = 0;
+	private int moneyToReach = 0;
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
+	private MVPStatemachine theFSM;
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
@@ -55,6 +159,14 @@ public class DrinkFactoryMachine extends JFrame {
 	 * Create the frame.
 	 */
 	public DrinkFactoryMachine() {
+		theFSM = new MVPStatemachine();
+		TimerService timer = new TimerService();
+		theFSM.setTimer(timer);
+		theFSM.init();
+		theFSM.enter();
+		theFSM.getSCInterface().getListeners().add(
+				new MVPControlerInterfaceImplementation(this)
+				);
 		setForeground(Color.WHITE);
 		setFont(new Font("Cantarell", Font.BOLD, 22));
 		setBackground(Color.DARK_GRAY);
@@ -67,7 +179,7 @@ public class DrinkFactoryMachine extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel messagesToUser = new JLabel("<html>This is<br>place to communicate <br> with the user");
+		messagesToUser = new JLabel(welcomeMessage);
 		messagesToUser.setForeground(Color.WHITE);
 		messagesToUser.setHorizontalAlignment(SwingConstants.LEFT);
 		messagesToUser.setVerticalAlignment(SwingConstants.TOP);
@@ -86,18 +198,36 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.setForeground(Color.WHITE);
 		coffeeButton.setBackground(Color.DARK_GRAY);
 		coffeeButton.setBounds(12, 34, 96, 25);
+		coffeeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseCoffeeButton();
+			}
+		});
 		contentPane.add(coffeeButton);
 
 		JButton expressoButton = new JButton("Expresso");
 		expressoButton.setForeground(Color.WHITE);
 		expressoButton.setBackground(Color.DARK_GRAY);
 		expressoButton.setBounds(12, 71, 96, 25);
+		expressoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseExpressoButton();
+			}
+		});
 		contentPane.add(expressoButton);
 
 		JButton teaButton = new JButton("Tea");
 		teaButton.setForeground(Color.WHITE);
 		teaButton.setBackground(Color.DARK_GRAY);
 		teaButton.setBounds(12, 108, 96, 25);
+		teaButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseTeaButton();
+			}
+		});
 		contentPane.add(teaButton);
 
 		JButton soupButton = new JButton("Soup");
@@ -197,16 +327,34 @@ public class DrinkFactoryMachine extends JFrame {
 		JButton money50centsButton = new JButton("0.50 €");
 		money50centsButton.setForeground(Color.WHITE);
 		money50centsButton.setBackground(Color.DARK_GRAY);
+		money50centsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseInsertCoin50();
+			}
+		});
 		panel.add(money50centsButton);
 
 		JButton money25centsButton = new JButton("0.25 €");
 		money25centsButton.setForeground(Color.WHITE);
 		money25centsButton.setBackground(Color.DARK_GRAY);
+		money25centsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseInsertCoin25();
+			}
+		});
 		panel.add(money25centsButton);
 
 		JButton money10centsButton = new JButton("0.10 €");
 		money10centsButton.setForeground(Color.WHITE);
 		money10centsButton.setBackground(Color.DARK_GRAY);
+		money10centsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseInsertCoin10();
+			}
+		});
 		panel.add(money10centsButton);
 
 		JPanel panel_1 = new JPanel();
@@ -217,6 +365,12 @@ public class DrinkFactoryMachine extends JFrame {
 		JButton nfcBiiiipButton = new JButton("biiip");
 		nfcBiiiipButton.setForeground(Color.WHITE);
 		nfcBiiiipButton.setBackground(Color.DARK_GRAY);
+		nfcBiiiipButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseNFC();
+			}
+		});
 		panel_1.add(nfcBiiiipButton);
 
 		JLabel lblNfc = new JLabel("NFC");
@@ -253,6 +407,12 @@ public class DrinkFactoryMachine extends JFrame {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.setForeground(Color.WHITE);
 		cancelButton.setBackground(Color.DARK_GRAY);
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseCancelButton();
+			}
+		});
 		panel_2.add(cancelButton);
 
 		// listeners
@@ -269,5 +429,77 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 
+	}
+	
+	void setMoneyGoal(int d) {
+		this.moneyToReach = d;
+		updateMessage();
+		checkIfMoneyGoal();
+	}
+	
+	void insertMoney(int added) {
+		this.moneyInserted += added;
+		updateMessage();
+		checkIfMoneyGoal();
+	}
+	
+	void nfc() {
+		insertMoney(50);
+	}
+	
+	void chooseDrink(Drink drink){
+		this.drinkSelected = drink;
+		updateMessage();
+		checkIfMoneyGoal();
+	}
+	
+	void cancel() {
+		this.messagesToUser.setText(welcomeMessage);
+		this.drinkSelected = Drink.NONE;
+		giveBackMoney();
+	}
+	
+	void giveBackMoney(){
+		if (this.moneyInserted > this.moneyToReach) {
+		//physically give back money method here
+		}
+		this.moneyInserted = 0;
+		this.moneyToReach = 0;
+	}
+
+	
+	void checkIfMoneyGoal() {
+		if (this.moneyToReach >0 && this.moneyInserted >= this.moneyToReach) {
+			theFSM.getSCInterface().raiseEnoughMoneyInserted();
+		}
+	}
+	
+	void updateMessage() {
+		double mti = (this.moneyToReach - this.moneyInserted)*0.01;
+		String smi = String.valueOf(this.moneyInserted*0.01);
+		String smti;
+		if (mti > 0) {
+			smti = String.valueOf(mti);
+		} else {
+			smti = "0.00";
+		}
+		if (smi.length()>4) smi = smi.substring(0,4);
+		if (smti.length()>4) smti = smti.substring(0,4);
+		if (smi.length()<4) smi+="0";
+		if (smti.length()<4) smti += "0";
+		if (drinkSelected!=Drink.NONE) {
+			this.messagesToUser.setText("<html>"+drinkSelected.toString().toLowerCase() + " selected<br>" +"Money to insert: " + smti +"€");
+		} else {
+			this.messagesToUser.setText("<html>No drink selected<br>"+"Money inserted: " + smi +"€");
+		}
+	}
+	
+	void startDrinkPrep() {
+		this.messagesToUser.setText("Drink in preparation ...");
+	}
+	
+	void doTransaction() {
+		this.moneyInserted -= this.moneyToReach;
+		giveBackMoney();
 	}
 }
