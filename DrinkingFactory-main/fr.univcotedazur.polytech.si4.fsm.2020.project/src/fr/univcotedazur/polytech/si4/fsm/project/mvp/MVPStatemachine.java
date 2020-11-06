@@ -16,6 +16,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 		public List<SCInterfaceListener> getListeners() {
 			return listeners;
 		}
+		private boolean podPlacement;
+		
+		
+		public void raisePodPlacement() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							podPlacement = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
 		private boolean coffeeButton;
 		
 		
@@ -211,6 +229,114 @@ public class MVPStatemachine implements IMVPStatemachine {
 					}
 				);
 				runCycle();
+			}
+		}
+		
+		private boolean seedGrind;
+		
+		
+		public void raiseSeedGrind() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							seedGrind = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean bagPlacement;
+		
+		
+		public void raiseBagPlacement() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							bagPlacement = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean bagPlaced;
+		
+		
+		public boolean isRaisedBagPlaced() {
+			synchronized(MVPStatemachine.this) {
+				return bagPlaced;
+			}
+		}
+		
+		protected void raiseBagPlaced() {
+			synchronized(MVPStatemachine.this) {
+				bagPlaced = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onBagPlacedRaised();
+				}
+			}
+		}
+		
+		private boolean seedGrinded;
+		
+		
+		public boolean isRaisedSeedGrinded() {
+			synchronized(MVPStatemachine.this) {
+				return seedGrinded;
+			}
+		}
+		
+		protected void raiseSeedGrinded() {
+			synchronized(MVPStatemachine.this) {
+				seedGrinded = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onSeedGrindedRaised();
+				}
+			}
+		}
+		
+		private boolean podPlaced;
+		
+		
+		public boolean isRaisedPodPlaced() {
+			synchronized(MVPStatemachine.this) {
+				return podPlaced;
+			}
+		}
+		
+		protected void raisePodPlaced() {
+			synchronized(MVPStatemachine.this) {
+				podPlaced = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPodPlacedRaised();
+				}
+			}
+		}
+		
+		private boolean waterHeated;
+		
+		
+		public boolean isRaisedWaterHeated() {
+			synchronized(MVPStatemachine.this) {
+				return waterHeated;
+			}
+		}
+		
+		protected void raiseWaterHeated() {
+			synchronized(MVPStatemachine.this) {
+				waterHeated = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onWaterHeatedRaised();
+				}
 			}
 		}
 		
@@ -537,6 +663,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 		
 		protected void clearEvents() {
+			podPlacement = false;
 			coffeeButton = false;
 			teaButton = false;
 			expressoButton = false;
@@ -548,9 +675,15 @@ public class MVPStatemachine implements IMVPStatemachine {
 			enoughMoneyInserted = false;
 			gobeletRecupere = false;
 			positionnerDosette = false;
+			seedGrind = false;
+			bagPlacement = false;
 		}
 		protected void clearOutEvents() {
 		
+		bagPlaced = false;
+		seedGrinded = false;
+		podPlaced = false;
+		waterHeated = false;
 		coffeeChosed = false;
 		teaChosed = false;
 		expressoChosed = false;
@@ -583,7 +716,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money,
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted,
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money,
-		main_region_End,
+		main_region_Step1,
+		main_region_Step1_r1_Water_heat,
+		main_region_Step1_r2_First_step,
+		main_region_Step1_r2_Drink_difference,
+		main_region_ENd,
 		$NullState$
 	};
 	
@@ -682,8 +819,17 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
 					main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_react(true);
 					break;
-				case main_region_End:
-					main_region_End_react(true);
+				case main_region_Step1_r1_Water_heat:
+					main_region_Step1_r1_Water_heat_react(true);
+					break;
+				case main_region_Step1_r2_First_step:
+					main_region_Step1_r2_First_step_react(true);
+					break;
+				case main_region_Step1_r2_Drink_difference:
+					main_region_Step1_r2_Drink_difference_react(true);
+					break;
+				case main_region_ENd:
+					main_region_ENd_react(true);
 					break;
 			default:
 				// $NullState$
@@ -768,8 +914,17 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted;
 		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
 			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money;
-		case main_region_End:
-			return stateVector[0] == State.main_region_End;
+		case main_region_Step1:
+			return stateVector[0].ordinal() >= State.
+					main_region_Step1.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step1_r2_Drink_difference.ordinal();
+		case main_region_Step1_r1_Water_heat:
+			return stateVector[0] == State.main_region_Step1_r1_Water_heat;
+		case main_region_Step1_r2_First_step:
+			return stateVector[1] == State.main_region_Step1_r2_First_step;
+		case main_region_Step1_r2_Drink_difference:
+			return stateVector[1] == State.main_region_Step1_r2_Drink_difference;
+		case main_region_ENd:
+			return stateVector[0] == State.main_region_ENd;
 		default:
 			return false;
 		}
@@ -808,6 +963,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	public SCInterface getSCInterface() {
 		return sCInterface;
+	}
+	
+	public synchronized void raisePodPlacement() {
+		sCInterface.raisePodPlacement();
 	}
 	
 	public synchronized void raiseCoffeeButton() {
@@ -852,6 +1011,30 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	public synchronized void raisePositionnerDosette() {
 		sCInterface.raisePositionnerDosette();
+	}
+	
+	public synchronized void raiseSeedGrind() {
+		sCInterface.raiseSeedGrind();
+	}
+	
+	public synchronized void raiseBagPlacement() {
+		sCInterface.raiseBagPlacement();
+	}
+	
+	public synchronized boolean isRaisedBagPlaced() {
+		return sCInterface.isRaisedBagPlaced();
+	}
+	
+	public synchronized boolean isRaisedSeedGrinded() {
+		return sCInterface.isRaisedSeedGrinded();
+	}
+	
+	public synchronized boolean isRaisedPodPlaced() {
+		return sCInterface.isRaisedPodPlaced();
+	}
+	
+	public synchronized boolean isRaisedWaterHeated() {
+		return sCInterface.isRaisedWaterHeated();
 	}
 	
 	public synchronized boolean isRaisedCoffeeChosed() {
@@ -985,6 +1168,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.setPayedEnough(true);
 	}
 	
+	/* Entry action for state 'Water heat'. */
+	private void entryAction_main_region_Step1_r1_Water_heat() {
+		sCInterface.raiseWaterHeated();
+	}
+	
 	/* Exit action for state 'Choice and Payment'. */
 	private void exitAction_main_region_Choice_and_Payment() {
 		timer.unsetTimer(this, 0);
@@ -1063,10 +1251,35 @@ public class MVPStatemachine implements IMVPStatemachine {
 		historyVector[1] = stateVector[1];
 	}
 	
-	/* 'default' enter sequence for state End */
-	private void enterSequence_main_region_End_default() {
+	/* 'default' enter sequence for state Step1 */
+	private void enterSequence_main_region_Step1_default() {
+		enterSequence_main_region_Step1_r1_default();
+		enterSequence_main_region_Step1_r2_default();
+	}
+	
+	/* 'default' enter sequence for state Water heat */
+	private void enterSequence_main_region_Step1_r1_Water_heat_default() {
+		entryAction_main_region_Step1_r1_Water_heat();
 		nextStateIndex = 0;
-		stateVector[0] = State.main_region_End;
+		stateVector[0] = State.main_region_Step1_r1_Water_heat;
+	}
+	
+	/* 'default' enter sequence for state First step */
+	private void enterSequence_main_region_Step1_r2_First_step_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step1_r2_First_step;
+	}
+	
+	/* 'default' enter sequence for state Drink difference */
+	private void enterSequence_main_region_Step1_r2_Drink_difference_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step1_r2_Drink_difference;
+	}
+	
+	/* 'default' enter sequence for state ENd */
+	private void enterSequence_main_region_ENd_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_ENd;
 	}
 	
 	/* 'default' enter sequence for region main region */
@@ -1125,6 +1338,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
+	/* 'default' enter sequence for region r1 */
+	private void enterSequence_main_region_Step1_r1_default() {
+		react_main_region_Step1_r1__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region r2 */
+	private void enterSequence_main_region_Step1_r2_default() {
+		react_main_region_Step1_r2__entry_Default();
+	}
+	
 	/* Default exit sequence for state Choice and Payment */
 	private void exitSequence_main_region_Choice_and_Payment() {
 		exitSequence_main_region_Choice_and_Payment_Choice_region();
@@ -1174,8 +1397,32 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state End */
-	private void exitSequence_main_region_End() {
+	/* Default exit sequence for state Step1 */
+	private void exitSequence_main_region_Step1() {
+		exitSequence_main_region_Step1_r1();
+		exitSequence_main_region_Step1_r2();
+	}
+	
+	/* Default exit sequence for state Water heat */
+	private void exitSequence_main_region_Step1_r1_Water_heat() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state First step */
+	private void exitSequence_main_region_Step1_r2_First_step() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Drink difference */
+	private void exitSequence_main_region_Step1_r2_Drink_difference() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state ENd */
+	private void exitSequence_main_region_ENd() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
 	}
@@ -1191,8 +1438,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
 			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
 			break;
-		case main_region_End:
-			exitSequence_main_region_End();
+		case main_region_Step1_r1_Water_heat:
+			exitSequence_main_region_Step1_r1_Water_heat();
+			break;
+		case main_region_ENd:
+			exitSequence_main_region_ENd();
 			break;
 		default:
 			break;
@@ -1213,6 +1463,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
 			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
 			exitAction_main_region_Choice_and_Payment();
+			break;
+		case main_region_Step1_r2_First_step:
+			exitSequence_main_region_Step1_r2_First_step();
+			break;
+		case main_region_Step1_r2_Drink_difference:
+			exitSequence_main_region_Step1_r2_Drink_difference();
 			break;
 		default:
 			break;
@@ -1286,6 +1542,31 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
+	/* Default exit sequence for region r1 */
+	private void exitSequence_main_region_Step1_r1() {
+		switch (stateVector[0]) {
+		case main_region_Step1_r1_Water_heat:
+			exitSequence_main_region_Step1_r1_Water_heat();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region r2 */
+	private void exitSequence_main_region_Step1_r2() {
+		switch (stateVector[1]) {
+		case main_region_Step1_r2_First_step:
+			exitSequence_main_region_Step1_r2_First_step();
+			break;
+		case main_region_Step1_r2_Drink_difference:
+			exitSequence_main_region_Step1_r2_Drink_difference();
+			break;
+		default:
+			break;
+		}
+	}
+	
 	/* Default react sequence for initial entry  */
 	private void react_main_region__entry_Default() {
 		enterSequence_main_region_Choice_and_Payment_default();
@@ -1331,6 +1612,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 		enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default();
 	}
 	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Step1_r1__entry_Default() {
+		enterSequence_main_region_Step1_r1_Water_heat_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Step1_r2__entry_Default() {
+		enterSequence_main_region_Step1_r2_Drink_difference_default();
+	}
+	
 	private boolean react() {
 		return false;
 	}
@@ -1343,7 +1634,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 				exitSequence_main_region_Choice_and_Payment();
 				sCInterface.raiseDoTransaction();
 				
-				enterSequence_main_region_End_default();
+				enterSequence_main_region_Step1_default();
 				react();
 			} else {
 				did_transition = false;
@@ -1368,6 +1659,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 			} else {
 				if (timeEvents[1]) {
 					exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
+					sCInterface.raiseCancel();
+					
 					enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_default();
 				} else {
 					if ((sCInterface.insertCoin10 || (sCInterface.insertCoin25 || (sCInterface.insertCoin50 || sCInterface.nFC)))) {
@@ -1544,7 +1837,78 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_End_react(boolean try_transition) {
+	private boolean main_region_Step1_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			exitSequence_main_region_Step1();
+			enterSequence_main_region_ENd_default();
+			react();
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step1_r1_Water_heat_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step1_r2_First_step_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step1_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step1_r2_Drink_difference_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.podPlacement) {
+				exitSequence_main_region_Step1_r2_Drink_difference();
+				sCInterface.raisePodPlaced();
+				
+				enterSequence_main_region_Step1_r2_First_step_default();
+				main_region_Step1_react(false);
+			} else {
+				if (sCInterface.seedGrind) {
+					exitSequence_main_region_Step1_r2_Drink_difference();
+					sCInterface.raiseSeedGrinded();
+					
+					enterSequence_main_region_Step1_r2_First_step_default();
+					main_region_Step1_react(false);
+				} else {
+					if (sCInterface.bagPlacement) {
+						exitSequence_main_region_Step1_r2_Drink_difference();
+						sCInterface.raiseBagPlaced();
+						
+						enterSequence_main_region_Step1_r2_First_step_default();
+						main_region_Step1_react(false);
+					} else {
+						did_transition = false;
+					}
+				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step1_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_ENd_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {

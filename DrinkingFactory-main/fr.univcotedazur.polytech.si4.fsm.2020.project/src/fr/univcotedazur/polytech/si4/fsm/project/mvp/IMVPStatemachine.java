@@ -12,6 +12,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	public interface SCInterface {
 	
+		public void raisePodPlacement();
+		
 		public void raiseCoffeeButton();
 		
 		public void raiseTeaButton();
@@ -33,6 +35,18 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void raiseGobeletRecupere();
 		
 		public void raisePositionnerDosette();
+		
+		public void raiseSeedGrind();
+		
+		public void raiseBagPlacement();
+		
+		public boolean isRaisedBagPlaced();
+		
+		public boolean isRaisedSeedGrinded();
+		
+		public boolean isRaisedPodPlaced();
+		
+		public boolean isRaisedWaterHeated();
 		
 		public boolean isRaisedCoffeeChosed();
 		
@@ -87,6 +101,10 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	
 	public interface SCInterfaceListener {
 	
+		public void onBagPlacedRaised();
+		public void onSeedGrindedRaised();
+		public void onPodPlacedRaised();
+		public void onWaterHeatedRaised();
 		public void onCoffeeChosedRaised();
 		public void onTeaChosedRaised();
 		public void onExpressoChosedRaised();

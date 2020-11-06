@@ -108,6 +108,26 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 		theMachine.nfc();
 		
 	}
+	@Override
+	public void onBagPlacedRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onSeedGrindedRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onPodPlacedRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onWaterHeatedRaised() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 
