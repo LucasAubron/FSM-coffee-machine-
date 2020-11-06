@@ -34,21 +34,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raisePositionnerDosette();
 		
-		public boolean isRaisedCoffeeChosed();
-		
-		public boolean isRaisedTeaChosed();
-		
-		public boolean isRaisedExpressoChosed();
-		
-		public boolean isRaisedCoin10Inserted();
-		
-		public boolean isRaisedCoin25Inserted();
-		
-		public boolean isRaisedCoin50Inserted();
-		
 		public boolean isRaisedCancel();
-		
-		public boolean isRaisedNFCPayment();
 		
 		public boolean isRaisedNotHotEnough();
 		
@@ -87,14 +73,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	
 	public interface SCInterfaceListener {
 	
-		public void onCoffeeChosedRaised();
-		public void onTeaChosedRaised();
-		public void onExpressoChosedRaised();
-		public void onCoin10InsertedRaised();
-		public void onCoin25InsertedRaised();
-		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
-		public void onNFCPaymentRaised();
 		public void onNotHotEnoughRaised();
 		public void onHotEnoughOutRaised();
 		public void onGiveBackMoneyRaised();

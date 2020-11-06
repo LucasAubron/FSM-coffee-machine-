@@ -117,6 +117,17 @@ enum Drink{
 	TEA,
 	EXPRESSO
 }
+enum Size{
+	SHORT,
+	NORMAL,
+	LONG
+}
+enum Temperature{
+	AMBIENT,
+	GENTLE,
+	HOT,
+	VERY_HOT
+}
 
 
 public class DrinkFactoryMachine extends JFrame {
@@ -503,3 +514,4 @@ public class DrinkFactoryMachine extends JFrame {
 		giveBackMoney();
 	}
 }
+

@@ -214,114 +214,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean coffeeChosed;
-		
-		
-		public boolean isRaisedCoffeeChosed() {
-			synchronized(MVPStatemachine.this) {
-				return coffeeChosed;
-			}
-		}
-		
-		protected void raiseCoffeeChosed() {
-			synchronized(MVPStatemachine.this) {
-				coffeeChosed = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onCoffeeChosedRaised();
-				}
-			}
-		}
-		
-		private boolean teaChosed;
-		
-		
-		public boolean isRaisedTeaChosed() {
-			synchronized(MVPStatemachine.this) {
-				return teaChosed;
-			}
-		}
-		
-		protected void raiseTeaChosed() {
-			synchronized(MVPStatemachine.this) {
-				teaChosed = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onTeaChosedRaised();
-				}
-			}
-		}
-		
-		private boolean expressoChosed;
-		
-		
-		public boolean isRaisedExpressoChosed() {
-			synchronized(MVPStatemachine.this) {
-				return expressoChosed;
-			}
-		}
-		
-		protected void raiseExpressoChosed() {
-			synchronized(MVPStatemachine.this) {
-				expressoChosed = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onExpressoChosedRaised();
-				}
-			}
-		}
-		
-		private boolean coin10Inserted;
-		
-		
-		public boolean isRaisedCoin10Inserted() {
-			synchronized(MVPStatemachine.this) {
-				return coin10Inserted;
-			}
-		}
-		
-		protected void raiseCoin10Inserted() {
-			synchronized(MVPStatemachine.this) {
-				coin10Inserted = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onCoin10InsertedRaised();
-				}
-			}
-		}
-		
-		private boolean coin25Inserted;
-		
-		
-		public boolean isRaisedCoin25Inserted() {
-			synchronized(MVPStatemachine.this) {
-				return coin25Inserted;
-			}
-		}
-		
-		protected void raiseCoin25Inserted() {
-			synchronized(MVPStatemachine.this) {
-				coin25Inserted = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onCoin25InsertedRaised();
-				}
-			}
-		}
-		
-		private boolean coin50Inserted;
-		
-		
-		public boolean isRaisedCoin50Inserted() {
-			synchronized(MVPStatemachine.this) {
-				return coin50Inserted;
-			}
-		}
-		
-		protected void raiseCoin50Inserted() {
-			synchronized(MVPStatemachine.this) {
-				coin50Inserted = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onCoin50InsertedRaised();
-				}
-			}
-		}
-		
 		private boolean cancel;
 		
 		
@@ -336,24 +228,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 				cancel = true;
 				for (SCInterfaceListener listener : listeners) {
 					listener.onCancelRaised();
-				}
-			}
-		}
-		
-		private boolean nFCPayment;
-		
-		
-		public boolean isRaisedNFCPayment() {
-			synchronized(MVPStatemachine.this) {
-				return nFCPayment;
-			}
-		}
-		
-		protected void raiseNFCPayment() {
-			synchronized(MVPStatemachine.this) {
-				nFCPayment = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onNFCPaymentRaised();
 				}
 			}
 		}
@@ -551,14 +425,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 		protected void clearOutEvents() {
 		
-		coffeeChosed = false;
-		teaChosed = false;
-		expressoChosed = false;
-		coin10Inserted = false;
-		coin25Inserted = false;
-		coin50Inserted = false;
 		cancel = false;
-		nFCPayment = false;
 		notHotEnough = false;
 		hotEnoughOut = false;
 		giveBackMoney = false;
@@ -583,18 +450,30 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money,
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted,
 		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money,
+		main_region_Fin_de_la_commande,
+		main_region_Fin_de_la_commande_nettoyage_Nettoyage,
+		main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie,
+		main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret,
+		main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_,
+		main_region_Preparation_de_la_boisson,
+		main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette,
+		main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet,
+		main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre,
+		main_region_Preparation_de_la_boisson_eau_Chauffage,
+		main_region_Preparation_de_la_boisson_eau_AssezChauff_,
+		main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau,
 		main_region_End,
 		$NullState$
 	};
 	
 	private State[] historyVector = new State[2];
-	private final State[] stateVector = new State[2];
+	private final State[] stateVector = new State[3];
 	
 	private int nextStateIndex;
 	
 	private ITimer timer;
 	
-	private final boolean[] timeEvents = new boolean[3];
+	private final boolean[] timeEvents = new boolean[6];
 	
 	private BlockingQueue<Runnable> inEventQueue = new LinkedBlockingQueue<Runnable>();
 	private boolean isRunningCycle = false;
@@ -607,7 +486,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		if (timer == null) {
 			throw new IllegalStateException("timer not set.");
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			stateVector[i] = State.$NullState$;
 		}
 		for (int i = 0; i < 2; i++) {
@@ -682,6 +561,36 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
 					main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_react(true);
 					break;
+				case main_region_Fin_de_la_commande_nettoyage_Nettoyage:
+					main_region_Fin_de_la_commande_nettoyage_Nettoyage_react(true);
+					break;
+				case main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie:
+					main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie_react(true);
+					break;
+				case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret:
+					main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret_react(true);
+					break;
+				case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_:
+					main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r__react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette:
+					main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette_react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet:
+					main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet_react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre:
+					main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre_react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_eau_Chauffage:
+					main_region_Preparation_de_la_boisson_eau_Chauffage_react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_eau_AssezChauff_:
+					main_region_Preparation_de_la_boisson_eau_AssezChauff__react(true);
+					break;
+				case main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau:
+					main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau_react(true);
+					break;
 				case main_region_End:
 					main_region_End_react(true);
 					break;
@@ -715,7 +624,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 	 * @see IStatemachine#isActive()
 	 */
 	public synchronized boolean isActive() {
-		return stateVector[0] != State.$NullState$||stateVector[1] != State.$NullState$;
+		return stateVector[0] != State.$NullState$||stateVector[1] != State.$NullState$||stateVector[2] != State.$NullState$;
 	}
 	
 	/** 
@@ -768,6 +677,32 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted;
 		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
 			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money;
+		case main_region_Fin_de_la_commande:
+			return stateVector[0].ordinal() >= State.
+					main_region_Fin_de_la_commande.ordinal()&& stateVector[0].ordinal() <= State.main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_.ordinal();
+		case main_region_Fin_de_la_commande_nettoyage_Nettoyage:
+			return stateVector[0] == State.main_region_Fin_de_la_commande_nettoyage_Nettoyage;
+		case main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie:
+			return stateVector[1] == State.main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie;
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret:
+			return stateVector[2] == State.main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret;
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_:
+			return stateVector[2] == State.main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_;
+		case main_region_Preparation_de_la_boisson:
+			return stateVector[0].ordinal() >= State.
+					main_region_Preparation_de_la_boisson.ordinal()&& stateVector[0].ordinal() <= State.main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau.ordinal();
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette:
+			return stateVector[0] == State.main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette;
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet:
+			return stateVector[0] == State.main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet;
+		case main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre:
+			return stateVector[0] == State.main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre;
+		case main_region_Preparation_de_la_boisson_eau_Chauffage:
+			return stateVector[1] == State.main_region_Preparation_de_la_boisson_eau_Chauffage;
+		case main_region_Preparation_de_la_boisson_eau_AssezChauff_:
+			return stateVector[1] == State.main_region_Preparation_de_la_boisson_eau_AssezChauff_;
+		case main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau:
+			return stateVector[1] == State.main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau;
 		case main_region_End:
 			return stateVector[0] == State.main_region_End;
 		default:
@@ -854,36 +789,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raisePositionnerDosette();
 	}
 	
-	public synchronized boolean isRaisedCoffeeChosed() {
-		return sCInterface.isRaisedCoffeeChosed();
-	}
-	
-	public synchronized boolean isRaisedTeaChosed() {
-		return sCInterface.isRaisedTeaChosed();
-	}
-	
-	public synchronized boolean isRaisedExpressoChosed() {
-		return sCInterface.isRaisedExpressoChosed();
-	}
-	
-	public synchronized boolean isRaisedCoin10Inserted() {
-		return sCInterface.isRaisedCoin10Inserted();
-	}
-	
-	public synchronized boolean isRaisedCoin25Inserted() {
-		return sCInterface.isRaisedCoin25Inserted();
-	}
-	
-	public synchronized boolean isRaisedCoin50Inserted() {
-		return sCInterface.isRaisedCoin50Inserted();
-	}
-	
 	public synchronized boolean isRaisedCancel() {
 		return sCInterface.isRaisedCancel();
-	}
-	
-	public synchronized boolean isRaisedNFCPayment() {
-		return sCInterface.isRaisedNFCPayment();
 	}
 	
 	public synchronized boolean isRaisedNotHotEnough() {
@@ -985,6 +892,35 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.setPayedEnough(true);
 	}
 	
+	/* Entry action for state 'Gobelet pret'. */
+	private void entryAction_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret() {
+		sCInterface.raiseGobeletIsReady();
+	}
+	
+	/* Entry action for state 'Gobelet récupéré'. */
+	private void entryAction_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_() {
+		sCInterface.raiseGobeletIsTaken();
+	}
+	
+	/* Entry action for state 'Preparation de la boisson'. */
+	private void entryAction_main_region_Preparation_de_la_boisson() {
+		timer.setTimer(this, 3, 50000, false);
+	}
+	
+	/* Entry action for state 'Chauffage'. */
+	private void entryAction_main_region_Preparation_de_la_boisson_eau_Chauffage() {
+		timer.setTimer(this, 4, 200, true);
+		
+		sCInterface.raiseNotHotEnough();
+	}
+	
+	/* Entry action for state 'AssezChauffé'. */
+	private void entryAction_main_region_Preparation_de_la_boisson_eau_AssezChauff_() {
+		timer.setTimer(this, 5, 200, true);
+		
+		sCInterface.raiseHotEnoughOut();
+	}
+	
 	/* Exit action for state 'Choice and Payment'. */
 	private void exitAction_main_region_Choice_and_Payment() {
 		timer.unsetTimer(this, 0);
@@ -998,6 +934,21 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Exit action for state 'Payed or not'. */
 	private void exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not() {
 		timer.unsetTimer(this, 2);
+	}
+	
+	/* Exit action for state 'Preparation de la boisson'. */
+	private void exitAction_main_region_Preparation_de_la_boisson() {
+		timer.unsetTimer(this, 3);
+	}
+	
+	/* Exit action for state 'Chauffage'. */
+	private void exitAction_main_region_Preparation_de_la_boisson_eau_Chauffage() {
+		timer.unsetTimer(this, 4);
+	}
+	
+	/* Exit action for state 'AssezChauffé'. */
+	private void exitAction_main_region_Preparation_de_la_boisson_eau_AssezChauff_() {
+		timer.unsetTimer(this, 5);
 	}
 	
 	/* 'default' enter sequence for state Choice and Payment */
@@ -1063,6 +1014,84 @@ public class MVPStatemachine implements IMVPStatemachine {
 		historyVector[1] = stateVector[1];
 	}
 	
+	/* 'default' enter sequence for state Fin de la commande */
+	private void enterSequence_main_region_Fin_de_la_commande_default() {
+		enterSequence_main_region_Fin_de_la_commande_nettoyage_default();
+		enterSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_default();
+		enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_default();
+	}
+	
+	/* 'default' enter sequence for state Nettoyage */
+	private void enterSequence_main_region_Fin_de_la_commande_nettoyage_Nettoyage_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Fin_de_la_commande_nettoyage_Nettoyage;
+	}
+	
+	/* 'default' enter sequence for state Rendre monnaie */
+	private void enterSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie;
+	}
+	
+	/* 'default' enter sequence for state Gobelet pret */
+	private void enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret_default() {
+		entryAction_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret();
+		nextStateIndex = 2;
+		stateVector[2] = State.main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret;
+	}
+	
+	/* 'default' enter sequence for state Gobelet récupéré */
+	private void enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r__default() {
+		entryAction_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_();
+		nextStateIndex = 2;
+		stateVector[2] = State.main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_;
+	}
+	
+	/* 'default' enter sequence for state Preparation de la boisson */
+	private void enterSequence_main_region_Preparation_de_la_boisson_default() {
+		entryAction_main_region_Preparation_de_la_boisson();
+		enterSequence_main_region_Preparation_de_la_boisson_gobelet_default();
+		enterSequence_main_region_Preparation_de_la_boisson_eau_default();
+	}
+	
+	/* 'default' enter sequence for state Positionnement dosette */
+	private void enterSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette;
+	}
+	
+	/* 'default' enter sequence for state Positionnement gobelet */
+	private void enterSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet;
+	}
+	
+	/* 'default' enter sequence for state Ajout du sucre */
+	private void enterSequence_main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre;
+	}
+	
+	/* 'default' enter sequence for state Chauffage */
+	private void enterSequence_main_region_Preparation_de_la_boisson_eau_Chauffage_default() {
+		entryAction_main_region_Preparation_de_la_boisson_eau_Chauffage();
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Preparation_de_la_boisson_eau_Chauffage;
+	}
+	
+	/* 'default' enter sequence for state AssezChauffé */
+	private void enterSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff__default() {
+		entryAction_main_region_Preparation_de_la_boisson_eau_AssezChauff_();
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Preparation_de_la_boisson_eau_AssezChauff_;
+	}
+	
+	/* 'default' enter sequence for state Versement de l'eau */
+	private void enterSequence_main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau;
+	}
+	
 	/* 'default' enter sequence for state End */
 	private void enterSequence_main_region_End_default() {
 		nextStateIndex = 0;
@@ -1125,6 +1154,31 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
+	/* 'default' enter sequence for region nettoyage */
+	private void enterSequence_main_region_Fin_de_la_commande_nettoyage_default() {
+		react_main_region_Fin_de_la_commande_nettoyage__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region fin de la commande/rendu monnaie */
+	private void enterSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_default() {
+		react_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region Récupérer gobelet */
+	private void enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_default() {
+		react_main_region_Fin_de_la_commande_R_cup_rer_gobelet__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region gobelet */
+	private void enterSequence_main_region_Preparation_de_la_boisson_gobelet_default() {
+		react_main_region_Preparation_de_la_boisson_gobelet__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region eau */
+	private void enterSequence_main_region_Preparation_de_la_boisson_eau_default() {
+		react_main_region_Preparation_de_la_boisson_eau__entry_Default();
+	}
+	
 	/* Default exit sequence for state Choice and Payment */
 	private void exitSequence_main_region_Choice_and_Payment() {
 		exitSequence_main_region_Choice_and_Payment_Choice_region();
@@ -1174,6 +1228,84 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state Fin de la commande */
+	private void exitSequence_main_region_Fin_de_la_commande() {
+		exitSequence_main_region_Fin_de_la_commande_nettoyage();
+		exitSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie();
+		exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet();
+	}
+	
+	/* Default exit sequence for state Nettoyage */
+	private void exitSequence_main_region_Fin_de_la_commande_nettoyage_Nettoyage() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Rendre monnaie */
+	private void exitSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Gobelet pret */
+	private void exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret() {
+		nextStateIndex = 2;
+		stateVector[2] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Gobelet récupéré */
+	private void exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_() {
+		nextStateIndex = 2;
+		stateVector[2] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Preparation de la boisson */
+	private void exitSequence_main_region_Preparation_de_la_boisson() {
+		exitSequence_main_region_Preparation_de_la_boisson_gobelet();
+		exitSequence_main_region_Preparation_de_la_boisson_eau();
+		exitAction_main_region_Preparation_de_la_boisson();
+	}
+	
+	/* Default exit sequence for state Positionnement dosette */
+	private void exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Positionnement gobelet */
+	private void exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Ajout du sucre */
+	private void exitSequence_main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Chauffage */
+	private void exitSequence_main_region_Preparation_de_la_boisson_eau_Chauffage() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+		
+		exitAction_main_region_Preparation_de_la_boisson_eau_Chauffage();
+	}
+	
+	/* Default exit sequence for state AssezChauffé */
+	private void exitSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff_() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+		
+		exitAction_main_region_Preparation_de_la_boisson_eau_AssezChauff_();
+	}
+	
+	/* Default exit sequence for state Versement de l'eau */
+	private void exitSequence_main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for state End */
 	private void exitSequence_main_region_End() {
 		nextStateIndex = 0;
@@ -1190,6 +1322,18 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
 			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
 			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
+			break;
+		case main_region_Fin_de_la_commande_nettoyage_Nettoyage:
+			exitSequence_main_region_Fin_de_la_commande_nettoyage_Nettoyage();
+			break;
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette();
+			break;
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet();
+			break;
+		case main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre();
 			break;
 		case main_region_End:
 			exitSequence_main_region_End();
@@ -1213,6 +1357,32 @@ public class MVPStatemachine implements IMVPStatemachine {
 			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
 			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
 			exitAction_main_region_Choice_and_Payment();
+			break;
+		case main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie:
+			exitSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie();
+			break;
+		case main_region_Preparation_de_la_boisson_eau_Chauffage:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_Chauffage();
+			exitAction_main_region_Preparation_de_la_boisson();
+			break;
+		case main_region_Preparation_de_la_boisson_eau_AssezChauff_:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff_();
+			exitAction_main_region_Preparation_de_la_boisson();
+			break;
+		case main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau();
+			exitAction_main_region_Preparation_de_la_boisson();
+			break;
+		default:
+			break;
+		}
+		
+		switch (stateVector[2]) {
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret:
+			exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret();
+			break;
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_:
+			exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_();
 			break;
 		default:
 			break;
@@ -1286,6 +1456,76 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
+	/* Default exit sequence for region nettoyage */
+	private void exitSequence_main_region_Fin_de_la_commande_nettoyage() {
+		switch (stateVector[0]) {
+		case main_region_Fin_de_la_commande_nettoyage_Nettoyage:
+			exitSequence_main_region_Fin_de_la_commande_nettoyage_Nettoyage();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region fin de la commande/rendu monnaie */
+	private void exitSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie() {
+		switch (stateVector[1]) {
+		case main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie:
+			exitSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region Récupérer gobelet */
+	private void exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet() {
+		switch (stateVector[2]) {
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret:
+			exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret();
+			break;
+		case main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_:
+			exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r_();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region gobelet */
+	private void exitSequence_main_region_Preparation_de_la_boisson_gobelet() {
+		switch (stateVector[0]) {
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette();
+			break;
+		case main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet();
+			break;
+		case main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre:
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/* Default exit sequence for region eau */
+	private void exitSequence_main_region_Preparation_de_la_boisson_eau() {
+		switch (stateVector[1]) {
+		case main_region_Preparation_de_la_boisson_eau_Chauffage:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_Chauffage();
+			break;
+		case main_region_Preparation_de_la_boisson_eau_AssezChauff_:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff_();
+			break;
+		case main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau:
+			exitSequence_main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau();
+			break;
+		default:
+			break;
+		}
+	}
+	
 	/* Default react sequence for initial entry  */
 	private void react_main_region__entry_Default() {
 		enterSequence_main_region_Choice_and_Payment_default();
@@ -1331,6 +1571,31 @@ public class MVPStatemachine implements IMVPStatemachine {
 		enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default();
 	}
 	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Fin_de_la_commande_nettoyage__entry_Default() {
+		enterSequence_main_region_Fin_de_la_commande_nettoyage_Nettoyage_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie__entry_Default() {
+		enterSequence_main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Fin_de_la_commande_R_cup_rer_gobelet__entry_Default() {
+		enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Preparation_de_la_boisson_gobelet__entry_Default() {
+		enterSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Preparation_de_la_boisson_eau__entry_Default() {
+		enterSequence_main_region_Preparation_de_la_boisson_eau_Chauffage_default();
+	}
+	
 	private boolean react() {
 		return false;
 	}
@@ -1359,10 +1624,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (sCInterface.teaButton) {
+			if ((sCInterface.teaButton || (sCInterface.coffeeButton || sCInterface.expressoButton))) {
 				exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-				sCInterface.raiseTeaChosed();
-				
 				entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
 				enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
 			} else {
@@ -1382,23 +1645,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 							entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
 							enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default();
 						} else {
-							if (sCInterface.coffeeButton) {
-								exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-								sCInterface.raiseCoffeeChosed();
-								
-								entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-								enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-							} else {
-								if (sCInterface.expressoButton) {
-									exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-									sCInterface.raiseExpressoChosed();
-									
-									entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-									enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-								} else {
-									did_transition = false;
-								}
-							}
+							did_transition = false;
 						}
 					}
 				}
@@ -1435,10 +1682,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (sCInterface.insertCoin10) {
+			if ((sCInterface.insertCoin10 || (sCInterface.insertCoin25 || sCInterface.insertCoin50))) {
 				exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-				sCInterface.raiseCoin10Inserted();
-				
 				entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
 				enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
 				main_region_Choice_and_Payment_react(false);
@@ -1449,7 +1694,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 					
 					enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default();
 				} else {
-					if (sCInterface.enoughMoneyInserted) {
+					if ((sCInterface.enoughMoneyInserted || sCInterface.nFC)) {
 						exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
 						entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
 						enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default();
@@ -1468,34 +1713,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 								enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default();
 								main_region_Choice_and_Payment_react(false);
 							} else {
-								if (sCInterface.insertCoin25) {
-									exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-									sCInterface.raiseCoin25Inserted();
-									
-									entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-									enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-									main_region_Choice_and_Payment_react(false);
-								} else {
-									if (sCInterface.insertCoin50) {
-										exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-										sCInterface.raiseCoin50Inserted();
-										
-										entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-										enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-										main_region_Choice_and_Payment_react(false);
-									} else {
-										if (sCInterface.nFC) {
-											exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-											sCInterface.raiseNFCPayment();
-											
-											entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-											enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default();
-											main_region_Choice_and_Payment_react(false);
-										} else {
-											did_transition = false;
-										}
-									}
-								}
+								did_transition = false;
 							}
 						}
 					}
@@ -1544,11 +1762,174 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_End_react(boolean try_transition) {
+	private boolean main_region_Fin_de_la_commande_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			exitSequence_main_region_Fin_de_la_commande();
+			enterSequence_main_region_Choice_and_Payment_default();
+			react();
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Fin_de_la_commande_nettoyage_Nettoyage_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			did_transition = false;
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Fin_de_la_commande_fin_de_la_commande_rendu_monnaie_Rendre_monnaie_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.getGobeletTaken()) {
+				exitSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_pret();
+				enterSequence_main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r__default();
+				main_region_Fin_de_la_commande_react(false);
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Fin_de_la_commande_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Fin_de_la_commande_R_cup_rer_gobelet_Gobelet_r_cup_r__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Fin_de_la_commande_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (timeEvents[3]) {
+				exitSequence_main_region_Preparation_de_la_boisson();
+				enterSequence_main_region_Fin_de_la_commande_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_dosette();
+			enterSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet_default();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			exitSequence_main_region_Preparation_de_la_boisson_gobelet_Positionnement_gobelet();
+			enterSequence_main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre_default();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_gobelet_Ajout_du_sucre_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_eau_Chauffage_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((timeEvents[4]) && (sCInterface.getHotEnough()))) {
+				exitSequence_main_region_Preparation_de_la_boisson_eau_Chauffage();
+				enterSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff__default();
+				main_region_Preparation_de_la_boisson_react(false);
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Preparation_de_la_boisson_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_eau_AssezChauff__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((timeEvents[5]) && (sCInterface.getGobeletOk()))) {
+				exitSequence_main_region_Preparation_de_la_boisson_eau_AssezChauff_();
+				enterSequence_main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau_default();
+				main_region_Preparation_de_la_boisson_react(false);
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Preparation_de_la_boisson_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Preparation_de_la_boisson_eau_Versement_de_l_eau_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Preparation_de_la_boisson_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_End_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.gobeletRecupere) {
+				exitSequence_main_region_End();
+				enterSequence_main_region_Preparation_de_la_boisson_default();
+				react();
+			} else {
+				did_transition = false;
+			}
 		}
 		if (did_transition==false) {
 			did_transition = react();
