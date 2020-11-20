@@ -16,6 +16,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 		public List<SCInterfaceListener> getListeners() {
 			return listeners;
 		}
+		private boolean optionButton;
+		
+		
+		public void raiseOptionButton() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							optionButton = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
 		private boolean podPlacement;
 		
 		
@@ -789,6 +807,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 		
 		protected void clearEvents() {
+			optionButton = false;
 			podPlacement = false;
 			coffeeButton = false;
 			teaButton = false;
@@ -841,14 +860,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 	private boolean initialized = false;
 	
 	public enum State {
-		main_region_Choice_and_Payment,
-		main_region_Choice_and_Payment_Choice_region_Chosed_or_not,
-		main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed,
-		main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice,
-		main_region_Choice_and_Payment_Payment_region_Payed_or_not,
-		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money,
-		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted,
-		main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money,
 		main_region_Step1,
 		main_region_Step1_r1_Water_heat,
 		main_region_Step1_r1__final_,
@@ -872,17 +883,20 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Step3_r2_Sugar_added,
 		main_region_Step3_r2__final_,
 		main_region__final_,
+		main_region_Choice_and_payment,
+		main_region_Choice_and_payment_r1_Drink_selected___not_enough_money,
+		main_region_Choice_and_payment_r1_No_drink_selected,
 		$NullState$
 	};
 	
-	private State[] historyVector = new State[2];
+	private State[] historyVector = new State[1];
 	private final State[] stateVector = new State[3];
 	
 	private int nextStateIndex;
 	
 	private ITimer timer;
 	
-	private final boolean[] timeEvents = new boolean[4];
+	private final boolean[] timeEvents = new boolean[2];
 	
 	private BlockingQueue<Runnable> inEventQueue = new LinkedBlockingQueue<Runnable>();
 	private boolean isRunningCycle = false;
@@ -898,7 +912,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		for (int i = 0; i < 3; i++) {
 			stateVector[i] = State.$NullState$;
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			historyVector[i] = State.$NullState$;
 		}
 		clearEvents();
@@ -955,21 +969,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-				case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-					main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_react(true);
-					break;
-				case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-					main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_react(true);
-					break;
-				case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-					main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_react(true);
-					break;
-				case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-					main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_react(true);
-					break;
-				case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-					main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_react(true);
-					break;
 				case main_region_Step1_r1_Water_heat:
 					main_region_Step1_r1_Water_heat_react(true);
 					break;
@@ -1026,6 +1025,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 					break;
 				case main_region__final_:
 					main_region__final__react(true);
+					break;
+				case main_region_Choice_and_payment_r1_Drink_selected___not_enough_money:
+					main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_react(true);
+					break;
+				case main_region_Choice_and_payment_r1_No_drink_selected:
+					main_region_Choice_and_payment_r1_No_drink_selected_react(true);
 					break;
 			default:
 				// $NullState$
@@ -1089,25 +1094,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 	public synchronized boolean isStateActive(State state) {
 	
 		switch (state) {
-		case main_region_Choice_and_Payment:
-			return stateVector[0].ordinal() >= State.
-					main_region_Choice_and_Payment.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money.ordinal();
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not:
-			return stateVector[0].ordinal() >= State.
-					main_region_Choice_and_Payment_Choice_region_Chosed_or_not.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice.ordinal();
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-			return stateVector[0] == State.main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed;
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-			return stateVector[0] == State.main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not:
-			return stateVector[1].ordinal() >= State.
-					main_region_Choice_and_Payment_Payment_region_Payed_or_not.ordinal()&& stateVector[1].ordinal() <= State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money.ordinal();
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-			return stateVector[1] == State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money;
 		case main_region_Step1:
 			return stateVector[0].ordinal() >= State.
 					main_region_Step1.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step1_r2__final_.ordinal();
@@ -1158,6 +1144,13 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[1] == State.main_region_Step3_r2__final_;
 		case main_region__final_:
 			return stateVector[0] == State.main_region__final_;
+		case main_region_Choice_and_payment:
+			return stateVector[0].ordinal() >= State.
+					main_region_Choice_and_payment.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_payment_r1_No_drink_selected.ordinal();
+		case main_region_Choice_and_payment_r1_Drink_selected___not_enough_money:
+			return stateVector[0] == State.main_region_Choice_and_payment_r1_Drink_selected___not_enough_money;
+		case main_region_Choice_and_payment_r1_No_drink_selected:
+			return stateVector[0] == State.main_region_Choice_and_payment_r1_No_drink_selected;
 		default:
 			return false;
 		}
@@ -1196,6 +1189,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	public SCInterface getSCInterface() {
 		return sCInterface;
+	}
+	
+	public synchronized void raiseOptionButton() {
+		sCInterface.raiseOptionButton();
 	}
 	
 	public synchronized void raisePodPlacement() {
@@ -1394,41 +1391,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.setGobeletTaken(value);
 	}
 	
-	/* Entry action for state 'Choice and Payment'. */
-	private void entryAction_main_region_Choice_and_Payment() {
-		timer.setTimer(this, 0, 200, true);
-	}
-	
-	/* Entry action for state 'Chosed or not'. */
-	private void entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not() {
-		timer.setTimer(this, 1, 5000, false);
-	}
-	
-	/* Entry action for state 'Drink chosed'. */
-	private void entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed() {
-		sCInterface.setSelected(true);
-	}
-	
-	/* Entry action for state 'No choice'. */
-	private void entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice() {
-		sCInterface.setSelected(false);
-	}
-	
-	/* Entry action for state 'Payed or not'. */
-	private void entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not() {
-		timer.setTimer(this, 2, 5000, false);
-	}
-	
-	/* Entry action for state 'No money'. */
-	private void entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money() {
-		sCInterface.setPayedEnough(false);
-	}
-	
-	/* Entry action for state 'Enough money'. */
-	private void entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money() {
-		sCInterface.setPayedEnough(true);
-	}
-	
 	/* Entry action for state 'Water heat'. */
 	private void entryAction_main_region_Step1_r1_Water_heat() {
 		sCInterface.raiseWaterHeated();
@@ -1436,7 +1398,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* Entry action for state 'Cup Placement'. */
 	private void entryAction_main_region_Step2_r1_Cup_Placement() {
-		timer.setTimer(this, 3, 3000, false);
+		timer.setTimer(this, 0, 3000, false);
 		
 		sCInterface.raiseCupPlacing();
 	}
@@ -1461,87 +1423,19 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseAddSugar();
 	}
 	
-	/* Exit action for state 'Choice and Payment'. */
-	private void exitAction_main_region_Choice_and_Payment() {
-		timer.unsetTimer(this, 0);
-	}
-	
-	/* Exit action for state 'Chosed or not'. */
-	private void exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not() {
-		timer.unsetTimer(this, 1);
-	}
-	
-	/* Exit action for state 'Payed or not'. */
-	private void exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not() {
-		timer.unsetTimer(this, 2);
+	/* Entry action for state 'Choice and payment'. */
+	private void entryAction_main_region_Choice_and_payment() {
+		timer.setTimer(this, 1, 5000, false);
 	}
 	
 	/* Exit action for state 'Cup Placement'. */
 	private void exitAction_main_region_Step2_r1_Cup_Placement() {
-		timer.unsetTimer(this, 3);
+		timer.unsetTimer(this, 0);
 	}
 	
-	/* 'default' enter sequence for state Choice and Payment */
-	private void enterSequence_main_region_Choice_and_Payment_default() {
-		entryAction_main_region_Choice_and_Payment();
-		enterSequence_main_region_Choice_and_Payment_Choice_region_default();
-		enterSequence_main_region_Choice_and_Payment_Payment_region_default();
-	}
-	
-	/* 'default' enter sequence for state Chosed or not */
-	private void enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_default() {
-		entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-		enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_default();
-	}
-	
-	/* 'default' enter sequence for state Drink chosed */
-	private void enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default() {
-		entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed();
-		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed;
-		
-		historyVector[0] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state No choice */
-	private void enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default() {
-		entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
-		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice;
-		
-		historyVector[0] = stateVector[0];
-	}
-	
-	/* 'default' enter sequence for state Payed or not */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default() {
-		entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-		enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_default();
-	}
-	
-	/* 'default' enter sequence for state No money */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default() {
-		entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money();
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money;
-		
-		historyVector[1] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Money inserted */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted;
-		
-		historyVector[1] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Enough money */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default() {
-		entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money;
-		
-		historyVector[1] = stateVector[1];
+	/* Exit action for state 'Choice and payment'. */
+	private void exitAction_main_region_Choice_and_payment() {
+		timer.unsetTimer(this, 1);
 	}
 	
 	/* 'default' enter sequence for state Step1 */
@@ -1688,60 +1582,31 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.main_region__final_;
 	}
 	
+	/* 'default' enter sequence for state Choice and payment */
+	private void enterSequence_main_region_Choice_and_payment_default() {
+		entryAction_main_region_Choice_and_payment();
+		enterSequence_main_region_Choice_and_payment_r1_default();
+	}
+	
+	/* 'default' enter sequence for state Drink selected & not enough money */
+	private void enterSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Choice_and_payment_r1_Drink_selected___not_enough_money;
+		
+		historyVector[0] = stateVector[0];
+	}
+	
+	/* 'default' enter sequence for state No_drink_selected */
+	private void enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Choice_and_payment_r1_No_drink_selected;
+		
+		historyVector[0] = stateVector[0];
+	}
+	
 	/* 'default' enter sequence for region main region */
 	private void enterSequence_main_region_default() {
 		react_main_region__entry_Default();
-	}
-	
-	/* 'default' enter sequence for region Choice region */
-	private void enterSequence_main_region_Choice_and_Payment_Choice_region_default() {
-		react_main_region_Choice_and_Payment_Choice_region__entry_Default();
-	}
-	
-	/* 'default' enter sequence for region r1 */
-	private void enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_default() {
-		react_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1__entry_Default();
-	}
-	
-	/* shallow enterSequence with history in child r1 */
-	private void shallowEnterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1() {
-		switch (historyVector[0]) {
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-			enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-			break;
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-			enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/* 'default' enter sequence for region Payment region */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_default() {
-		react_main_region_Choice_and_Payment_Payment_region__entry_Default();
-	}
-	
-	/* 'default' enter sequence for region r1 */
-	private void enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_default() {
-		react_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1__entry_Default();
-	}
-	
-	/* shallow enterSequence with history in child r1 */
-	private void shallowEnterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1() {
-		switch (historyVector[1]) {
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-			enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-			enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-			enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default();
-			break;
-		default:
-			break;
-		}
 	}
 	
 	/* 'default' enter sequence for region r1 */
@@ -1784,53 +1649,23 @@ public class MVPStatemachine implements IMVPStatemachine {
 		react_main_region_Step3_r2__entry_Default();
 	}
 	
-	/* Default exit sequence for state Choice and Payment */
-	private void exitSequence_main_region_Choice_and_Payment() {
-		exitSequence_main_region_Choice_and_Payment_Choice_region();
-		exitSequence_main_region_Choice_and_Payment_Payment_region();
-		exitAction_main_region_Choice_and_Payment();
+	/* 'default' enter sequence for region r1 */
+	private void enterSequence_main_region_Choice_and_payment_r1_default() {
+		react_main_region_Choice_and_payment_r1__entry_Default();
 	}
 	
-	/* Default exit sequence for state Chosed or not */
-	private void exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not() {
-		exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1();
-		exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-	}
-	
-	/* Default exit sequence for state Drink chosed */
-	private void exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state No choice */
-	private void exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Payed or not */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not() {
-		exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1();
-		exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-	}
-	
-	/* Default exit sequence for state No money */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Money inserted */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Enough money */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
+	/* shallow enterSequence with history in child r1 */
+	private void shallowEnterSequence_main_region_Choice_and_payment_r1() {
+		switch (historyVector[0]) {
+		case main_region_Choice_and_payment_r1_Drink_selected___not_enough_money:
+			enterSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_default();
+			break;
+		case main_region_Choice_and_payment_r1_No_drink_selected:
+			enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
+			break;
+		default:
+			break;
+		}
 	}
 	
 	/* Default exit sequence for state Step1 */
@@ -1973,17 +1808,27 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state Choice and payment */
+	private void exitSequence_main_region_Choice_and_payment() {
+		exitSequence_main_region_Choice_and_payment_r1();
+		exitAction_main_region_Choice_and_payment();
+	}
+	
+	/* Default exit sequence for state Drink selected & not enough money */
+	private void exitSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state No_drink_selected */
+	private void exitSequence_main_region_Choice_and_payment_r1_No_drink_selected() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region main region */
 	private void exitSequence_main_region() {
 		switch (stateVector[0]) {
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed();
-			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-			break;
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
-			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-			break;
 		case main_region_Step1_r1_Water_heat:
 			exitSequence_main_region_Step1_r1_Water_heat();
 			break;
@@ -2005,26 +1850,19 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region__final_:
 			exitSequence_main_region__final_();
 			break;
+		case main_region_Choice_and_payment_r1_Drink_selected___not_enough_money:
+			exitSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money();
+			exitAction_main_region_Choice_and_payment();
+			break;
+		case main_region_Choice_and_payment_r1_No_drink_selected:
+			exitSequence_main_region_Choice_and_payment_r1_No_drink_selected();
+			exitAction_main_region_Choice_and_payment();
+			break;
 		default:
 			break;
 		}
 		
 		switch (stateVector[1]) {
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			exitAction_main_region_Choice_and_Payment();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			exitAction_main_region_Choice_and_Payment();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			exitAction_main_region_Choice_and_Payment();
-			break;
 		case main_region_Step1_r2_First_step:
 			exitSequence_main_region_Step1_r2_First_step();
 			break;
@@ -2065,73 +1903,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 			break;
 		case main_region_Step2_r2_ExpressoCase_r2__final_:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r2__final_();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/* Default exit sequence for region Choice region */
-	private void exitSequence_main_region_Choice_and_Payment_Choice_region() {
-		switch (stateVector[0]) {
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed();
-			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-			break;
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
-			exitAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/* Default exit sequence for region r1 */
-	private void exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1() {
-		switch (stateVector[0]) {
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed();
-			break;
-		case main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice:
-			exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/* Default exit sequence for region Payment region */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region() {
-		switch (stateVector[1]) {
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
-			exitAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/* Default exit sequence for region r1 */
-	private void exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1() {
-		switch (stateVector[1]) {
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted();
-			break;
-		case main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money:
-			exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money();
 			break;
 		default:
 			break;
@@ -2273,49 +2044,18 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
-	/* Default react sequence for initial entry  */
-	private void react_main_region__entry_Default() {
-		enterSequence_main_region_Choice_and_Payment_default();
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1__entry_Default() {
-		enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default();
-	}
-	
-	/* Default react sequence for shallow history entry history */
-	private void react_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_history() {
-		/* Enter the region with shallow history */
-		if (historyVector[0] != State.$NullState$) {
-			shallowEnterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1();
-		} else {
-			enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default();
+	/* Default exit sequence for region r1 */
+	private void exitSequence_main_region_Choice_and_payment_r1() {
+		switch (stateVector[0]) {
+		case main_region_Choice_and_payment_r1_Drink_selected___not_enough_money:
+			exitSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money();
+			break;
+		case main_region_Choice_and_payment_r1_No_drink_selected:
+			exitSequence_main_region_Choice_and_payment_r1_No_drink_selected();
+			break;
+		default:
+			break;
 		}
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_main_region_Choice_and_Payment_Choice_region__entry_Default() {
-		enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_default();
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1__entry_Default() {
-		enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default();
-	}
-	
-	/* Default react sequence for shallow history entry History */
-	private void react_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_History() {
-		/* Enter the region with shallow history */
-		if (historyVector[1] != State.$NullState$) {
-			shallowEnterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1();
-		} else {
-			enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default();
-		}
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_main_region_Choice_and_Payment_Payment_region__entry_Default() {
-		enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default();
 	}
 	
 	/* Default react sequence for initial entry  */
@@ -2358,217 +2098,28 @@ public class MVPStatemachine implements IMVPStatemachine {
 		enterSequence_main_region_Step3_r2_Sugar_added_default();
 	}
 	
+	/* Default react sequence for initial entry  */
+	private void react_main_region__entry_Default() {
+		enterSequence_main_region_Choice_and_payment_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_Choice_and_payment_r1__entry_Default() {
+		enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
+	}
+	
+	/* Default react sequence for shallow history entry history */
+	private void react_main_region_Choice_and_payment_r1_history() {
+		/* Enter the region with shallow history */
+		if (historyVector[0] != State.$NullState$) {
+			shallowEnterSequence_main_region_Choice_and_payment_r1();
+		} else {
+			enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
+		}
+	}
+	
 	private boolean react() {
 		return false;
-	}
-	
-	private boolean main_region_Choice_and_Payment_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (((timeEvents[0]) && ((sCInterface.getSelected() && sCInterface.getPayedEnough())))) {
-				exitSequence_main_region_Choice_and_Payment();
-				sCInterface.raiseDoTransaction();
-				
-				enterSequence_main_region_Step1_default();
-				react();
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = react();
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Choice_region_Chosed_or_not_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.teaButton) {
-				exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-				sCInterface.raiseTeaChosed();
-				
-				entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-				enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-			} else {
-				if (timeEvents[1]) {
-					exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-					sCInterface.raiseCancel();
-					
-					enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_default();
-				} else {
-					if ((sCInterface.insertCoin10 || (sCInterface.insertCoin25 || (sCInterface.insertCoin50 || sCInterface.nFC)))) {
-						exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-						entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-						react_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_history();
-					} else {
-						if (sCInterface.cancelButton) {
-							exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-							sCInterface.raiseCancel();
-							
-							entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-							enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_default();
-						} else {
-							if (sCInterface.coffeeButton) {
-								exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-								sCInterface.raiseCoffeeChosed();
-								
-								entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-								enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-							} else {
-								if (sCInterface.expressoButton) {
-									exitSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-									sCInterface.raiseExpressoChosed();
-									
-									entryAction_main_region_Choice_and_Payment_Choice_region_Chosed_or_not();
-									enterSequence_main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_default();
-								} else {
-									did_transition = false;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_Drink_chosed_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_Choice_region_Chosed_or_not_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Choice_region_Chosed_or_not_r1_No_choice_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_Choice_region_Chosed_or_not_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Payment_region_Payed_or_not_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.insertCoin10) {
-				exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-				sCInterface.raiseCoin10Inserted();
-				
-				entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-				enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-				main_region_Choice_and_Payment_react(false);
-			} else {
-				if (timeEvents[2]) {
-					exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-					sCInterface.raiseCancel();
-					
-					enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_default();
-				} else {
-					if (sCInterface.enoughMoneyInserted) {
-						exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-						entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-						enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default();
-						main_region_Choice_and_Payment_react(false);
-					} else {
-						if ((sCInterface.coffeeButton || (sCInterface.teaButton || sCInterface.expressoButton))) {
-							exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-							entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-							react_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_History();
-						} else {
-							if (sCInterface.cancelButton) {
-								exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-								entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-								enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_default();
-								main_region_Choice_and_Payment_react(false);
-							} else {
-								if (sCInterface.insertCoin25) {
-									exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-									sCInterface.raiseCoin25Inserted();
-									
-									entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-									enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-									main_region_Choice_and_Payment_react(false);
-								} else {
-									if (sCInterface.insertCoin50) {
-										exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-										sCInterface.raiseCoin50Inserted();
-										
-										entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-										enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_default();
-										main_region_Choice_and_Payment_react(false);
-									} else {
-										if (sCInterface.nFC) {
-											exitSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-											sCInterface.raiseNFCPayment();
-											
-											entryAction_main_region_Choice_and_Payment_Payment_region_Payed_or_not();
-											enterSequence_main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_default();
-											main_region_Choice_and_Payment_react(false);
-										} else {
-											did_transition = false;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_No_money_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_Payment_region_Payed_or_not_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Money_inserted_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_Payment_region_Payed_or_not_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_Payment_Payment_region_Payed_or_not_r1_Enough_money_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_Payment_Payment_region_Payed_or_not_react(try_transition);
-		}
-		return did_transition;
 	}
 	
 	private boolean main_region_Step1_react(boolean try_transition) {
@@ -2689,7 +2240,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[3]) {
+			if (timeEvents[0]) {
 				exitSequence_main_region_Step2_r1_Cup_Placement();
 				enterSequence_main_region_Step2_r1__final__default();
 			} else {
@@ -2892,6 +2443,92 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 		if (did_transition==false) {
 			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Choice_and_payment_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if ((sCInterface.insertCoin10 || (sCInterface.insertCoin25 || (sCInterface.insertCoin50 || (sCInterface.optionButton || sCInterface.nFC))))) {
+				exitSequence_main_region_Choice_and_payment();
+				entryAction_main_region_Choice_and_payment();
+				react_main_region_Choice_and_payment_r1_history();
+			} else {
+				if ((timeEvents[1] || sCInterface.cancelButton)) {
+					exitSequence_main_region_Choice_and_payment();
+					sCInterface.raiseCancel();
+					
+					entryAction_main_region_Choice_and_payment();
+					enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
+					react();
+				} else {
+					if (sCInterface.coffeeButton) {
+						exitSequence_main_region_Choice_and_payment();
+						sCInterface.raiseCoffeeChosed();
+						
+						entryAction_main_region_Choice_and_payment();
+						enterSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_default();
+						react();
+					} else {
+						if (sCInterface.teaButton) {
+							exitSequence_main_region_Choice_and_payment();
+							sCInterface.raiseTeaChosed();
+							
+							entryAction_main_region_Choice_and_payment();
+							enterSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_default();
+							react();
+						} else {
+							if (sCInterface.expressoButton) {
+								exitSequence_main_region_Choice_and_payment();
+								sCInterface.raiseExpressoChosed();
+								
+								entryAction_main_region_Choice_and_payment();
+								enterSequence_main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_default();
+								react();
+							} else {
+								if (sCInterface.enoughMoneyInserted) {
+									exitSequence_main_region_Choice_and_payment();
+									sCInterface.raiseDoTransaction();
+									
+									enterSequence_main_region_Step1_default();
+									react();
+								} else {
+									did_transition = false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Choice_and_payment_r1_Drink_selected___not_enough_money_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Choice_and_payment_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Choice_and_payment_r1_No_drink_selected_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Choice_and_payment_react(try_transition);
 		}
 		return did_transition;
 	}

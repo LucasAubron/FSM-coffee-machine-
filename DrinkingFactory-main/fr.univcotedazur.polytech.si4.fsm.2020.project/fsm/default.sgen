@@ -14,7 +14,7 @@ GeneratorModel for yakindu::java {
 				inEventQueue = true
 				synchronized = true
 				runnable = false
-		}
- 
+		} 
+  
 	}
 }

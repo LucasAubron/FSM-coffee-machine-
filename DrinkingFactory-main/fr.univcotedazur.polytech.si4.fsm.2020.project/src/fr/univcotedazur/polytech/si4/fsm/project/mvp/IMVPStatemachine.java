@@ -12,6 +12,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 	public interface SCInterface {
 	
+		public void raiseOptionButton();
+		
 		public void raisePodPlacement();
 		
 		public void raiseCoffeeButton();
