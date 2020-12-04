@@ -1150,24 +1150,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean giveBackMoney;
-		
-		
-		public boolean isRaisedGiveBackMoney() {
-			synchronized(MVPStatemachine.this) {
-				return giveBackMoney;
-			}
-		}
-		
-		protected void raiseGiveBackMoney() {
-			synchronized(MVPStatemachine.this) {
-				giveBackMoney = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onGiveBackMoneyRaised();
-				}
-			}
-		}
-		
 		private boolean doTransaction;
 		
 		
@@ -1294,6 +1276,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
+		private boolean sugarOrSyrup;
+		
+		
+		public boolean isRaisedSugarOrSyrup() {
+			synchronized(MVPStatemachine.this) {
+				return sugarOrSyrup;
+			}
+		}
+		
+		protected void raiseSugarOrSyrup() {
+			synchronized(MVPStatemachine.this) {
+				sugarOrSyrup = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onSugarOrSyrupRaised();
+				}
+			}
+		}
+		
 		protected void clearEvents() {
 			optionButton = false;
 			podPlacement = false;
@@ -1361,7 +1361,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		coin50Inserted = false;
 		cancel = false;
 		nFCPayment = false;
-		giveBackMoney = false;
 		doTransaction = false;
 		endThirdStep = false;
 		beginSecondStep = false;
@@ -1369,6 +1368,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		checkMilkOption = false;
 		beginFirstStep = false;
 		automaticCancel = false;
+		sugarOrSyrup = false;
 		}
 		
 	}
@@ -1393,11 +1393,13 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Step2_r2_Waiting_for_water_to_heat,
 		main_region_Step3,
 		main_region_Step3_r1_Waiting_for_water_to_be_poured,
+		main_region_Step3_r1_WaterPoured,
 		main_region_Step3_r2_Milk_option__,
 		main_region_Step3_r2_Waiting_for_milk_to_be_poured,
 		main_region_Step3_r2_Waiting_for_sugar_to_be_added,
 		main_region_Step3_r2_Sugar_or_mapple_syrup,
-		main_region_Step3_r2_waitin_fo_mapple_syrup,
+		main_region_Step3_r2_waiting_fo_mapple_syrup,
+		main_region_Step3_r2_End_option,
 		main_region_Choice_and_payment,
 		main_region_Choice_and_payment_r1_No_drink_selected,
 		main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted,
@@ -1511,6 +1513,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Step3_r1_Waiting_for_water_to_be_poured:
 					main_region_Step3_r1_Waiting_for_water_to_be_poured_react(true);
 					break;
+				case main_region_Step3_r1_WaterPoured:
+					main_region_Step3_r1_WaterPoured_react(true);
+					break;
 				case main_region_Step3_r2_Milk_option__:
 					main_region_Step3_r2_Milk_option___react(true);
 					break;
@@ -1523,8 +1528,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Step3_r2_Sugar_or_mapple_syrup:
 					main_region_Step3_r2_Sugar_or_mapple_syrup_react(true);
 					break;
-				case main_region_Step3_r2_waitin_fo_mapple_syrup:
-					main_region_Step3_r2_waitin_fo_mapple_syrup_react(true);
+				case main_region_Step3_r2_waiting_fo_mapple_syrup:
+					main_region_Step3_r2_waiting_fo_mapple_syrup_react(true);
+					break;
+				case main_region_Step3_r2_End_option:
+					main_region_Step3_r2_End_option_react(true);
 					break;
 				case main_region_Choice_and_payment_r1_No_drink_selected:
 					main_region_Choice_and_payment_r1_No_drink_selected_react(true);
@@ -1643,9 +1651,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[1] == State.main_region_Step2_r2_Waiting_for_water_to_heat;
 		case main_region_Step3:
 			return stateVector[0].ordinal() >= State.
-					main_region_Step3.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step3_r2_waitin_fo_mapple_syrup.ordinal();
+					main_region_Step3.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step3_r2_End_option.ordinal();
 		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
 			return stateVector[0] == State.main_region_Step3_r1_Waiting_for_water_to_be_poured;
+		case main_region_Step3_r1_WaterPoured:
+			return stateVector[0] == State.main_region_Step3_r1_WaterPoured;
 		case main_region_Step3_r2_Milk_option__:
 			return stateVector[1] == State.main_region_Step3_r2_Milk_option__;
 		case main_region_Step3_r2_Waiting_for_milk_to_be_poured:
@@ -1654,8 +1664,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[1] == State.main_region_Step3_r2_Waiting_for_sugar_to_be_added;
 		case main_region_Step3_r2_Sugar_or_mapple_syrup:
 			return stateVector[1] == State.main_region_Step3_r2_Sugar_or_mapple_syrup;
-		case main_region_Step3_r2_waitin_fo_mapple_syrup:
-			return stateVector[1] == State.main_region_Step3_r2_waitin_fo_mapple_syrup;
+		case main_region_Step3_r2_waiting_fo_mapple_syrup:
+			return stateVector[1] == State.main_region_Step3_r2_waiting_fo_mapple_syrup;
+		case main_region_Step3_r2_End_option:
+			return stateVector[1] == State.main_region_Step3_r2_End_option;
 		case main_region_Choice_and_payment:
 			return stateVector[0].ordinal() >= State.
 					main_region_Choice_and_payment.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_payment_r1_Option_selected.ordinal();
@@ -1967,10 +1979,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return sCInterface.isRaisedNFCPayment();
 	}
 	
-	public synchronized boolean isRaisedGiveBackMoney() {
-		return sCInterface.isRaisedGiveBackMoney();
-	}
-	
 	public synchronized boolean isRaisedDoTransaction() {
 		return sCInterface.isRaisedDoTransaction();
 	}
@@ -1997,6 +2005,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	public synchronized boolean isRaisedAutomaticCancel() {
 		return sCInterface.isRaisedAutomaticCancel();
+	}
+	
+	public synchronized boolean isRaisedSugarOrSyrup() {
+		return sCInterface.isRaisedSugarOrSyrup();
 	}
 	
 	/* Entry action for state 'Water heat'. */
@@ -2044,6 +2056,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Entry action for state 'Waiting for milk to be poured'. */
 	private void entryAction_main_region_Step3_r2_Waiting_for_milk_to_be_poured() {
 		sCInterface.raisePourMilk();
+	}
+	
+	/* Entry action for state 'Sugar or mapple syrup'. */
+	private void entryAction_main_region_Step3_r2_Sugar_or_mapple_syrup() {
+		sCInterface.raiseSugarOrSyrup();
 	}
 	
 	/* Entry action for state 'Choice and payment'. */
@@ -2179,6 +2196,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.main_region_Step3_r1_Waiting_for_water_to_be_poured;
 	}
 	
+	/* 'default' enter sequence for state WaterPoured */
+	private void enterSequence_main_region_Step3_r1_WaterPoured_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Step3_r1_WaterPoured;
+	}
+	
 	/* 'default' enter sequence for state Milk option ? */
 	private void enterSequence_main_region_Step3_r2_Milk_option___default() {
 		entryAction_main_region_Step3_r2_Milk_option__();
@@ -2201,14 +2224,21 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* 'default' enter sequence for state Sugar or mapple syrup */
 	private void enterSequence_main_region_Step3_r2_Sugar_or_mapple_syrup_default() {
+		entryAction_main_region_Step3_r2_Sugar_or_mapple_syrup();
 		nextStateIndex = 1;
 		stateVector[1] = State.main_region_Step3_r2_Sugar_or_mapple_syrup;
 	}
 	
-	/* 'default' enter sequence for state waitin fo mapple syrup */
-	private void enterSequence_main_region_Step3_r2_waitin_fo_mapple_syrup_default() {
+	/* 'default' enter sequence for state waiting fo mapple syrup */
+	private void enterSequence_main_region_Step3_r2_waiting_fo_mapple_syrup_default() {
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Step3_r2_waitin_fo_mapple_syrup;
+		stateVector[1] = State.main_region_Step3_r2_waiting_fo_mapple_syrup;
+	}
+	
+	/* 'default' enter sequence for state End option */
+	private void enterSequence_main_region_Step3_r2_End_option_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step3_r2_End_option;
 	}
 	
 	/* 'default' enter sequence for state Choice and payment */
@@ -2427,6 +2457,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state WaterPoured */
+	private void exitSequence_main_region_Step3_r1_WaterPoured() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for state Milk option ? */
 	private void exitSequence_main_region_Step3_r2_Milk_option__() {
 		nextStateIndex = 1;
@@ -2451,8 +2487,14 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state waitin fo mapple syrup */
-	private void exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup() {
+	/* Default exit sequence for state waiting fo mapple syrup */
+	private void exitSequence_main_region_Step3_r2_waiting_fo_mapple_syrup() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state End option */
+	private void exitSequence_main_region_Step3_r2_End_option() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 	}
@@ -2530,6 +2572,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
 			exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured();
 			break;
+		case main_region_Step3_r1_WaterPoured:
+			exitSequence_main_region_Step3_r1_WaterPoured();
+			break;
 		case main_region_Choice_and_payment_r1_No_drink_selected:
 			exitSequence_main_region_Choice_and_payment_r1_No_drink_selected();
 			exitAction_main_region_Choice_and_payment();
@@ -2589,8 +2634,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step3_r2_Sugar_or_mapple_syrup:
 			exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
 			break;
-		case main_region_Step3_r2_waitin_fo_mapple_syrup:
-			exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
+		case main_region_Step3_r2_waiting_fo_mapple_syrup:
+			exitSequence_main_region_Step3_r2_waiting_fo_mapple_syrup();
+			break;
+		case main_region_Step3_r2_End_option:
+			exitSequence_main_region_Step3_r2_End_option();
 			break;
 		default:
 			break;
@@ -2697,6 +2745,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
 			exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured();
 			break;
+		case main_region_Step3_r1_WaterPoured:
+			exitSequence_main_region_Step3_r1_WaterPoured();
+			break;
 		default:
 			break;
 		}
@@ -2717,8 +2768,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step3_r2_Sugar_or_mapple_syrup:
 			exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
 			break;
-		case main_region_Step3_r2_waitin_fo_mapple_syrup:
-			exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
+		case main_region_Step3_r2_waiting_fo_mapple_syrup:
+			exitSequence_main_region_Step3_r2_waiting_fo_mapple_syrup();
+			break;
+		case main_region_Step3_r2_End_option:
+			exitSequence_main_region_Step3_r2_End_option();
 			break;
 		default:
 			break;
@@ -3052,11 +3106,25 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((sCInterface.waterPoured && isStateActive(State.main_region_Step3_r2_Milk_option__)) && sCInterface.noMilkOption)) {
+			if (sCInterface.waterPoured) {
+				exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured();
+				enterSequence_main_region_Step3_r1_WaterPoured_default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r1_WaterPoured_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((true && isStateActive(State.main_region_Step3_r2_End_option)) && true)) {
 				exitSequence_main_region_Step3();
 				react_main_region__sync2();
 			} else {
-				if (((sCInterface.waterPoured && isStateActive(State.main_region_Step3_r2_Waiting_for_milk_to_be_poured)) && sCInterface.milkAdded)) {
+				if (((true && isStateActive(State.main_region_Step3_r2_End_option)) && true)) {
 					exitSequence_main_region_Step3();
 					react_main_region__sync3();
 				} else {
@@ -3071,9 +3139,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((sCInterface.noMilkOption && isStateActive(State.main_region_Step3_r1_Waiting_for_water_to_be_poured)) && sCInterface.waterPoured)) {
-				exitSequence_main_region_Step3();
-				react_main_region__sync2();
+			if (sCInterface.noMilkOption) {
+				exitSequence_main_region_Step3_r2_Milk_option__();
+				enterSequence_main_region_Step3_r2_End_option_default();
+				main_region_Step3_react(false);
 			} else {
 				if (sCInterface.milkOption) {
 					exitSequence_main_region_Step3_r2_Milk_option__();
@@ -3094,9 +3163,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((sCInterface.milkAdded && isStateActive(State.main_region_Step3_r1_Waiting_for_water_to_be_poured)) && sCInterface.waterPoured)) {
-				exitSequence_main_region_Step3();
-				react_main_region__sync3();
+			if (sCInterface.milkAdded) {
+				exitSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured();
+				enterSequence_main_region_Step3_r2_End_option_default();
+				main_region_Step3_react(false);
 			} else {
 				did_transition = false;
 			}
@@ -3136,7 +3206,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 			} else {
 				if (sCInterface.syrup) {
 					exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
-					enterSequence_main_region_Step3_r2_waitin_fo_mapple_syrup_default();
+					enterSequence_main_region_Step3_r2_waiting_fo_mapple_syrup_default();
 					main_region_Step3_react(false);
 				} else {
 					did_transition = false;
@@ -3149,16 +3219,38 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Step3_r2_waitin_fo_mapple_syrup_react(boolean try_transition) {
+	private boolean main_region_Step3_r2_waiting_fo_mapple_syrup_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.syrupAdded) {
-				exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
+				exitSequence_main_region_Step3_r2_waiting_fo_mapple_syrup();
 				enterSequence_main_region_Step3_r2_Milk_option___default();
 				main_region_Step3_react(false);
 			} else {
 				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step3_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r2_End_option_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((true && isStateActive(State.main_region_Step3_r1_WaterPoured)) && true)) {
+				exitSequence_main_region_Step3();
+				react_main_region__sync2();
+			} else {
+				if (((true && isStateActive(State.main_region_Step3_r1_WaterPoured)) && true)) {
+					exitSequence_main_region_Step3();
+					react_main_region__sync3();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		if (did_transition==false) {

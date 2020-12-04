@@ -55,11 +55,6 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	}
 
 	@Override
-	public void onGiveBackMoneyRaised() {
-		
-	}
-
-	@Override
 	public void onDoTransactionRaised() {
 		this.theMachine.doTransaction();
 	}
@@ -106,12 +101,11 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	@Override
 	public void onAddSugarRaised() {
 		 //
-		
 	}
+	
 	@Override
 	public void onSeedPackingRaised() {
-		
-		
+		theMachine.packSeed();
 	}
 	@Override
 	public void onCupPlacingRaised() {
@@ -157,21 +151,18 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	@Override
 	public void onMilkChosedRaised() {
 		theMachine.addOption(Option.MILK, 10);
-		
 	}
 	@Override
 	public void onDisableMissingIngredientsRaised() {
-		 
-		
+		 theMachine.checkIngredient();
 	}
 	@Override
 	public void onBeginMachineCleaningRaised() {
-		 
-		
+		 theMachine.cleanMachine();
 	}
 	@Override
 	public void onEndThirdStepRaised() {
-		 
+		 theMachine.teaOrNot();
 		
 	}
 	@Override
@@ -184,13 +175,11 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	}
 	@Override
 	public void onPourMilkRaised() {
-		 
-		
+		 theMachine.pourMilk();
 	}
 	@Override
 	public void onCheckMilkOptionRaised() {
-		 
-		
+		 theMachine.milkOrNot();
 	}
 	@Override
 	public void onSyrupChosedRaised() {
@@ -201,6 +190,10 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 		theMachine.cancel(true);
 		
 	}
+	@Override
+	public void onSugarOrSyrupRaised() {
+		theMachine.sugarOrSyrup();
+	}
 		 
 	
 
@@ -210,7 +203,9 @@ enum Drink{
 	NONE,
 	COFFEE,
 	TEA,
-	EXPRESSO
+	EXPRESSO,
+	SOUP,
+	ICED_TEA
 }
 
 enum Option{
@@ -247,7 +242,7 @@ enum Temperature{
 
 
 public class DrinkFactoryMachine extends JFrame {
-	
+	private HashMap<String, Integer> leftOver = new HashMap<String, Integer>();
 	private Timer globalTimer1;
 	private Timer globalTimer2;
 	private Timer globalTimer3;
@@ -260,7 +255,9 @@ public class DrinkFactoryMachine extends JFrame {
 	private int moneyToReach = 0;
 	private ArrayList<ActionListener> actionsForOptionButton = new ArrayList<ActionListener>();
 	private ArrayList<JButton> optionButtons = new ArrayList<JButton>();
+	private ArrayList<JButton> drinkButtons = new ArrayList<JButton>();
 	private Option[] optionNames = {Option.MILK,Option.VANILLA,Option.MAPPLE_SYRUP, Option.CRUST};
+	private Drink[] drinkNames = {Drink.COFFEE, Drink.EXPRESSO, Drink.TEA, Drink.SOUP, Drink.ICED_TEA};
 	private Boolean NFCPayment = false;
 	private JTextField cardLabel;
 	private HashMap<String, ArrayList<Integer>> NFCsHistory;
@@ -272,7 +269,8 @@ public class DrinkFactoryMachine extends JFrame {
 	private JSlider temperatureSlider;
 	private JSlider sugarSlider;
 	private JLabel labelForPictures;
-	
+	private JButton takeFullCupButton;
+	private JButton addCupButton;
 	  
 	 
 	private static final long serialVersionUID = 2030629304432075314L;
@@ -297,15 +295,15 @@ public class DrinkFactoryMachine extends JFrame {
 
 	
 	 
+
+
+
+
 	public DrinkFactoryMachine() {
 		theFSM = new MVPStatemachine();
 		TimerService timer = new TimerService();
-		theFSM.setTimer(timer);
-		theFSM.init();
-		theFSM.enter();
-		theFSM.getSCInterface().getListeners().add(
-				new MVPControlerInterfaceImplementation(this)
-				);
+		theFSM.setTimer(timer);		
+		
 		setForeground(Color.WHITE);
 		setFont(new Font("Cantarell", Font.BOLD, 22));
 		setBackground(Color.DARK_GRAY);
@@ -331,6 +329,17 @@ public class DrinkFactoryMachine extends JFrame {
 		messagesToUser.setBackground(Color.WHITE);
 		messagesToUser.setBounds(126, 34, 165, 75);
 		contentPane.add(messagesToUser);
+		leftOver.put("COFFEE", 1);
+		leftOver.put("TEA", 2);
+		leftOver.put("SOUP", 2);
+		leftOver.put("EXPRESSO", 2);
+		leftOver.put("ICED_TEA", 2);
+		leftOver.put("CRUST", 2);
+		leftOver.put("VANILLA", 2);
+		leftOver.put("MAPPLE_SYRUP", 2);
+		leftOver.put("MILK", 2);
+		
+		
 		
 		ActionListener milkOption = new ActionListener() {
 			@Override
@@ -514,6 +523,8 @@ public class DrinkFactoryMachine extends JFrame {
 		icedTeaButton.setBackground(Color.DARK_GRAY);
 		icedTeaButton.setBounds(12, 182, 96, 25);
 		contentPane.add(icedTeaButton);
+		
+		drinkButtons = new ArrayList<JButton>(Arrays.asList(coffeeButton, expressoButton, teaButton, soupButton, icedTeaButton));
 
 		JLabel lblSugar = new JLabel("Sugar");
 		lblSugar.setForeground(Color.WHITE);
@@ -605,12 +616,39 @@ public class DrinkFactoryMachine extends JFrame {
 		separator.setBounds(12, 292, 622, 15);
 		contentPane.add(separator);
 
-		JButton addCupButton = new JButton("Add cup");
+		addCupButton = new JButton("Add cup");
 		addCupButton.setForeground(Color.WHITE);
 		addCupButton.setBackground(Color.DARK_GRAY);
-		addCupButton.setBounds(45, 336, 96, 25);
+		addCupButton.setBounds(45, 360, 96, 25);
+		addCupButton.setEnabled(false);
+		addCupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		contentPane.add(addCupButton);
-
+		
+		takeFullCupButton = new JButton("Take cup");
+		takeFullCupButton.setForeground(Color.WHITE);
+		takeFullCupButton.setBackground(Color.DARK_GRAY);
+		takeFullCupButton.setBounds(45, 336, 96, 25);
+		takeFullCupButton.setEnabled(false);
+		takeFullCupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				theFSM.getSCInterface().raiseCupIsTaken();
+				try {
+					BufferedImage myPicture = null;
+					myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+					labelForPictures.setIcon(new ImageIcon(myPicture));
+				} catch (IOException a) {
+					a.printStackTrace();
+				}
+			}
+		});
+		contentPane.add(takeFullCupButton);
+		
 		BufferedImage myPicture = null;
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
@@ -650,6 +688,12 @@ public class DrinkFactoryMachine extends JFrame {
 				labelForPictures.setIcon(new ImageIcon(myPicture));
 			}
 		});
+		
+		theFSM.init();
+		theFSM.enter();
+		theFSM.getSCInterface().getListeners().add(
+				new MVPControlerInterfaceImplementation(this)
+				);
 
 	}
 	
@@ -660,6 +704,11 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void insertMoney(int added) {
+		//if for visual purpose only
+		if (globalTimer1!=null) {
+			globalTimer1.stop();
+			globalTimer1 = null;
+		}
 		if (!NFCPayment) {
 			this.moneyInserted += added;
 			updateMessage();
@@ -704,6 +753,11 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void chooseDrink(Drink drink){
+		//if for visual purpose only
+		if (globalTimer1!=null) {
+			globalTimer1.stop();
+			globalTimer1 = null;
+		}
 		this.drinkSelected = drink;
 		this.optionsSelected.clear();
 		updateMessage();
@@ -735,18 +789,6 @@ public class DrinkFactoryMachine extends JFrame {
 			this.moneyInserted = 0;
 			this.moneyToReach = 0;
 			if (!autoCanceled) this.messagesToUser.setText("Aucun remboursement");
-		}
-		if (canceled) {
-			ActionListener wait2000ms = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					messagesToUser.setText(welcomeMessage);
-					//globalTimer1.stop();
-					globalTimer1 = null;
-				}
-			};
-			globalTimer1 = new Timer(2000,wait2000ms);
-			globalTimer1.start();
 		}
 	}
 
@@ -785,6 +827,7 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	void doTransaction() {
 		this.moneyInserted -= this.moneyToReach;
+		leftOver.replace(this.drinkSelected.toString(), leftOver.get(this.drinkSelected.toString()), leftOver.get(this.drinkSelected.toString())-1);
 		unsetOptionButtons();
 		switch(this.sizeSlider.getValue()) {
 			case 0:
@@ -874,8 +917,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					theFSM.getSCInterface().raiseWaterHeated();
-					//messagesToUser.setText("Fin chauffage eau");
-					globalTimer1.stop();
+					//globalTimer1.stop();
 					globalTimer1 = null;
 			}
 		};
@@ -940,7 +982,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void podPlacement() {
-		ActionListener wait1000ms = new ActionListener() {
+		ActionListener wait2000ms = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				globalTimer2.stop();
@@ -948,7 +990,7 @@ public class DrinkFactoryMachine extends JFrame {
 				theFSM.getSCInterface().raiseStep1ElementPlaced();
 			}
 		};
-		globalTimer2 = new Timer(1000,wait1000ms);
+		globalTimer2 = new Timer(2000,wait2000ms);
 		globalTimer2.start();
 	}
 	
@@ -979,16 +1021,104 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void startToPour() {
+		this.messagesToUser.setText("<html>En attente du <br>versement de la boisson");
 		ActionListener wait = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				globalTimer1.stop();
+				//globalTimer1.stop();
 				globalTimer1 = null;
 				theFSM.getSCInterface().raiseWaterPoured();
 			}
 		};
 		globalTimer1 = new Timer(size.getValue()*2000+2000,wait);
 		globalTimer1.start();
+	}
+	
+	public void sugarOrSyrup() {
+		if (optionsSelected.contains(Option.MAPPLE_SYRUP)) {
+			theFSM.getSCInterface().raiseSyrup();
+		} else {
+			theFSM.getSCInterface().raiseSugar();
+		}
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				globalTimer2.stop();
+				globalTimer2 = null;
+				theFSM.getSCInterface().raiseSugarAdded();
+				theFSM.getSCInterface().raiseSyrupAdded();
+			}
+		};
+		globalTimer2 = new Timer(sugarDose*500,wait);
+		globalTimer2.start();
+	}
+	
+	public void milkOrNot() {
+		if (optionsSelected.contains(Option.MILK)) {
+			theFSM.getSCInterface().raiseMilkOption();
+		} else {
+			theFSM.getSCInterface().raiseNoMilkOption();
+		}
+	}
+	
+	public void pourMilk() {
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				globalTimer2.stop();
+				globalTimer2 = null;
+				theFSM.getSCInterface().raiseMilkAdded();
+			}
+		};
+		globalTimer2 = new Timer(2000,wait);
+		globalTimer2.start();
+	}
+	
+	public void teaOrNot() {
+		this.messagesToUser.setText("Boisson prête");
+		if (drinkSelected==Drink.TEA) {
+			theFSM.raiseLetInfuse();
+			this.messagesToUser.setText("Infusion");
+			ActionListener wait = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//globalTimer1.stop();
+					globalTimer1 = null;
+					theFSM.getSCInterface().raiseGiveCup();
+					takeFullCupButton.setEnabled(true);
+				}
+			};
+			globalTimer1 = new Timer(5000,wait);
+			globalTimer1.start();
+		} else {
+			theFSM.raiseGiveCup();
+			takeFullCupButton.setEnabled(true);
+		}
+	}
+	
+	public void cleanMachine() {
+		//clean machine !!!!!!
+		this.messagesToUser.setText("<html>Cleaning machine ..." );
+		globalTimer1 = null;
+		globalTimer2 = null;
+		globalTimer3 = null;
+		globalTimer4 = null;
+		
+	}
+	
+	public void checkIngredient() {
+		//disable buttons if not enough ingredient for option and/or drink
+		for (int i=0; i<optionNames.length; i++) {
+			if (leftOver.get(optionNames[i].toString())<=0) {
+				optionButtons.get(i).setEnabled(false);
+			}
+		}
+		for (int i=0; i<drinkNames.length; i++) {
+			if (leftOver.get(drinkNames[i].toString())<=0) {
+				drinkButtons.get(i).setEnabled(false);
+			}
+		}
+		this.messagesToUser.setText(welcomeMessage);
 	}
 	
 }

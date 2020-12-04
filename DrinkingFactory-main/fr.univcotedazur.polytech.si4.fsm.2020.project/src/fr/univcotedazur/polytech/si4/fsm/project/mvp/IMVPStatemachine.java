@@ -138,8 +138,6 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedNFCPayment();
 		
-		public boolean isRaisedGiveBackMoney();
-		
 		public boolean isRaisedDoTransaction();
 		
 		public boolean isRaisedEndThirdStep();
@@ -153,6 +151,8 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public boolean isRaisedBeginFirstStep();
 		
 		public boolean isRaisedAutomaticCancel();
+		
+		public boolean isRaisedSugarOrSyrup();
 		
 	public List<SCInterfaceListener> getListeners();
 	}
@@ -182,7 +182,6 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
 		public void onNFCPaymentRaised();
-		public void onGiveBackMoneyRaised();
 		public void onDoTransactionRaised();
 		public void onEndThirdStepRaised();
 		public void onBeginSecondStepRaised();
@@ -190,6 +189,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCheckMilkOptionRaised();
 		public void onBeginFirstStepRaised();
 		public void onAutomaticCancelRaised();
+		public void onSugarOrSyrupRaised();
 		}
 	
 	public SCInterface getSCInterface();
