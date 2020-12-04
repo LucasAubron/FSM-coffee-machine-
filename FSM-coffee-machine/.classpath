@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="FSM-coffee-machine-/DrinkingFactory-main/fr.univcotedazur.polytech.si4.fsm.2020.project/src"/>
-	<classpathentry kind="src" path="FSM-coffee-machine-/MVP_V1/fr.univcotedazur.polytech.si4.fsm.2020.project/src"/>
-	<classpathentry kind="output" path="FSM-coffee-machine-/DrinkingFactory-main/fr.univcotedazur.polytech.si4.fsm.2020.project/bin"/>
-</classpath>
