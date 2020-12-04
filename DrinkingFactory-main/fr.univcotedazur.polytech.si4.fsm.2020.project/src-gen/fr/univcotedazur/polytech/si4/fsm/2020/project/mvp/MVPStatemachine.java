@@ -502,16 +502,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean milk;
+		private boolean milkButton;
 		
 		
-		public void raiseMilk() {
+		public void raiseMilkButton() {
 			synchronized(MVPStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							milk = true;
+							milkButton = true;
 							singleCycle();
 						}
 					}
@@ -520,16 +520,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean sirup;
+		private boolean sirupButton;
 		
 		
-		public void raiseSirup() {
+		public void raiseSirupButton() {
 			synchronized(MVPStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							sirup = true;
+							sirupButton = true;
 							singleCycle();
 						}
 					}
@@ -538,16 +538,214 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean crust;
+		private boolean crustButton;
 		
 		
-		public void raiseCrust() {
+		public void raiseCrustButton() {
 			synchronized(MVPStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							crust = true;
+							crustButton = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean vanillaButton;
+		
+		
+		public void raiseVanillaButton() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							vanillaButton = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean waterPoured;
+		
+		
+		public void raiseWaterPoured() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							waterPoured = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean sugarAdded;
+		
+		
+		public void raiseSugarAdded() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							sugarAdded = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean syrupAdded;
+		
+		
+		public void raiseSyrupAdded() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							syrupAdded = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean step1ElementPlaced;
+		
+		
+		public void raiseStep1ElementPlaced() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							step1ElementPlaced = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean noMilkOption;
+		
+		
+		public void raiseNoMilkOption() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							noMilkOption = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean milkOption;
+		
+		
+		public void raiseMilkOption() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							milkOption = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean milkAdded;
+		
+		
+		public void raiseMilkAdded() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							milkAdded = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean bowlPlacement;
+		
+		
+		public void raiseBowlPlacement() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							bowlPlacement = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean sugar;
+		
+		
+		public void raiseSugar() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							sugar = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean syrup;
+		
+		
+		public void raiseSyrup() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							syrup = true;
 							singleCycle();
 						}
 					}
@@ -574,21 +772,327 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean validateOptions;
+		private boolean soup;
 		
 		
-		public void raiseValidateOptions() {
+		public void raiseSoup() {
 			synchronized(MVPStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							validateOptions = true;
+							soup = true;
 							singleCycle();
 						}
 					}
 				);
 				runCycle();
+			}
+		}
+		
+		private boolean notASoup;
+		
+		
+		public void raiseNotASoup() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							notASoup = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean capsIsReady;
+		
+		
+		public void raiseCapsIsReady() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							capsIsReady = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean soupPoured;
+		
+		
+		public void raiseSoupPoured() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							soupPoured = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean spicesAdded;
+		
+		
+		public void raiseSpicesAdded() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							spicesAdded = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean lockDoor;
+		
+		
+		public void raiseLockDoor() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							lockDoor = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean coolWithAzote;
+		
+		
+		public void raiseCoolWithAzote() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							coolWithAzote = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean cooledEnough;
+		
+		
+		public void raiseCooledEnough() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							cooledEnough = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean unlockDoor;
+		
+		
+		public void raiseUnlockDoor() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							unlockDoor = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean personnalCupInserted;
+		
+		
+		public void raisePersonnalCupInserted() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							personnalCupInserted = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean personnalCupIsPlaced;
+		
+		
+		public void raisePersonnalCupIsPlaced() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							personnalCupIsPlaced = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean noPersonnalCup;
+		
+		
+		public void raiseNoPersonnalCup() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							noPersonnalCup = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean personnalCupIsInserted;
+		
+		
+		public boolean isRaisedPersonnalCupIsInserted() {
+			synchronized(MVPStatemachine.this) {
+				return personnalCupIsInserted;
+			}
+		}
+		
+		protected void raisePersonnalCupIsInserted() {
+			synchronized(MVPStatemachine.this) {
+				personnalCupIsInserted = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPersonnalCupIsInsertedRaised();
+				}
+			}
+		}
+		
+		private boolean checkPersonnalCup;
+		
+		
+		public boolean isRaisedCheckPersonnalCup() {
+			synchronized(MVPStatemachine.this) {
+				return checkPersonnalCup;
+			}
+		}
+		
+		protected void raiseCheckPersonnalCup() {
+			synchronized(MVPStatemachine.this) {
+				checkPersonnalCup = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onCheckPersonnalCupRaised();
+				}
+			}
+		}
+		
+		private boolean bowlPlacing;
+		
+		
+		public boolean isRaisedBowlPlacing() {
+			synchronized(MVPStatemachine.this) {
+				return bowlPlacing;
+			}
+		}
+		
+		protected void raiseBowlPlacing() {
+			synchronized(MVPStatemachine.this) {
+				bowlPlacing = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onBowlPlacingRaised();
+				}
+			}
+		}
+		
+		private boolean prepareCaps;
+		
+		
+		public boolean isRaisedPrepareCaps() {
+			synchronized(MVPStatemachine.this) {
+				return prepareCaps;
+			}
+		}
+		
+		protected void raisePrepareCaps() {
+			synchronized(MVPStatemachine.this) {
+				prepareCaps = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPrepareCapsRaised();
+				}
+			}
+		}
+		
+		private boolean addSpices;
+		
+		
+		public boolean isRaisedAddSpices() {
+			synchronized(MVPStatemachine.this) {
+				return addSpices;
+			}
+		}
+		
+		protected void raiseAddSpices() {
+			synchronized(MVPStatemachine.this) {
+				addSpices = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onAddSpicesRaised();
+				}
+			}
+		}
+		
+		private boolean beginFirstStep;
+		
+		
+		public boolean isRaisedBeginFirstStep() {
+			synchronized(MVPStatemachine.this) {
+				return beginFirstStep;
+			}
+		}
+		
+		protected void raiseBeginFirstStep() {
+			synchronized(MVPStatemachine.this) {
+				beginFirstStep = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onBeginFirstStepRaised();
+				}
 			}
 		}
 		
@@ -1042,73 +1546,111 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
-		private boolean selected;
+		private boolean endThirdStep;
 		
-		public synchronized boolean getSelected() {
+		
+		public boolean isRaisedEndThirdStep() {
 			synchronized(MVPStatemachine.this) {
-				return selected;
+				return endThirdStep;
 			}
 		}
 		
-		public void setSelected(boolean value) {
+		protected void raiseEndThirdStep() {
 			synchronized(MVPStatemachine.this) {
-				this.selected = value;
+				endThirdStep = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onEndThirdStepRaised();
+				}
 			}
 		}
 		
-		private boolean payedEnough;
+		private boolean beginSecondStep;
 		
-		public synchronized boolean getPayedEnough() {
+		
+		public boolean isRaisedBeginSecondStep() {
 			synchronized(MVPStatemachine.this) {
-				return payedEnough;
+				return beginSecondStep;
 			}
 		}
 		
-		public void setPayedEnough(boolean value) {
+		protected void raiseBeginSecondStep() {
 			synchronized(MVPStatemachine.this) {
-				this.payedEnough = value;
+				beginSecondStep = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onBeginSecondStepRaised();
+				}
 			}
 		}
 		
-		private boolean hotEnough;
+		private boolean pourMilk;
 		
-		public synchronized boolean getHotEnough() {
+		
+		public boolean isRaisedPourMilk() {
 			synchronized(MVPStatemachine.this) {
-				return hotEnough;
+				return pourMilk;
 			}
 		}
 		
-		public void setHotEnough(boolean value) {
+		protected void raisePourMilk() {
 			synchronized(MVPStatemachine.this) {
-				this.hotEnough = value;
+				pourMilk = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPourMilkRaised();
+				}
 			}
 		}
 		
-		private boolean gobeletOk;
+		private boolean pourVanilla;
 		
-		public synchronized boolean getGobeletOk() {
+		
+		public boolean isRaisedPourVanilla() {
 			synchronized(MVPStatemachine.this) {
-				return gobeletOk;
+				return pourVanilla;
 			}
 		}
 		
-		public void setGobeletOk(boolean value) {
+		protected void raisePourVanilla() {
 			synchronized(MVPStatemachine.this) {
-				this.gobeletOk = value;
+				pourVanilla = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPourVanillaRaised();
+				}
 			}
 		}
 		
-		private boolean gobeletTaken;
+		private boolean pourSoup;
 		
-		public synchronized boolean getGobeletTaken() {
+		
+		public boolean isRaisedPourSoup() {
 			synchronized(MVPStatemachine.this) {
-				return gobeletTaken;
+				return pourSoup;
 			}
 		}
 		
-		public void setGobeletTaken(boolean value) {
+		protected void raisePourSoup() {
 			synchronized(MVPStatemachine.this) {
-				this.gobeletTaken = value;
+				pourSoup = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPourSoupRaised();
+				}
+			}
+		}
+		
+		private boolean checkMilkOption;
+		
+		
+		public boolean isRaisedCheckMilkOption() {
+			synchronized(MVPStatemachine.this) {
+				return checkMilkOption;
+			}
+		}
+		
+		protected void raiseCheckMilkOption() {
+			synchronized(MVPStatemachine.this) {
+				checkMilkOption = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onCheckMilkOptionRaised();
+				}
 			}
 		}
 		
@@ -1140,14 +1682,42 @@ public class MVPStatemachine implements IMVPStatemachine {
 			giveCup = false;
 			cupIsTaken = false;
 			letInfuse = false;
-			milk = false;
-			sirup = false;
-			crust = false;
+			milkButton = false;
+			sirupButton = false;
+			crustButton = false;
+			vanillaButton = false;
+			waterPoured = false;
+			sugarAdded = false;
+			syrupAdded = false;
+			step1ElementPlaced = false;
+			noMilkOption = false;
+			milkOption = false;
+			milkAdded = false;
+			bowlPlacement = false;
+			sugar = false;
+			syrup = false;
 			vanilla = false;
-			validateOptions = false;
+			soup = false;
+			notASoup = false;
+			capsIsReady = false;
+			soupPoured = false;
+			spicesAdded = false;
+			lockDoor = false;
+			coolWithAzote = false;
+			cooledEnough = false;
+			unlockDoor = false;
+			personnalCupInserted = false;
+			personnalCupIsPlaced = false;
+			noPersonnalCup = false;
 		}
 		protected void clearOutEvents() {
 		
+		personnalCupIsInserted = false;
+		checkPersonnalCup = false;
+		bowlPlacing = false;
+		prepareCaps = false;
+		addSpices = false;
+		beginFirstStep = false;
 		vanillaChosed = false;
 		sirupChosed = false;
 		crustChosed = false;
@@ -1173,6 +1743,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		nFCPayment = false;
 		giveBackMoney = false;
 		doTransaction = false;
+		endThirdStep = false;
+		beginSecondStep = false;
+		pourMilk = false;
+		pourVanilla = false;
+		pourSoup = false;
+		checkMilkOption = false;
 		}
 		
 	}
@@ -1187,38 +1763,48 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Step1_r1_Water_heat,
 		main_region_Step1_r2_First_step,
 		main_region_Step1_r2_Drink_difference,
+		main_region_Step1_r2_AlreadyBowlForSoup,
 		main_region_Step2,
 		main_region_Step2_r1_Cup_Placement,
-		main_region_Step2_r2_Drink_difference,
+		main_region_Step2_r1_Cup_placed,
+		main_region_Step2_r1_IsPersonnalCupPlaced_,
+		main_region_Step2_r2_Drink_difference_step2,
 		main_region_Step2_r2_ExpressoCase,
 		main_region_Step2_r2_ExpressoCase_r1_PackSeed,
-		main_region_Step2_r2_ExpressoCase_r1__final_,
 		main_region_Step2_r2_ExpressoCase_r2_WaitWater,
-		main_region_Step2_r2_ExpressoCase_r2__final_,
 		main_region_Step2_r2_Waiting_for_water_to_heat,
 		main_region_Step3,
-		main_region_Step3_r1__final_,
-		main_region_Step3_r1_Water_wait,
-		main_region_Step3_r2_Sugar_added,
-		main_region_Step3_r2__final_,
+		main_region_Step3_r1_Waiting_for_water_to_be_poured,
+		main_region_Step3_r2_Milk_option__,
+		main_region_Step3_r2_Waiting_for_milk_to_be_poured,
+		main_region_Step3_r2_Waiting_for_sugar_to_be_added,
+		main_region_Step3_r2_Sugar_or_mapple_syrup,
+		main_region_Step3_r2_waitin_fo_mapple_syrup,
+		main_region_Step3_r2_IsSoup_,
 		main_region_Choice_and_payment,
 		main_region_Choice_and_payment_r1_No_drink_selected,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille,
-		main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready,
+		main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted,
+		main_region_Choice_and_payment_r1_Option_selected,
+		main_region_Choice_and_payment_r1_CupInserted,
 		main_region_WaitForCupToBeTaken,
 		main_region_CleanMachine,
 		main_region_Infusing,
 		main_region_CheckIngredients,
+		main_region_Drink_difference,
+		main_region_Vanilla,
+		main_region_IsSousoup_,
+		main_region_StepSousoup,
+		main_region_StepSousoup_r1_WaitingForHotWater,
+		main_region_StepSousoup_r2_GetCaps,
+		main_region_StepSousoup_r2_PourSoup_,
+		main_region_StepSousoup_r3_AddSpices,
+		main_region_LockDoor,
+		main_region_CoolWithAzote,
+		main_region_TemperatureReached,
 		$NullState$
 	};
 	
-	private State[] historyVector = new State[3];
+	private State[] historyVector = new State[1];
 	private final State[] stateVector = new State[3];
 	
 	private int nextStateIndex;
@@ -1241,20 +1827,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		for (int i = 0; i < 3; i++) {
 			stateVector[i] = State.$NullState$;
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 1; i++) {
 			historyVector[i] = State.$NullState$;
 		}
 		clearEvents();
 		clearOutEvents();
-		sCInterface.setSelected(false);
-		
-		sCInterface.setPayedEnough(false);
-		
-		sCInterface.setHotEnough(false);
-		
-		sCInterface.setGobeletOk(false);
-		
-		sCInterface.setGobeletTaken(false);
 	}
 	
 	public synchronized void enter() {
@@ -1307,62 +1884,62 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Step1_r2_Drink_difference:
 					main_region_Step1_r2_Drink_difference_react(true);
 					break;
+				case main_region_Step1_r2_AlreadyBowlForSoup:
+					main_region_Step1_r2_AlreadyBowlForSoup_react(true);
+					break;
 				case main_region_Step2_r1_Cup_Placement:
 					main_region_Step2_r1_Cup_Placement_react(true);
 					break;
-				case main_region_Step2_r2_Drink_difference:
-					main_region_Step2_r2_Drink_difference_react(true);
+				case main_region_Step2_r1_Cup_placed:
+					main_region_Step2_r1_Cup_placed_react(true);
+					break;
+				case main_region_Step2_r1_IsPersonnalCupPlaced_:
+					main_region_Step2_r1_IsPersonnalCupPlaced__react(true);
+					break;
+				case main_region_Step2_r2_Drink_difference_step2:
+					main_region_Step2_r2_Drink_difference_step2_react(true);
 					break;
 				case main_region_Step2_r2_ExpressoCase_r1_PackSeed:
 					main_region_Step2_r2_ExpressoCase_r1_PackSeed_react(true);
 					break;
-				case main_region_Step2_r2_ExpressoCase_r1__final_:
-					main_region_Step2_r2_ExpressoCase_r1__final__react(true);
-					break;
 				case main_region_Step2_r2_ExpressoCase_r2_WaitWater:
 					main_region_Step2_r2_ExpressoCase_r2_WaitWater_react(true);
-					break;
-				case main_region_Step2_r2_ExpressoCase_r2__final_:
-					main_region_Step2_r2_ExpressoCase_r2__final__react(true);
 					break;
 				case main_region_Step2_r2_Waiting_for_water_to_heat:
 					main_region_Step2_r2_Waiting_for_water_to_heat_react(true);
 					break;
-				case main_region_Step3_r1__final_:
-					main_region_Step3_r1__final__react(true);
+				case main_region_Step3_r1_Waiting_for_water_to_be_poured:
+					main_region_Step3_r1_Waiting_for_water_to_be_poured_react(true);
 					break;
-				case main_region_Step3_r1_Water_wait:
-					main_region_Step3_r1_Water_wait_react(true);
+				case main_region_Step3_r2_Milk_option__:
+					main_region_Step3_r2_Milk_option___react(true);
 					break;
-				case main_region_Step3_r2_Sugar_added:
-					main_region_Step3_r2_Sugar_added_react(true);
+				case main_region_Step3_r2_Waiting_for_milk_to_be_poured:
+					main_region_Step3_r2_Waiting_for_milk_to_be_poured_react(true);
 					break;
-				case main_region_Step3_r2__final_:
-					main_region_Step3_r2__final__react(true);
+				case main_region_Step3_r2_Waiting_for_sugar_to_be_added:
+					main_region_Step3_r2_Waiting_for_sugar_to_be_added_react(true);
+					break;
+				case main_region_Step3_r2_Sugar_or_mapple_syrup:
+					main_region_Step3_r2_Sugar_or_mapple_syrup_react(true);
+					break;
+				case main_region_Step3_r2_waitin_fo_mapple_syrup:
+					main_region_Step3_r2_waitin_fo_mapple_syrup_react(true);
+					break;
+				case main_region_Step3_r2_IsSoup_:
+					main_region_Step3_r2_IsSoup__react(true);
 					break;
 				case main_region_Choice_and_payment_r1_No_drink_selected:
 					main_region_Choice_and_payment_r1_No_drink_selected_react(true);
 					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_react(true);
+				case main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted:
+					main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_react(true);
 					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options_react(true);
+				case main_region_Choice_and_payment_r1_Option_selected:
+					main_region_Choice_and_payment_r1_Option_selected_react(true);
 					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait_react(true);
-					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton_react(true);
-					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop_react(true);
-					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille_react(true);
-					break;
-				case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_react(true);
+				case main_region_Choice_and_payment_r1_CupInserted:
+					main_region_Choice_and_payment_r1_CupInserted_react(true);
 					break;
 				case main_region_WaitForCupToBeTaken:
 					main_region_WaitForCupToBeTaken_react(true);
@@ -1375,6 +1952,36 @@ public class MVPStatemachine implements IMVPStatemachine {
 					break;
 				case main_region_CheckIngredients:
 					main_region_CheckIngredients_react(true);
+					break;
+				case main_region_Drink_difference:
+					main_region_Drink_difference_react(true);
+					break;
+				case main_region_Vanilla:
+					main_region_Vanilla_react(true);
+					break;
+				case main_region_IsSousoup_:
+					main_region_IsSousoup__react(true);
+					break;
+				case main_region_StepSousoup_r1_WaitingForHotWater:
+					main_region_StepSousoup_r1_WaitingForHotWater_react(true);
+					break;
+				case main_region_StepSousoup_r2_GetCaps:
+					main_region_StepSousoup_r2_GetCaps_react(true);
+					break;
+				case main_region_StepSousoup_r2_PourSoup_:
+					main_region_StepSousoup_r2_PourSoup__react(true);
+					break;
+				case main_region_StepSousoup_r3_AddSpices:
+					main_region_StepSousoup_r3_AddSpices_react(true);
+					break;
+				case main_region_LockDoor:
+					main_region_LockDoor_react(true);
+					break;
+				case main_region_CoolWithAzote:
+					main_region_CoolWithAzote_react(true);
+					break;
+				case main_region_TemperatureReached:
+					main_region_TemperatureReached_react(true);
 					break;
 			default:
 				// $NullState$
@@ -1410,10 +2017,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 	}
 	
 	/** 
+	* Always returns 'false' since this state machine can never become final.
+	*
 	* @see IStatemachine#isFinal()
 	*/
 	public synchronized boolean isFinal() {
-		return (stateVector[0] == State.main_region_Step3_r1__final_) && (stateVector[1] == State.main_region_Step2_r2_ExpressoCase_r1__final_ || stateVector[1] == State.main_region_Step3_r2__final_) && (stateVector[2] == State.main_region_Step2_r2_ExpressoCase_r2__final_);
+		return false;
 	}
 	/**
 	* This method resets the incoming events (time events included).
@@ -1440,66 +2049,63 @@ public class MVPStatemachine implements IMVPStatemachine {
 		switch (state) {
 		case main_region_Step1:
 			return stateVector[0].ordinal() >= State.
-					main_region_Step1.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step1_r2_Drink_difference.ordinal();
+					main_region_Step1.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step1_r2_AlreadyBowlForSoup.ordinal();
 		case main_region_Step1_r1_Water_heat:
 			return stateVector[0] == State.main_region_Step1_r1_Water_heat;
 		case main_region_Step1_r2_First_step:
 			return stateVector[1] == State.main_region_Step1_r2_First_step;
 		case main_region_Step1_r2_Drink_difference:
 			return stateVector[1] == State.main_region_Step1_r2_Drink_difference;
+		case main_region_Step1_r2_AlreadyBowlForSoup:
+			return stateVector[1] == State.main_region_Step1_r2_AlreadyBowlForSoup;
 		case main_region_Step2:
 			return stateVector[0].ordinal() >= State.
 					main_region_Step2.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step2_r2_Waiting_for_water_to_heat.ordinal();
 		case main_region_Step2_r1_Cup_Placement:
 			return stateVector[0] == State.main_region_Step2_r1_Cup_Placement;
-		case main_region_Step2_r2_Drink_difference:
-			return stateVector[1] == State.main_region_Step2_r2_Drink_difference;
+		case main_region_Step2_r1_Cup_placed:
+			return stateVector[0] == State.main_region_Step2_r1_Cup_placed;
+		case main_region_Step2_r1_IsPersonnalCupPlaced_:
+			return stateVector[0] == State.main_region_Step2_r1_IsPersonnalCupPlaced_;
+		case main_region_Step2_r2_Drink_difference_step2:
+			return stateVector[1] == State.main_region_Step2_r2_Drink_difference_step2;
 		case main_region_Step2_r2_ExpressoCase:
 			return stateVector[1].ordinal() >= State.
-					main_region_Step2_r2_ExpressoCase.ordinal()&& stateVector[1].ordinal() <= State.main_region_Step2_r2_ExpressoCase_r2__final_.ordinal();
+					main_region_Step2_r2_ExpressoCase.ordinal()&& stateVector[1].ordinal() <= State.main_region_Step2_r2_ExpressoCase_r2_WaitWater.ordinal();
 		case main_region_Step2_r2_ExpressoCase_r1_PackSeed:
 			return stateVector[1] == State.main_region_Step2_r2_ExpressoCase_r1_PackSeed;
-		case main_region_Step2_r2_ExpressoCase_r1__final_:
-			return stateVector[1] == State.main_region_Step2_r2_ExpressoCase_r1__final_;
 		case main_region_Step2_r2_ExpressoCase_r2_WaitWater:
 			return stateVector[2] == State.main_region_Step2_r2_ExpressoCase_r2_WaitWater;
-		case main_region_Step2_r2_ExpressoCase_r2__final_:
-			return stateVector[2] == State.main_region_Step2_r2_ExpressoCase_r2__final_;
 		case main_region_Step2_r2_Waiting_for_water_to_heat:
 			return stateVector[1] == State.main_region_Step2_r2_Waiting_for_water_to_heat;
 		case main_region_Step3:
 			return stateVector[0].ordinal() >= State.
-					main_region_Step3.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step3_r2__final_.ordinal();
-		case main_region_Step3_r1__final_:
-			return stateVector[0] == State.main_region_Step3_r1__final_;
-		case main_region_Step3_r1_Water_wait:
-			return stateVector[0] == State.main_region_Step3_r1_Water_wait;
-		case main_region_Step3_r2_Sugar_added:
-			return stateVector[1] == State.main_region_Step3_r2_Sugar_added;
-		case main_region_Step3_r2__final_:
-			return stateVector[1] == State.main_region_Step3_r2__final_;
+					main_region_Step3.ordinal()&& stateVector[0].ordinal() <= State.main_region_Step3_r2_IsSoup_.ordinal();
+		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
+			return stateVector[0] == State.main_region_Step3_r1_Waiting_for_water_to_be_poured;
+		case main_region_Step3_r2_Milk_option__:
+			return stateVector[1] == State.main_region_Step3_r2_Milk_option__;
+		case main_region_Step3_r2_Waiting_for_milk_to_be_poured:
+			return stateVector[1] == State.main_region_Step3_r2_Waiting_for_milk_to_be_poured;
+		case main_region_Step3_r2_Waiting_for_sugar_to_be_added:
+			return stateVector[1] == State.main_region_Step3_r2_Waiting_for_sugar_to_be_added;
+		case main_region_Step3_r2_Sugar_or_mapple_syrup:
+			return stateVector[1] == State.main_region_Step3_r2_Sugar_or_mapple_syrup;
+		case main_region_Step3_r2_waitin_fo_mapple_syrup:
+			return stateVector[1] == State.main_region_Step3_r2_waitin_fo_mapple_syrup;
+		case main_region_Step3_r2_IsSoup_:
+			return stateVector[1] == State.main_region_Step3_r2_IsSoup_;
 		case main_region_Choice_and_payment:
 			return stateVector[0].ordinal() >= State.
-					main_region_Choice_and_payment.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready.ordinal();
+					main_region_Choice_and_payment.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_payment_r1_CupInserted.ordinal();
 		case main_region_Choice_and_payment_r1_No_drink_selected:
 			return stateVector[0] == State.main_region_Choice_and_payment_r1_No_drink_selected;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money:
-			return stateVector[0].ordinal() >= State.
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money.ordinal()&& stateVector[0].ordinal() <= State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready.ordinal();
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			return stateVector[0] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-			return stateVector[1] == State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready;
+		case main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted:
+			return stateVector[0] == State.main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted;
+		case main_region_Choice_and_payment_r1_Option_selected:
+			return stateVector[0] == State.main_region_Choice_and_payment_r1_Option_selected;
+		case main_region_Choice_and_payment_r1_CupInserted:
+			return stateVector[0] == State.main_region_Choice_and_payment_r1_CupInserted;
 		case main_region_WaitForCupToBeTaken:
 			return stateVector[0] == State.main_region_WaitForCupToBeTaken;
 		case main_region_CleanMachine:
@@ -1508,6 +2114,29 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[0] == State.main_region_Infusing;
 		case main_region_CheckIngredients:
 			return stateVector[0] == State.main_region_CheckIngredients;
+		case main_region_Drink_difference:
+			return stateVector[0] == State.main_region_Drink_difference;
+		case main_region_Vanilla:
+			return stateVector[0] == State.main_region_Vanilla;
+		case main_region_IsSousoup_:
+			return stateVector[0] == State.main_region_IsSousoup_;
+		case main_region_StepSousoup:
+			return stateVector[0].ordinal() >= State.
+					main_region_StepSousoup.ordinal()&& stateVector[0].ordinal() <= State.main_region_StepSousoup_r3_AddSpices.ordinal();
+		case main_region_StepSousoup_r1_WaitingForHotWater:
+			return stateVector[0] == State.main_region_StepSousoup_r1_WaitingForHotWater;
+		case main_region_StepSousoup_r2_GetCaps:
+			return stateVector[1] == State.main_region_StepSousoup_r2_GetCaps;
+		case main_region_StepSousoup_r2_PourSoup_:
+			return stateVector[1] == State.main_region_StepSousoup_r2_PourSoup_;
+		case main_region_StepSousoup_r3_AddSpices:
+			return stateVector[2] == State.main_region_StepSousoup_r3_AddSpices;
+		case main_region_LockDoor:
+			return stateVector[0] == State.main_region_LockDoor;
+		case main_region_CoolWithAzote:
+			return stateVector[0] == State.main_region_CoolWithAzote;
+		case main_region_TemperatureReached:
+			return stateVector[0] == State.main_region_TemperatureReached;
 		default:
 			return false;
 		}
@@ -1656,24 +2285,136 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseLetInfuse();
 	}
 	
-	public synchronized void raiseMilk() {
-		sCInterface.raiseMilk();
+	public synchronized void raiseMilkButton() {
+		sCInterface.raiseMilkButton();
 	}
 	
-	public synchronized void raiseSirup() {
-		sCInterface.raiseSirup();
+	public synchronized void raiseSirupButton() {
+		sCInterface.raiseSirupButton();
 	}
 	
-	public synchronized void raiseCrust() {
-		sCInterface.raiseCrust();
+	public synchronized void raiseCrustButton() {
+		sCInterface.raiseCrustButton();
+	}
+	
+	public synchronized void raiseVanillaButton() {
+		sCInterface.raiseVanillaButton();
+	}
+	
+	public synchronized void raiseWaterPoured() {
+		sCInterface.raiseWaterPoured();
+	}
+	
+	public synchronized void raiseSugarAdded() {
+		sCInterface.raiseSugarAdded();
+	}
+	
+	public synchronized void raiseSyrupAdded() {
+		sCInterface.raiseSyrupAdded();
+	}
+	
+	public synchronized void raiseStep1ElementPlaced() {
+		sCInterface.raiseStep1ElementPlaced();
+	}
+	
+	public synchronized void raiseNoMilkOption() {
+		sCInterface.raiseNoMilkOption();
+	}
+	
+	public synchronized void raiseMilkOption() {
+		sCInterface.raiseMilkOption();
+	}
+	
+	public synchronized void raiseMilkAdded() {
+		sCInterface.raiseMilkAdded();
+	}
+	
+	public synchronized void raiseBowlPlacement() {
+		sCInterface.raiseBowlPlacement();
+	}
+	
+	public synchronized void raiseSugar() {
+		sCInterface.raiseSugar();
+	}
+	
+	public synchronized void raiseSyrup() {
+		sCInterface.raiseSyrup();
 	}
 	
 	public synchronized void raiseVanilla() {
 		sCInterface.raiseVanilla();
 	}
 	
-	public synchronized void raiseValidateOptions() {
-		sCInterface.raiseValidateOptions();
+	public synchronized void raiseSoup() {
+		sCInterface.raiseSoup();
+	}
+	
+	public synchronized void raiseNotASoup() {
+		sCInterface.raiseNotASoup();
+	}
+	
+	public synchronized void raiseCapsIsReady() {
+		sCInterface.raiseCapsIsReady();
+	}
+	
+	public synchronized void raiseSoupPoured() {
+		sCInterface.raiseSoupPoured();
+	}
+	
+	public synchronized void raiseSpicesAdded() {
+		sCInterface.raiseSpicesAdded();
+	}
+	
+	public synchronized void raiseLockDoor() {
+		sCInterface.raiseLockDoor();
+	}
+	
+	public synchronized void raiseCoolWithAzote() {
+		sCInterface.raiseCoolWithAzote();
+	}
+	
+	public synchronized void raiseCooledEnough() {
+		sCInterface.raiseCooledEnough();
+	}
+	
+	public synchronized void raiseUnlockDoor() {
+		sCInterface.raiseUnlockDoor();
+	}
+	
+	public synchronized void raisePersonnalCupInserted() {
+		sCInterface.raisePersonnalCupInserted();
+	}
+	
+	public synchronized void raisePersonnalCupIsPlaced() {
+		sCInterface.raisePersonnalCupIsPlaced();
+	}
+	
+	public synchronized void raiseNoPersonnalCup() {
+		sCInterface.raiseNoPersonnalCup();
+	}
+	
+	public synchronized boolean isRaisedPersonnalCupIsInserted() {
+		return sCInterface.isRaisedPersonnalCupIsInserted();
+	}
+	
+	public synchronized boolean isRaisedCheckPersonnalCup() {
+		return sCInterface.isRaisedCheckPersonnalCup();
+	}
+	
+	public synchronized boolean isRaisedBowlPlacing() {
+		return sCInterface.isRaisedBowlPlacing();
+	}
+	
+	public synchronized boolean isRaisedPrepareCaps() {
+		return sCInterface.isRaisedPrepareCaps();
+	}
+	
+	public synchronized boolean isRaisedAddSpices() {
+		return sCInterface.isRaisedAddSpices();
+	}
+	
+	public synchronized boolean isRaisedBeginFirstStep() {
+		return sCInterface.isRaisedBeginFirstStep();
 	}
 	
 	public synchronized boolean isRaisedVanillaChosed() {
@@ -1776,44 +2517,28 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return sCInterface.isRaisedDoTransaction();
 	}
 	
-	public synchronized boolean getSelected() {
-		return sCInterface.getSelected();
+	public synchronized boolean isRaisedEndThirdStep() {
+		return sCInterface.isRaisedEndThirdStep();
 	}
 	
-	public synchronized void setSelected(boolean value) {
-		sCInterface.setSelected(value);
+	public synchronized boolean isRaisedBeginSecondStep() {
+		return sCInterface.isRaisedBeginSecondStep();
 	}
 	
-	public synchronized boolean getPayedEnough() {
-		return sCInterface.getPayedEnough();
+	public synchronized boolean isRaisedPourMilk() {
+		return sCInterface.isRaisedPourMilk();
 	}
 	
-	public synchronized void setPayedEnough(boolean value) {
-		sCInterface.setPayedEnough(value);
+	public synchronized boolean isRaisedPourVanilla() {
+		return sCInterface.isRaisedPourVanilla();
 	}
 	
-	public synchronized boolean getHotEnough() {
-		return sCInterface.getHotEnough();
+	public synchronized boolean isRaisedPourSoup() {
+		return sCInterface.isRaisedPourSoup();
 	}
 	
-	public synchronized void setHotEnough(boolean value) {
-		sCInterface.setHotEnough(value);
-	}
-	
-	public synchronized boolean getGobeletOk() {
-		return sCInterface.getGobeletOk();
-	}
-	
-	public synchronized void setGobeletOk(boolean value) {
-		sCInterface.setGobeletOk(value);
-	}
-	
-	public synchronized boolean getGobeletTaken() {
-		return sCInterface.getGobeletTaken();
-	}
-	
-	public synchronized void setGobeletTaken(boolean value) {
-		sCInterface.setGobeletTaken(value);
+	public synchronized boolean isRaisedCheckMilkOption() {
+		return sCInterface.isRaisedCheckMilkOption();
 	}
 	
 	/* Entry action for state 'Water heat'. */
@@ -1821,11 +2546,31 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseBeginWaterHeat();
 	}
 	
+	/* Entry action for state 'Drink difference'. */
+	private void entryAction_main_region_Step1_r2_Drink_difference() {
+		sCInterface.raiseBeginFirstStep();
+	}
+	
+	/* Entry action for state 'AlreadyBowlForSoup'. */
+	private void entryAction_main_region_Step1_r2_AlreadyBowlForSoup() {
+		sCInterface.raiseBowlPlacing();
+	}
+	
 	/* Entry action for state 'Cup Placement'. */
 	private void entryAction_main_region_Step2_r1_Cup_Placement() {
 		timer.setTimer(this, 0, 3000, false);
 		
 		sCInterface.raiseCupPlacing();
+	}
+	
+	/* Entry action for state 'IsPersonnalCupPlaced?'. */
+	private void entryAction_main_region_Step2_r1_IsPersonnalCupPlaced_() {
+		sCInterface.raiseCheckPersonnalCup();
+	}
+	
+	/* Entry action for state 'Drink difference step2'. */
+	private void entryAction_main_region_Step2_r2_Drink_difference_step2() {
+		sCInterface.raiseBeginSecondStep();
 	}
 	
 	/* Entry action for state 'PackSeed'. */
@@ -1838,19 +2583,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseWaitForWaterHeated();
 	}
 	
-	/* Entry action for state 'Water wait'. */
-	private void entryAction_main_region_Step3_r1_Water_wait() {
+	/* Entry action for state 'Waiting for water to be poured'. */
+	private void entryAction_main_region_Step3_r1_Waiting_for_water_to_be_poured() {
 		sCInterface.raiseWaitForWaterPoured();
 	}
 	
-	/* Entry action for state 'Sugar added'. */
-	private void entryAction_main_region_Step3_r2_Sugar_added() {
-		sCInterface.raiseAddSugar();
+	/* Entry action for state 'Milk option ?'. */
+	private void entryAction_main_region_Step3_r2_Milk_option__() {
+		sCInterface.raiseCheckMilkOption();
+	}
+	
+	/* Entry action for state 'Waiting for milk to be poured'. */
+	private void entryAction_main_region_Step3_r2_Waiting_for_milk_to_be_poured() {
+		sCInterface.raisePourMilk();
 	}
 	
 	/* Entry action for state 'Choice and payment'. */
 	private void entryAction_main_region_Choice_and_payment() {
-		timer.setTimer(this, 1, 5000, false);
+		timer.setTimer(this, 1, 45000, false);
 	}
 	
 	/* Entry action for state 'CleanMachine'. */
@@ -1863,6 +2613,36 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Entry action for state 'CheckIngredients'. */
 	private void entryAction_main_region_CheckIngredients() {
 		timer.setTimer(this, 3, 10, false);
+	}
+	
+	/* Entry action for state 'Drink difference'. */
+	private void entryAction_main_region_Drink_difference() {
+		sCInterface.raiseEndThirdStep();
+	}
+	
+	/* Entry action for state 'Vanilla'. */
+	private void entryAction_main_region_Vanilla() {
+		sCInterface.raisePourVanilla();
+	}
+	
+	/* Entry action for state 'WaitingForHotWater'. */
+	private void entryAction_main_region_StepSousoup_r1_WaitingForHotWater() {
+		sCInterface.raiseWaitForWaterHeated();
+	}
+	
+	/* Entry action for state 'GetCaps'. */
+	private void entryAction_main_region_StepSousoup_r2_GetCaps() {
+		sCInterface.raisePrepareCaps();
+	}
+	
+	/* Entry action for state 'PourSoup '. */
+	private void entryAction_main_region_StepSousoup_r2_PourSoup_() {
+		sCInterface.raisePourSoup();
+	}
+	
+	/* Entry action for state 'AddSpices'. */
+	private void entryAction_main_region_StepSousoup_r3_AddSpices() {
+		sCInterface.raiseAddSpices();
 	}
 	
 	/* Exit action for state 'Cup Placement'. */
@@ -1906,8 +2686,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* 'default' enter sequence for state Drink difference */
 	private void enterSequence_main_region_Step1_r2_Drink_difference_default() {
+		entryAction_main_region_Step1_r2_Drink_difference();
 		nextStateIndex = 1;
 		stateVector[1] = State.main_region_Step1_r2_Drink_difference;
+	}
+	
+	/* 'default' enter sequence for state AlreadyBowlForSoup */
+	private void enterSequence_main_region_Step1_r2_AlreadyBowlForSoup_default() {
+		entryAction_main_region_Step1_r2_AlreadyBowlForSoup();
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step1_r2_AlreadyBowlForSoup;
 	}
 	
 	/* 'default' enter sequence for state Step2 */
@@ -1923,10 +2711,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.main_region_Step2_r1_Cup_Placement;
 	}
 	
-	/* 'default' enter sequence for state Drink difference */
-	private void enterSequence_main_region_Step2_r2_Drink_difference_default() {
+	/* 'default' enter sequence for state Cup placed */
+	private void enterSequence_main_region_Step2_r1_Cup_placed_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Step2_r1_Cup_placed;
+	}
+	
+	/* 'default' enter sequence for state IsPersonnalCupPlaced? */
+	private void enterSequence_main_region_Step2_r1_IsPersonnalCupPlaced__default() {
+		entryAction_main_region_Step2_r1_IsPersonnalCupPlaced_();
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Step2_r1_IsPersonnalCupPlaced_;
+	}
+	
+	/* 'default' enter sequence for state Drink difference step2 */
+	private void enterSequence_main_region_Step2_r2_Drink_difference_step2_default() {
+		entryAction_main_region_Step2_r2_Drink_difference_step2();
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Step2_r2_Drink_difference;
+		stateVector[1] = State.main_region_Step2_r2_Drink_difference_step2;
 	}
 	
 	/* 'default' enter sequence for state ExpressoCase */
@@ -1942,23 +2744,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.main_region_Step2_r2_ExpressoCase_r1_PackSeed;
 	}
 	
-	/* Default enter sequence for state null */
-	private void enterSequence_main_region_Step2_r2_ExpressoCase_r1__final__default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Step2_r2_ExpressoCase_r1__final_;
-	}
-	
 	/* 'default' enter sequence for state WaitWater */
 	private void enterSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater_default() {
 		entryAction_main_region_Step2_r2_ExpressoCase_r2_WaitWater();
 		nextStateIndex = 2;
 		stateVector[2] = State.main_region_Step2_r2_ExpressoCase_r2_WaitWater;
-	}
-	
-	/* Default enter sequence for state null */
-	private void enterSequence_main_region_Step2_r2_ExpressoCase_r2__final__default() {
-		nextStateIndex = 2;
-		stateVector[2] = State.main_region_Step2_r2_ExpressoCase_r2__final_;
 	}
 	
 	/* 'default' enter sequence for state Waiting for water to heat */
@@ -1973,30 +2763,49 @@ public class MVPStatemachine implements IMVPStatemachine {
 		enterSequence_main_region_Step3_r2_default();
 	}
 	
-	/* Default enter sequence for state null */
-	private void enterSequence_main_region_Step3_r1__final__default() {
+	/* 'default' enter sequence for state Waiting for water to be poured */
+	private void enterSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured_default() {
+		entryAction_main_region_Step3_r1_Waiting_for_water_to_be_poured();
 		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Step3_r1__final_;
+		stateVector[0] = State.main_region_Step3_r1_Waiting_for_water_to_be_poured;
 	}
 	
-	/* 'default' enter sequence for state Water wait */
-	private void enterSequence_main_region_Step3_r1_Water_wait_default() {
-		entryAction_main_region_Step3_r1_Water_wait();
-		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Step3_r1_Water_wait;
-	}
-	
-	/* 'default' enter sequence for state Sugar added */
-	private void enterSequence_main_region_Step3_r2_Sugar_added_default() {
-		entryAction_main_region_Step3_r2_Sugar_added();
+	/* 'default' enter sequence for state Milk option ? */
+	private void enterSequence_main_region_Step3_r2_Milk_option___default() {
+		entryAction_main_region_Step3_r2_Milk_option__();
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Step3_r2_Sugar_added;
+		stateVector[1] = State.main_region_Step3_r2_Milk_option__;
 	}
 	
-	/* Default enter sequence for state null */
-	private void enterSequence_main_region_Step3_r2__final__default() {
+	/* 'default' enter sequence for state Waiting for milk to be poured */
+	private void enterSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured_default() {
+		entryAction_main_region_Step3_r2_Waiting_for_milk_to_be_poured();
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Step3_r2__final_;
+		stateVector[1] = State.main_region_Step3_r2_Waiting_for_milk_to_be_poured;
+	}
+	
+	/* 'default' enter sequence for state Waiting for sugar to be added */
+	private void enterSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step3_r2_Waiting_for_sugar_to_be_added;
+	}
+	
+	/* 'default' enter sequence for state Sugar or mapple syrup */
+	private void enterSequence_main_region_Step3_r2_Sugar_or_mapple_syrup_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step3_r2_Sugar_or_mapple_syrup;
+	}
+	
+	/* 'default' enter sequence for state waitin fo mapple syrup */
+	private void enterSequence_main_region_Step3_r2_waitin_fo_mapple_syrup_default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step3_r2_waitin_fo_mapple_syrup;
+	}
+	
+	/* 'default' enter sequence for state IsSoup? */
+	private void enterSequence_main_region_Step3_r2_IsSoup__default() {
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_Step3_r2_IsSoup_;
 	}
 	
 	/* 'default' enter sequence for state Choice and payment */
@@ -2013,60 +2822,28 @@ public class MVPStatemachine implements IMVPStatemachine {
 		historyVector[0] = stateVector[0];
 	}
 	
-	/* 'default' enter sequence for state Drink selected & not enough money */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_default() {
+	/* 'default' enter sequence for state Drink selected && not enough money inserted */
+	private void enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default() {
 		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money;
+		stateVector[0] = State.main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted;
 		
-		historyVector[1] = stateVector[0];
+		historyVector[0] = stateVector[0];
 	}
 	
-	/* 'default' enter sequence for state No options */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options;
+	/* 'default' enter sequence for state Option selected */
+	private void enterSequence_main_region_Choice_and_payment_r1_Option_selected_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Choice_and_payment_r1_Option_selected;
 		
-		historyVector[2] = stateVector[1];
+		historyVector[0] = stateVector[0];
 	}
 	
-	/* 'default' enter sequence for state Lait */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait;
+	/* 'default' enter sequence for state CupInserted */
+	private void enterSequence_main_region_Choice_and_payment_r1_CupInserted_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Choice_and_payment_r1_CupInserted;
 		
-		historyVector[2] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Crouton */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton;
-		
-		historyVector[2] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Sirop */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop;
-		
-		historyVector[2] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Glace vanille */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille;
-		
-		historyVector[2] = stateVector[1];
-	}
-	
-	/* 'default' enter sequence for state Ready */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default() {
-		nextStateIndex = 1;
-		stateVector[1] = State.main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready;
-		
-		historyVector[2] = stateVector[1];
+		historyVector[0] = stateVector[0];
 	}
 	
 	/* 'default' enter sequence for state WaitForCupToBeTaken */
@@ -2093,6 +2870,79 @@ public class MVPStatemachine implements IMVPStatemachine {
 		entryAction_main_region_CheckIngredients();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_region_CheckIngredients;
+	}
+	
+	/* 'default' enter sequence for state Drink difference */
+	private void enterSequence_main_region_Drink_difference_default() {
+		entryAction_main_region_Drink_difference();
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Drink_difference;
+	}
+	
+	/* 'default' enter sequence for state Vanilla */
+	private void enterSequence_main_region_Vanilla_default() {
+		entryAction_main_region_Vanilla();
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Vanilla;
+	}
+	
+	/* 'default' enter sequence for state IsSousoup? */
+	private void enterSequence_main_region_IsSousoup__default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_IsSousoup_;
+	}
+	
+	/* 'default' enter sequence for state StepSousoup */
+	private void enterSequence_main_region_StepSousoup_default() {
+		enterSequence_main_region_StepSousoup_r1_default();
+		enterSequence_main_region_StepSousoup_r2_default();
+		enterSequence_main_region_StepSousoup_r3_default();
+	}
+	
+	/* 'default' enter sequence for state WaitingForHotWater */
+	private void enterSequence_main_region_StepSousoup_r1_WaitingForHotWater_default() {
+		entryAction_main_region_StepSousoup_r1_WaitingForHotWater();
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_StepSousoup_r1_WaitingForHotWater;
+	}
+	
+	/* 'default' enter sequence for state GetCaps */
+	private void enterSequence_main_region_StepSousoup_r2_GetCaps_default() {
+		entryAction_main_region_StepSousoup_r2_GetCaps();
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_StepSousoup_r2_GetCaps;
+	}
+	
+	/* 'default' enter sequence for state PourSoup  */
+	private void enterSequence_main_region_StepSousoup_r2_PourSoup__default() {
+		entryAction_main_region_StepSousoup_r2_PourSoup_();
+		nextStateIndex = 1;
+		stateVector[1] = State.main_region_StepSousoup_r2_PourSoup_;
+	}
+	
+	/* 'default' enter sequence for state AddSpices */
+	private void enterSequence_main_region_StepSousoup_r3_AddSpices_default() {
+		entryAction_main_region_StepSousoup_r3_AddSpices();
+		nextStateIndex = 2;
+		stateVector[2] = State.main_region_StepSousoup_r3_AddSpices;
+	}
+	
+	/* 'default' enter sequence for state LockDoor */
+	private void enterSequence_main_region_LockDoor_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_LockDoor;
+	}
+	
+	/* 'default' enter sequence for state CoolWithAzote */
+	private void enterSequence_main_region_CoolWithAzote_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_CoolWithAzote;
+	}
+	
+	/* 'default' enter sequence for state TemperatureReached */
+	private void enterSequence_main_region_TemperatureReached_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_TemperatureReached;
 	}
 	
 	/* 'default' enter sequence for region main region */
@@ -2151,55 +3001,33 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Choice_and_payment_r1_No_drink_selected:
 			enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			deepEnterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1();
-			deepEnterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2();
+		case main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted:
+			enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default();
+			break;
+		case main_region_Choice_and_payment_r1_Option_selected:
+			enterSequence_main_region_Choice_and_payment_r1_Option_selected_default();
+			break;
+		case main_region_Choice_and_payment_r1_CupInserted:
+			enterSequence_main_region_Choice_and_payment_r1_CupInserted_default();
 			break;
 		default:
 			break;
 		}
 	}
 	
-	/* deep enterSequence with history in child r1 */
-	private void deepEnterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1() {
-		switch (historyVector[1]) {
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_default();
-			break;
-		default:
-			break;
-		}
+	/* 'default' enter sequence for region r1 */
+	private void enterSequence_main_region_StepSousoup_r1_default() {
+		react_main_region_StepSousoup_r1__entry_Default();
 	}
 	
 	/* 'default' enter sequence for region r2 */
-	private void enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_default() {
-		react_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2__entry_Default();
+	private void enterSequence_main_region_StepSousoup_r2_default() {
+		react_main_region_StepSousoup_r2__entry_Default();
 	}
 	
-	/* deep enterSequence with history in child r2 */
-	private void deepEnterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2() {
-		switch (historyVector[2]) {
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options_default();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait_default();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton_default();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop_default();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille_default();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-			enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default();
-			break;
-		default:
-			break;
-		}
+	/* 'default' enter sequence for region r3 */
+	private void enterSequence_main_region_StepSousoup_r3_default() {
+		react_main_region_StepSousoup_r3__entry_Default();
 	}
 	
 	/* Default exit sequence for state Step1 */
@@ -2226,6 +3054,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state AlreadyBowlForSoup */
+	private void exitSequence_main_region_Step1_r2_AlreadyBowlForSoup() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for state Step2 */
 	private void exitSequence_main_region_Step2() {
 		exitSequence_main_region_Step2_r1();
@@ -2240,8 +3074,20 @@ public class MVPStatemachine implements IMVPStatemachine {
 		exitAction_main_region_Step2_r1_Cup_Placement();
 	}
 	
-	/* Default exit sequence for state Drink difference */
-	private void exitSequence_main_region_Step2_r2_Drink_difference() {
+	/* Default exit sequence for state Cup placed */
+	private void exitSequence_main_region_Step2_r1_Cup_placed() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state IsPersonnalCupPlaced? */
+	private void exitSequence_main_region_Step2_r1_IsPersonnalCupPlaced_() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Drink difference step2 */
+	private void exitSequence_main_region_Step2_r2_Drink_difference_step2() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 	}
@@ -2258,20 +3104,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[1] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for final state. */
-	private void exitSequence_main_region_Step2_r2_ExpressoCase_r1__final_() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
 	/* Default exit sequence for state WaitWater */
 	private void exitSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for final state. */
-	private void exitSequence_main_region_Step2_r2_ExpressoCase_r2__final_() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NullState$;
 	}
@@ -2288,26 +3122,44 @@ public class MVPStatemachine implements IMVPStatemachine {
 		exitSequence_main_region_Step3_r2();
 	}
 	
-	/* Default exit sequence for final state. */
-	private void exitSequence_main_region_Step3_r1__final_() {
+	/* Default exit sequence for state Waiting for water to be poured */
+	private void exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state Water wait */
-	private void exitSequence_main_region_Step3_r1_Water_wait() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Sugar added */
-	private void exitSequence_main_region_Step3_r2_Sugar_added() {
+	/* Default exit sequence for state Milk option ? */
+	private void exitSequence_main_region_Step3_r2_Milk_option__() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for final state. */
-	private void exitSequence_main_region_Step3_r2__final_() {
+	/* Default exit sequence for state Waiting for milk to be poured */
+	private void exitSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Waiting for sugar to be added */
+	private void exitSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Sugar or mapple syrup */
+	private void exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state waitin fo mapple syrup */
+	private void exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state IsSoup? */
+	private void exitSequence_main_region_Step3_r2_IsSoup_() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 	}
@@ -2324,46 +3176,22 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state Drink selected & not enough money */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money() {
+	/* Default exit sequence for state Drink selected && not enough money inserted */
+	private void exitSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state No options */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
+	/* Default exit sequence for state Option selected */
+	private void exitSequence_main_region_Choice_and_payment_r1_Option_selected() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
 	}
 	
-	/* Default exit sequence for state Lait */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Crouton */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Sirop */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Glace vanille */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
-	}
-	
-	/* Default exit sequence for state Ready */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready() {
-		nextStateIndex = 1;
-		stateVector[1] = State.$NullState$;
+	/* Default exit sequence for state CupInserted */
+	private void exitSequence_main_region_Choice_and_payment_r1_CupInserted() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state WaitForCupToBeTaken */
@@ -2394,6 +3222,73 @@ public class MVPStatemachine implements IMVPStatemachine {
 		exitAction_main_region_CheckIngredients();
 	}
 	
+	/* Default exit sequence for state Drink difference */
+	private void exitSequence_main_region_Drink_difference() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Vanilla */
+	private void exitSequence_main_region_Vanilla() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state IsSousoup? */
+	private void exitSequence_main_region_IsSousoup_() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state StepSousoup */
+	private void exitSequence_main_region_StepSousoup() {
+		exitSequence_main_region_StepSousoup_r1();
+		exitSequence_main_region_StepSousoup_r2();
+		exitSequence_main_region_StepSousoup_r3();
+	}
+	
+	/* Default exit sequence for state WaitingForHotWater */
+	private void exitSequence_main_region_StepSousoup_r1_WaitingForHotWater() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state GetCaps */
+	private void exitSequence_main_region_StepSousoup_r2_GetCaps() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state PourSoup  */
+	private void exitSequence_main_region_StepSousoup_r2_PourSoup_() {
+		nextStateIndex = 1;
+		stateVector[1] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state AddSpices */
+	private void exitSequence_main_region_StepSousoup_r3_AddSpices() {
+		nextStateIndex = 2;
+		stateVector[2] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state LockDoor */
+	private void exitSequence_main_region_LockDoor() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state CoolWithAzote */
+	private void exitSequence_main_region_CoolWithAzote() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state TemperatureReached */
+	private void exitSequence_main_region_TemperatureReached() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region main region */
 	private void exitSequence_main_region() {
 		switch (stateVector[0]) {
@@ -2403,18 +3298,30 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step2_r1_Cup_Placement:
 			exitSequence_main_region_Step2_r1_Cup_Placement();
 			break;
-		case main_region_Step3_r1__final_:
-			exitSequence_main_region_Step3_r1__final_();
+		case main_region_Step2_r1_Cup_placed:
+			exitSequence_main_region_Step2_r1_Cup_placed();
 			break;
-		case main_region_Step3_r1_Water_wait:
-			exitSequence_main_region_Step3_r1_Water_wait();
+		case main_region_Step2_r1_IsPersonnalCupPlaced_:
+			exitSequence_main_region_Step2_r1_IsPersonnalCupPlaced_();
+			break;
+		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
+			exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured();
 			break;
 		case main_region_Choice_and_payment_r1_No_drink_selected:
 			exitSequence_main_region_Choice_and_payment_r1_No_drink_selected();
 			exitAction_main_region_Choice_and_payment();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money();
+		case main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted:
+			exitSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted();
+			exitAction_main_region_Choice_and_payment();
+			break;
+		case main_region_Choice_and_payment_r1_Option_selected:
+			exitSequence_main_region_Choice_and_payment_r1_Option_selected();
+			exitAction_main_region_Choice_and_payment();
+			break;
+		case main_region_Choice_and_payment_r1_CupInserted:
+			exitSequence_main_region_Choice_and_payment_r1_CupInserted();
+			exitAction_main_region_Choice_and_payment();
 			break;
 		case main_region_WaitForCupToBeTaken:
 			exitSequence_main_region_WaitForCupToBeTaken();
@@ -2428,6 +3335,27 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_CheckIngredients:
 			exitSequence_main_region_CheckIngredients();
 			break;
+		case main_region_Drink_difference:
+			exitSequence_main_region_Drink_difference();
+			break;
+		case main_region_Vanilla:
+			exitSequence_main_region_Vanilla();
+			break;
+		case main_region_IsSousoup_:
+			exitSequence_main_region_IsSousoup_();
+			break;
+		case main_region_StepSousoup_r1_WaitingForHotWater:
+			exitSequence_main_region_StepSousoup_r1_WaitingForHotWater();
+			break;
+		case main_region_LockDoor:
+			exitSequence_main_region_LockDoor();
+			break;
+		case main_region_CoolWithAzote:
+			exitSequence_main_region_CoolWithAzote();
+			break;
+		case main_region_TemperatureReached:
+			exitSequence_main_region_TemperatureReached();
+			break;
 		default:
 			break;
 		}
@@ -2439,47 +3367,41 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step1_r2_Drink_difference:
 			exitSequence_main_region_Step1_r2_Drink_difference();
 			break;
-		case main_region_Step2_r2_Drink_difference:
-			exitSequence_main_region_Step2_r2_Drink_difference();
+		case main_region_Step1_r2_AlreadyBowlForSoup:
+			exitSequence_main_region_Step1_r2_AlreadyBowlForSoup();
+			break;
+		case main_region_Step2_r2_Drink_difference_step2:
+			exitSequence_main_region_Step2_r2_Drink_difference_step2();
 			break;
 		case main_region_Step2_r2_ExpressoCase_r1_PackSeed:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r1_PackSeed();
 			break;
-		case main_region_Step2_r2_ExpressoCase_r1__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r1__final_();
-			break;
 		case main_region_Step2_r2_Waiting_for_water_to_heat:
 			exitSequence_main_region_Step2_r2_Waiting_for_water_to_heat();
 			break;
-		case main_region_Step3_r2_Sugar_added:
-			exitSequence_main_region_Step3_r2_Sugar_added();
+		case main_region_Step3_r2_Milk_option__:
+			exitSequence_main_region_Step3_r2_Milk_option__();
 			break;
-		case main_region_Step3_r2__final_:
-			exitSequence_main_region_Step3_r2__final_();
+		case main_region_Step3_r2_Waiting_for_milk_to_be_poured:
+			exitSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_Step3_r2_Waiting_for_sugar_to_be_added:
+			exitSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_Step3_r2_Sugar_or_mapple_syrup:
+			exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_Step3_r2_waitin_fo_mapple_syrup:
+			exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_Step3_r2_IsSoup_:
+			exitSequence_main_region_Step3_r2_IsSoup_();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_StepSousoup_r2_GetCaps:
+			exitSequence_main_region_StepSousoup_r2_GetCaps();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready();
-			exitAction_main_region_Choice_and_payment();
+		case main_region_StepSousoup_r2_PourSoup_:
+			exitSequence_main_region_StepSousoup_r2_PourSoup_();
 			break;
 		default:
 			break;
@@ -2489,8 +3411,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step2_r2_ExpressoCase_r2_WaitWater:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater();
 			break;
-		case main_region_Step2_r2_ExpressoCase_r2__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r2__final_();
+		case main_region_StepSousoup_r3_AddSpices:
+			exitSequence_main_region_StepSousoup_r3_AddSpices();
 			break;
 		default:
 			break;
@@ -2517,6 +3439,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step1_r2_Drink_difference:
 			exitSequence_main_region_Step1_r2_Drink_difference();
 			break;
+		case main_region_Step1_r2_AlreadyBowlForSoup:
+			exitSequence_main_region_Step1_r2_AlreadyBowlForSoup();
+			break;
 		default:
 			break;
 		}
@@ -2528,6 +3453,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step2_r1_Cup_Placement:
 			exitSequence_main_region_Step2_r1_Cup_Placement();
 			break;
+		case main_region_Step2_r1_Cup_placed:
+			exitSequence_main_region_Step2_r1_Cup_placed();
+			break;
+		case main_region_Step2_r1_IsPersonnalCupPlaced_:
+			exitSequence_main_region_Step2_r1_IsPersonnalCupPlaced_();
+			break;
 		default:
 			break;
 		}
@@ -2536,14 +3467,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Default exit sequence for region r2 */
 	private void exitSequence_main_region_Step2_r2() {
 		switch (stateVector[1]) {
-		case main_region_Step2_r2_Drink_difference:
-			exitSequence_main_region_Step2_r2_Drink_difference();
+		case main_region_Step2_r2_Drink_difference_step2:
+			exitSequence_main_region_Step2_r2_Drink_difference_step2();
 			break;
 		case main_region_Step2_r2_ExpressoCase_r1_PackSeed:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r1_PackSeed();
-			break;
-		case main_region_Step2_r2_ExpressoCase_r1__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r1__final_();
 			break;
 		case main_region_Step2_r2_Waiting_for_water_to_heat:
 			exitSequence_main_region_Step2_r2_Waiting_for_water_to_heat();
@@ -2556,9 +3484,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step2_r2_ExpressoCase_r2_WaitWater:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater();
 			break;
-		case main_region_Step2_r2_ExpressoCase_r2__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r2__final_();
-			break;
 		default:
 			break;
 		}
@@ -2569,9 +3494,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		switch (stateVector[1]) {
 		case main_region_Step2_r2_ExpressoCase_r1_PackSeed:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r1_PackSeed();
-			break;
-		case main_region_Step2_r2_ExpressoCase_r1__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r1__final_();
 			break;
 		default:
 			break;
@@ -2584,9 +3506,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Step2_r2_ExpressoCase_r2_WaitWater:
 			exitSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater();
 			break;
-		case main_region_Step2_r2_ExpressoCase_r2__final_:
-			exitSequence_main_region_Step2_r2_ExpressoCase_r2__final_();
-			break;
 		default:
 			break;
 		}
@@ -2595,11 +3514,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Default exit sequence for region r1 */
 	private void exitSequence_main_region_Step3_r1() {
 		switch (stateVector[0]) {
-		case main_region_Step3_r1__final_:
-			exitSequence_main_region_Step3_r1__final_();
-			break;
-		case main_region_Step3_r1_Water_wait:
-			exitSequence_main_region_Step3_r1_Water_wait();
+		case main_region_Step3_r1_Waiting_for_water_to_be_poured:
+			exitSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured();
 			break;
 		default:
 			break;
@@ -2609,11 +3525,23 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Default exit sequence for region r2 */
 	private void exitSequence_main_region_Step3_r2() {
 		switch (stateVector[1]) {
-		case main_region_Step3_r2_Sugar_added:
-			exitSequence_main_region_Step3_r2_Sugar_added();
+		case main_region_Step3_r2_Milk_option__:
+			exitSequence_main_region_Step3_r2_Milk_option__();
 			break;
-		case main_region_Step3_r2__final_:
-			exitSequence_main_region_Step3_r2__final_();
+		case main_region_Step3_r2_Waiting_for_milk_to_be_poured:
+			exitSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured();
+			break;
+		case main_region_Step3_r2_Waiting_for_sugar_to_be_added:
+			exitSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added();
+			break;
+		case main_region_Step3_r2_Sugar_or_mapple_syrup:
+			exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
+			break;
+		case main_region_Step3_r2_waitin_fo_mapple_syrup:
+			exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
+			break;
+		case main_region_Step3_r2_IsSoup_:
+			exitSequence_main_region_Step3_r2_IsSoup_();
 			break;
 		default:
 			break;
@@ -2626,31 +3554,14 @@ public class MVPStatemachine implements IMVPStatemachine {
 		case main_region_Choice_and_payment_r1_No_drink_selected:
 			exitSequence_main_region_Choice_and_payment_r1_No_drink_selected();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money();
+		case main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted:
+			exitSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted();
 			break;
-		default:
+		case main_region_Choice_and_payment_r1_Option_selected:
+			exitSequence_main_region_Choice_and_payment_r1_Option_selected();
 			break;
-		}
-		
-		switch (stateVector[1]) {
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready();
+		case main_region_Choice_and_payment_r1_CupInserted:
+			exitSequence_main_region_Choice_and_payment_r1_CupInserted();
 			break;
 		default:
 			break;
@@ -2658,10 +3569,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 	}
 	
 	/* Default exit sequence for region r1 */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1() {
+	private void exitSequence_main_region_StepSousoup_r1() {
 		switch (stateVector[0]) {
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money();
+		case main_region_StepSousoup_r1_WaitingForHotWater:
+			exitSequence_main_region_StepSousoup_r1_WaitingForHotWater();
 			break;
 		default:
 			break;
@@ -2669,25 +3580,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 	}
 	
 	/* Default exit sequence for region r2 */
-	private void exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2() {
+	private void exitSequence_main_region_StepSousoup_r2() {
 		switch (stateVector[1]) {
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
+		case main_region_StepSousoup_r2_GetCaps:
+			exitSequence_main_region_StepSousoup_r2_GetCaps();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait();
+		case main_region_StepSousoup_r2_PourSoup_:
+			exitSequence_main_region_StepSousoup_r2_PourSoup_();
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton();
+		default:
 			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille();
-			break;
-		case main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready:
-			exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready();
+		}
+	}
+	
+	/* Default exit sequence for region r3 */
+	private void exitSequence_main_region_StepSousoup_r3() {
+		switch (stateVector[2]) {
+		case main_region_StepSousoup_r3_AddSpices:
+			exitSequence_main_region_StepSousoup_r3_AddSpices();
 			break;
 		default:
 			break;
@@ -2706,12 +3616,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* Default react sequence for initial entry  */
 	private void react_main_region_Step2_r1__entry_Default() {
-		enterSequence_main_region_Step2_r1_Cup_Placement_default();
+		enterSequence_main_region_Step2_r1_IsPersonnalCupPlaced__default();
 	}
 	
 	/* Default react sequence for initial entry  */
 	private void react_main_region_Step2_r2__entry_Default() {
-		enterSequence_main_region_Step2_r2_Drink_difference_default();
+		enterSequence_main_region_Step2_r2_Drink_difference_step2_default();
 	}
 	
 	/* Default react sequence for initial entry  */
@@ -2726,12 +3636,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* Default react sequence for initial entry  */
 	private void react_main_region_Step3_r1__entry_Default() {
-		enterSequence_main_region_Step3_r1_Water_wait_default();
+		enterSequence_main_region_Step3_r1_Waiting_for_water_to_be_poured_default();
 	}
 	
 	/* Default react sequence for initial entry  */
 	private void react_main_region_Step3_r2__entry_Default() {
-		enterSequence_main_region_Step3_r2_Sugar_added_default();
+		enterSequence_main_region_Step3_r2_IsSoup__default();
 	}
 	
 	/* Default react sequence for initial entry  */
@@ -2744,11 +3654,6 @@ public class MVPStatemachine implements IMVPStatemachine {
 		enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
 	}
 	
-	/* Default react sequence for initial entry  */
-	private void react_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2__entry_Default() {
-		enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options_default();
-	}
-	
 	/* Default react sequence for deep history entry history */
 	private void react_main_region_Choice_and_payment_r1_history() {
 		/* Enter the region with deep history */
@@ -2759,16 +3664,54 @@ public class MVPStatemachine implements IMVPStatemachine {
 		}
 	}
 	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_StepSousoup_r1__entry_Default() {
+		enterSequence_main_region_StepSousoup_r1_WaitingForHotWater_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_StepSousoup_r2__entry_Default() {
+		enterSequence_main_region_StepSousoup_r2_GetCaps_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_StepSousoup_r3__entry_Default() {
+		enterSequence_main_region_StepSousoup_r3_AddSpices_default();
+	}
+	
 	/* The reactions of state null. */
-	private void react_main_region_Step1_r1__sync0() {
-		exitSequence_main_region_Step1();
-		enterSequence_main_region_Step2_default();
-		react();
+	private void react_main_region_Step2_r2__sync0() {
+		enterSequence_main_region_Step2_r2_Waiting_for_water_to_heat_default();
 	}
 	
 	/* The reactions of state null. */
 	private void react_main_region__sync0() {
 		enterSequence_main_region_Step3_default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main_region__sync1() {
+		enterSequence_main_region_IsSousoup__default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main_region__sync2() {
+		enterSequence_main_region_Drink_difference_default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main_region__sync3() {
+		enterSequence_main_region_Drink_difference_default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main_region__sync4() {
+		enterSequence_main_region_Step3_default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main_region__sync5() {
+		enterSequence_main_region_Drink_difference_default();
 	}
 	
 	private boolean react() {
@@ -2791,8 +3734,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((true && isStateActive(State.main_region_Step1_r2_First_step)) && sCInterface.endFirstStep)) {
-				react_main_region_Step1_r1__sync0();
+			if (((true && isStateActive(State.main_region_Step1_r2_First_step)) && sCInterface.step1ElementPlaced)) {
+				exitSequence_main_region_Step1();
+				react_main_region__sync1();
 			} else {
 				did_transition = false;
 			}
@@ -2804,8 +3748,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((sCInterface.endFirstStep && isStateActive(State.main_region_Step1_r1_Water_heat)) && true)) {
-				react_main_region_Step1_r1__sync0();
+			if (((sCInterface.step1ElementPlaced && isStateActive(State.main_region_Step1_r1_Water_heat)) && true)) {
+				exitSequence_main_region_Step1();
+				react_main_region__sync1();
 			} else {
 				did_transition = false;
 			}
@@ -2841,10 +3786,38 @@ public class MVPStatemachine implements IMVPStatemachine {
 						enterSequence_main_region_Step1_r2_First_step_default();
 						main_region_Step1_react(false);
 					} else {
-						did_transition = false;
+						if (sCInterface.bowlPlacement) {
+							exitSequence_main_region_Step1_r2_Drink_difference();
+							sCInterface.raiseBowlPlacing();
+							
+							enterSequence_main_region_Step1_r2_First_step_default();
+							main_region_Step1_react(false);
+						} else {
+							if (sCInterface.personnalCupIsPlaced) {
+								exitSequence_main_region_Step1_r2_Drink_difference();
+								enterSequence_main_region_Step1_r2_AlreadyBowlForSoup_default();
+								main_region_Step1_react(false);
+							} else {
+								did_transition = false;
+							}
+						}
 					}
 				}
 			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step1_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step1_r2_AlreadyBowlForSoup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			exitSequence_main_region_Step1_r2_AlreadyBowlForSoup();
+			enterSequence_main_region_Step1_r2_First_step_default();
+			main_region_Step1_react(false);
 		}
 		if (did_transition==false) {
 			did_transition = main_region_Step1_react(try_transition);
@@ -2868,7 +3841,21 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if ((((timeEvents[0] || sCInterface.cupIsPlaced) && isStateActive(State.main_region_Step2_r2_Waiting_for_water_to_heat)) && sCInterface.waterHeated)) {
+			if (timeEvents[0]) {
+				exitSequence_main_region_Step2_r1_Cup_Placement();
+				enterSequence_main_region_Step2_r1_Cup_placed_default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step2_r1_Cup_placed_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((true && isStateActive(State.main_region_Step2_r2_Waiting_for_water_to_heat)) && sCInterface.waterHeated)) {
 				exitSequence_main_region_Step2();
 				react_main_region__sync0();
 			} else {
@@ -2878,19 +3865,38 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Step2_r2_Drink_difference_react(boolean try_transition) {
+	private boolean main_region_Step2_r1_IsPersonnalCupPlaced__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.noPersonnalCup) {
+				exitSequence_main_region_Step2_r1_IsPersonnalCupPlaced_();
+				enterSequence_main_region_Step2_r1_Cup_Placement_default();
+			} else {
+				if (sCInterface.personnalCupIsPlaced) {
+					exitSequence_main_region_Step2_r1_IsPersonnalCupPlaced_();
+					enterSequence_main_region_Step2_r1_Cup_placed_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step2_r2_Drink_difference_step2_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.waitingForWater) {
-				exitSequence_main_region_Step2_r2_Drink_difference();
+				exitSequence_main_region_Step2_r2_Drink_difference_step2();
 				sCInterface.raiseWaitForWaterHeated();
 				
 				enterSequence_main_region_Step2_r2_Waiting_for_water_to_heat_default();
 				main_region_Step2_react(false);
 			} else {
 				if (sCInterface.step2Expresso) {
-					exitSequence_main_region_Step2_r2_Drink_difference();
+					exitSequence_main_region_Step2_r2_Drink_difference_step2();
 					enterSequence_main_region_Step2_r2_ExpressoCase_default();
 					main_region_Step2_react(false);
 				} else {
@@ -2908,9 +3914,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			exitSequence_main_region_Step2_r2_ExpressoCase();
-			enterSequence_main_region_Step2_r2_Waiting_for_water_to_heat_default();
-			main_region_Step2_react(false);
+			did_transition = false;
 		}
 		if (did_transition==false) {
 			did_transition = main_region_Step2_react(try_transition);
@@ -2922,21 +3926,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (sCInterface.endPackSeed) {
-				exitSequence_main_region_Step2_r2_ExpressoCase_r1_PackSeed();
-				enterSequence_main_region_Step2_r2_ExpressoCase_r1__final__default();
+			if (((sCInterface.endPackSeed && isStateActive(State.main_region_Step2_r2_ExpressoCase_r2_WaitWater)) && true)) {
+				exitSequence_main_region_Step2_r2_ExpressoCase();
+				react_main_region_Step2_r2__sync0();
 			} else {
 				did_transition = false;
 			}
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Step2_r2_ExpressoCase_r1__final__react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
 		}
 		return did_transition;
 	}
@@ -2945,20 +3940,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			exitSequence_main_region_Step2_r2_ExpressoCase_r2_WaitWater();
-			enterSequence_main_region_Step2_r2_ExpressoCase_r2__final__default();
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Step2_r2_ExpressoCase_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Step2_r2_ExpressoCase_r2__final__react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
+			if (((true && isStateActive(State.main_region_Step2_r2_ExpressoCase_r1_PackSeed)) && sCInterface.endPackSeed)) {
+				exitSequence_main_region_Step2_r2_ExpressoCase();
+				react_main_region_Step2_r2__sync0();
+			} else {
+				did_transition = false;
+			}
 		}
 		if (did_transition==false) {
 			did_transition = main_region_Step2_r2_ExpressoCase_react(try_transition);
@@ -2970,7 +3957,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((sCInterface.waterHeated && isStateActive(State.main_region_Step2_r1_Cup_Placement)) && (timeEvents[0] || sCInterface.cupIsPlaced))) {
+			if (((sCInterface.waterHeated && isStateActive(State.main_region_Step2_r1_Cup_placed)) && true)) {
 				exitSequence_main_region_Step2();
 				react_main_region__sync0();
 			} else {
@@ -2987,19 +3974,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (sCInterface.giveCup) {
-				exitSequence_main_region_Step3();
-				enterSequence_main_region_WaitForCupToBeTaken_default();
-				react();
-			} else {
-				if (sCInterface.letInfuse) {
-					exitSequence_main_region_Step3();
-					enterSequence_main_region_Infusing_default();
-					react();
-				} else {
-					did_transition = false;
-				}
-			}
+			did_transition = false;
 		}
 		if (did_transition==false) {
 			did_transition = react();
@@ -3007,31 +3982,46 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Step3_r1__final__react(boolean try_transition) {
+	private boolean main_region_Step3_r1_Waiting_for_water_to_be_poured_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			did_transition = false;
+			if (((sCInterface.waterPoured && isStateActive(State.main_region_Step3_r2_Milk_option__)) && sCInterface.noMilkOption)) {
+				exitSequence_main_region_Step3();
+				react_main_region__sync2();
+			} else {
+				if (((sCInterface.waterPoured && isStateActive(State.main_region_Step3_r2_Waiting_for_milk_to_be_poured)) && sCInterface.milkAdded)) {
+					exitSequence_main_region_Step3();
+					react_main_region__sync3();
+				} else {
+					if (((sCInterface.waterPoured && isStateActive(State.main_region_Step3_r2_IsSoup_)) && sCInterface.soup)) {
+						exitSequence_main_region_Step3();
+						react_main_region__sync5();
+					} else {
+						did_transition = false;
+					}
+				}
+			}
 		}
 		return did_transition;
 	}
 	
-	private boolean main_region_Step3_r1_Water_wait_react(boolean try_transition) {
+	private boolean main_region_Step3_r2_Milk_option___react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			exitSequence_main_region_Step3_r1_Water_wait();
-			enterSequence_main_region_Step3_r1__final__default();
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Step3_r2_Sugar_added_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			exitSequence_main_region_Step3_r2_Sugar_added();
-			enterSequence_main_region_Step3_r2__final__default();
+			if (((sCInterface.noMilkOption && isStateActive(State.main_region_Step3_r1_Waiting_for_water_to_be_poured)) && sCInterface.waterPoured)) {
+				exitSequence_main_region_Step3();
+				react_main_region__sync2();
+			} else {
+				if (sCInterface.milkOption) {
+					exitSequence_main_region_Step3_r2_Milk_option__();
+					enterSequence_main_region_Step3_r2_Waiting_for_milk_to_be_poured_default();
+					main_region_Step3_react(false);
+				} else {
+					did_transition = false;
+				}
+			}
 		}
 		if (did_transition==false) {
 			did_transition = main_region_Step3_react(try_transition);
@@ -3039,11 +4029,99 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Step3_r2__final__react(boolean try_transition) {
+	private boolean main_region_Step3_r2_Waiting_for_milk_to_be_poured_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			did_transition = false;
+			if (((sCInterface.milkAdded && isStateActive(State.main_region_Step3_r1_Waiting_for_water_to_be_poured)) && sCInterface.waterPoured)) {
+				exitSequence_main_region_Step3();
+				react_main_region__sync3();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step3_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r2_Waiting_for_sugar_to_be_added_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.sugarAdded) {
+				exitSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added();
+				enterSequence_main_region_Step3_r2_Milk_option___default();
+				main_region_Step3_react(false);
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step3_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r2_Sugar_or_mapple_syrup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.sugar) {
+				exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
+				enterSequence_main_region_Step3_r2_Waiting_for_sugar_to_be_added_default();
+				main_region_Step3_react(false);
+			} else {
+				if (sCInterface.syrup) {
+					exitSequence_main_region_Step3_r2_Sugar_or_mapple_syrup();
+					enterSequence_main_region_Step3_r2_waitin_fo_mapple_syrup_default();
+					main_region_Step3_react(false);
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step3_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r2_waitin_fo_mapple_syrup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.syrupAdded) {
+				exitSequence_main_region_Step3_r2_waitin_fo_mapple_syrup();
+				enterSequence_main_region_Step3_r2_Milk_option___default();
+				main_region_Step3_react(false);
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Step3_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Step3_r2_IsSoup__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.notASoup) {
+				exitSequence_main_region_Step3_r2_IsSoup_();
+				enterSequence_main_region_Step3_r2_Sugar_or_mapple_syrup_default();
+				main_region_Step3_react(false);
+			} else {
+				if (((sCInterface.soup && isStateActive(State.main_region_Step3_r1_Waiting_for_water_to_be_poured)) && sCInterface.waterPoured)) {
+					exitSequence_main_region_Step3();
+					react_main_region__sync5();
+				} else {
+					did_transition = false;
+				}
+			}
 		}
 		if (did_transition==false) {
 			did_transition = main_region_Step3_react(try_transition);
@@ -3080,10 +4158,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 							sCInterface.raiseTeaChosed();
 							
 							entryAction_main_region_Choice_and_payment();
-							enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_default();
-							enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_default();
-							historyVector[0] = stateVector[0];
-							
+							enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default();
 							react();
 						} else {
 							if (sCInterface.expressoButton) {
@@ -3091,10 +4166,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 								sCInterface.raiseExpressoChosed();
 								
 								entryAction_main_region_Choice_and_payment();
-								enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_default();
-								enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_default();
-								historyVector[0] = stateVector[0];
-								
+								enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default();
 								react();
 							} else {
 								if (sCInterface.coffeeButton) {
@@ -3102,13 +4174,55 @@ public class MVPStatemachine implements IMVPStatemachine {
 									sCInterface.raiseCoffeeChosed();
 									
 									entryAction_main_region_Choice_and_payment();
-									enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_default();
-									enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_default();
-									historyVector[0] = stateVector[0];
-									
+									enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default();
 									react();
 								} else {
-									did_transition = false;
+									if (sCInterface.milkButton) {
+										exitSequence_main_region_Choice_and_payment();
+										sCInterface.raiseMilkChosed();
+										
+										entryAction_main_region_Choice_and_payment();
+										enterSequence_main_region_Choice_and_payment_r1_Option_selected_default();
+										react();
+									} else {
+										if (sCInterface.crustButton) {
+											exitSequence_main_region_Choice_and_payment();
+											sCInterface.raiseCrustChosed();
+											
+											entryAction_main_region_Choice_and_payment();
+											enterSequence_main_region_Choice_and_payment_r1_Option_selected_default();
+											react();
+										} else {
+											if (sCInterface.vanillaButton) {
+												exitSequence_main_region_Choice_and_payment();
+												sCInterface.raiseVanillaChosed();
+												
+												entryAction_main_region_Choice_and_payment();
+												enterSequence_main_region_Choice_and_payment_r1_Option_selected_default();
+												react();
+											} else {
+												if (sCInterface.sirupButton) {
+													exitSequence_main_region_Choice_and_payment();
+													sCInterface.raiseSirupChosed();
+													
+													entryAction_main_region_Choice_and_payment();
+													enterSequence_main_region_Choice_and_payment_r1_Option_selected_default();
+													react();
+												} else {
+													if (sCInterface.personnalCupInserted) {
+														exitSequence_main_region_Choice_and_payment();
+														sCInterface.raisePersonnalCupIsInserted();
+														
+														entryAction_main_region_Choice_and_payment();
+														enterSequence_main_region_Choice_and_payment_r1_CupInserted_default();
+														react();
+													} else {
+														did_transition = false;
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 						}
@@ -3134,7 +4248,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(boolean try_transition) {
+	private boolean main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
@@ -3146,139 +4260,26 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return did_transition;
 	}
 	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r1_Drink_selected___not_enough_money_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			did_transition = false;
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.milk) {
-				exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-				sCInterface.raiseMilkChosed();
-				
-				enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait_default();
-				main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-			} else {
-				if (sCInterface.crust) {
-					exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-					sCInterface.raiseCrustChosed();
-					
-					enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton_default();
-					main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-				} else {
-					if (sCInterface.sirup) {
-						exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-						sCInterface.raiseSirupChosed();
-						
-						enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop_default();
-						main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-					} else {
-						if (sCInterface.vanilla) {
-							exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_No_options();
-							sCInterface.raiseVanillaChosed();
-							
-							enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille_default();
-							main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-						} else {
-							did_transition = false;
-						}
-					}
-				}
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.validateOptions) {
-				exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Lait();
-				enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default();
-				main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.validateOptions) {
-				exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Crouton();
-				enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default();
-				main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.validateOptions) {
-				exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Sirop();
-				enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default();
-				main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille_react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (sCInterface.validateOptions) {
-				exitSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Glace_vanille();
-				enterSequence_main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_default();
-				main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(false);
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
-		}
-		return did_transition;
-	}
-	
-	private boolean main_region_Choice_and_payment_r1_Drink___options___not_enough_money_r2_Ready_react(boolean try_transition) {
+	private boolean main_region_Choice_and_payment_r1_Option_selected_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			did_transition = false;
 		}
 		if (did_transition==false) {
-			did_transition = main_region_Choice_and_payment_r1_Drink___options___not_enough_money_react(try_transition);
+			did_transition = main_region_Choice_and_payment_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Choice_and_payment_r1_CupInserted_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = main_region_Choice_and_payment_react(try_transition);
 		}
 		return did_transition;
 	}
@@ -3328,7 +4329,13 @@ public class MVPStatemachine implements IMVPStatemachine {
 				enterSequence_main_region_WaitForCupToBeTaken_default();
 				react();
 			} else {
-				did_transition = false;
+				if (sCInterface.lockDoor) {
+					exitSequence_main_region_Infusing();
+					enterSequence_main_region_LockDoor_default();
+					react();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		if (did_transition==false) {
@@ -3346,6 +4353,203 @@ public class MVPStatemachine implements IMVPStatemachine {
 				sCInterface.raiseDisableMissingIngredients();
 				
 				enterSequence_main_region_Choice_and_payment_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Drink_difference_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.giveCup) {
+				exitSequence_main_region_Drink_difference();
+				enterSequence_main_region_WaitForCupToBeTaken_default();
+				react();
+			} else {
+				if (sCInterface.letInfuse) {
+					exitSequence_main_region_Drink_difference();
+					enterSequence_main_region_Infusing_default();
+					react();
+				} else {
+					if (sCInterface.vanilla) {
+						exitSequence_main_region_Drink_difference();
+						enterSequence_main_region_Vanilla_default();
+						react();
+					} else {
+						did_transition = false;
+					}
+				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Vanilla_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.giveCup) {
+				exitSequence_main_region_Vanilla();
+				enterSequence_main_region_WaitForCupToBeTaken_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_IsSousoup__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.notASoup) {
+				exitSequence_main_region_IsSousoup_();
+				enterSequence_main_region_Step2_default();
+				react();
+			} else {
+				if (sCInterface.soup) {
+					exitSequence_main_region_IsSousoup_();
+					enterSequence_main_region_StepSousoup_default();
+					react();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_StepSousoup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			did_transition = false;
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_StepSousoup_r1_WaitingForHotWater_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((((sCInterface.waterHeated && isStateActive(State.main_region_StepSousoup_r2_PourSoup_)) && sCInterface.soupPoured) && isStateActive(State.main_region_StepSousoup_r3_AddSpices)) && sCInterface.spicesAdded)) {
+				exitSequence_main_region_StepSousoup();
+				react_main_region__sync4();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_StepSousoup_r2_GetCaps_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.capsIsReady) {
+				exitSequence_main_region_StepSousoup_r2_GetCaps();
+				enterSequence_main_region_StepSousoup_r2_PourSoup__default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_StepSousoup_r2_PourSoup__react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((((sCInterface.soupPoured && isStateActive(State.main_region_StepSousoup_r1_WaitingForHotWater)) && sCInterface.waterHeated) && isStateActive(State.main_region_StepSousoup_r3_AddSpices)) && sCInterface.spicesAdded)) {
+				exitSequence_main_region_StepSousoup();
+				react_main_region__sync4();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_StepSousoup_r3_AddSpices_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (((((sCInterface.spicesAdded && isStateActive(State.main_region_StepSousoup_r1_WaitingForHotWater)) && sCInterface.waterHeated) && isStateActive(State.main_region_StepSousoup_r2_PourSoup_)) && sCInterface.soupPoured)) {
+				exitSequence_main_region_StepSousoup();
+				react_main_region__sync4();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = main_region_StepSousoup_react(try_transition);
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_LockDoor_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.coolWithAzote) {
+				exitSequence_main_region_LockDoor();
+				enterSequence_main_region_CoolWithAzote_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_CoolWithAzote_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.cooledEnough) {
+				exitSequence_main_region_CoolWithAzote();
+				enterSequence_main_region_TemperatureReached_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_TemperatureReached_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.unlockDoor) {
+				exitSequence_main_region_TemperatureReached();
+				enterSequence_main_region_Infusing_default();
 				react();
 			} else {
 				did_transition = false;
