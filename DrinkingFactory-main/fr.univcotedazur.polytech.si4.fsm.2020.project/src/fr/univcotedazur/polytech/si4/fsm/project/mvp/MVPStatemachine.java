@@ -736,6 +736,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
+		private boolean vanilla;
+		
+		
+		public void raiseVanilla() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							vanilla = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
 		private boolean vanillaChosed;
 		
 		
@@ -1294,6 +1312,24 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
+		private boolean pourAndMixVanilla;
+		
+		
+		public boolean isRaisedPourAndMixVanilla() {
+			synchronized(MVPStatemachine.this) {
+				return pourAndMixVanilla;
+			}
+		}
+		
+		protected void raisePourAndMixVanilla() {
+			synchronized(MVPStatemachine.this) {
+				pourAndMixVanilla = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onPourAndMixVanillaRaised();
+				}
+			}
+		}
+		
 		protected void clearEvents() {
 			optionButton = false;
 			podPlacement = false;
@@ -1335,6 +1371,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 			milkAdded = false;
 			sugar = false;
 			syrup = false;
+			vanilla = false;
 		}
 		protected void clearOutEvents() {
 		
@@ -1369,6 +1406,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		beginFirstStep = false;
 		automaticCancel = false;
 		sugarOrSyrup = false;
+		pourAndMixVanilla = false;
 		}
 		
 	}
@@ -1409,6 +1447,7 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_Infusing,
 		main_region_CheckIngredients,
 		main_region_Drink_difference,
+		main_region_Vanilla,
 		$NullState$
 	};
 	
@@ -1558,6 +1597,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Drink_difference:
 					main_region_Drink_difference_react(true);
 					break;
+				case main_region_Vanilla:
+					main_region_Vanilla_react(true);
+					break;
 			default:
 				// $NullState$
 			}
@@ -1687,6 +1729,8 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[0] == State.main_region_CheckIngredients;
 		case main_region_Drink_difference:
 			return stateVector[0] == State.main_region_Drink_difference;
+		case main_region_Vanilla:
+			return stateVector[0] == State.main_region_Vanilla;
 		default:
 			return false;
 		}
@@ -1887,6 +1931,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseSyrup();
 	}
 	
+	public synchronized void raiseVanilla() {
+		sCInterface.raiseVanilla();
+	}
+	
 	public synchronized boolean isRaisedVanillaChosed() {
 		return sCInterface.isRaisedVanillaChosed();
 	}
@@ -2011,6 +2059,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		return sCInterface.isRaisedSugarOrSyrup();
 	}
 	
+	public synchronized boolean isRaisedPourAndMixVanilla() {
+		return sCInterface.isRaisedPourAndMixVanilla();
+	}
+	
 	/* Entry action for state 'Water heat'. */
 	private void entryAction_main_region_Step1_r1_Water_heat() {
 		sCInterface.raiseBeginWaterHeat();
@@ -2065,12 +2117,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	/* Entry action for state 'Choice and payment'. */
 	private void entryAction_main_region_Choice_and_payment() {
-		timer.setTimer(this, 1, 5000, false);
+		timer.setTimer(this, 1, 45000, false);
 	}
 	
 	/* Entry action for state 'CleanMachine'. */
 	private void entryAction_main_region_CleanMachine() {
-		timer.setTimer(this, 2, 10000, false);
+		timer.setTimer(this, 2, 4000, false);
 		
 		sCInterface.raiseBeginMachineCleaning();
 	}
@@ -2083,6 +2135,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 	/* Entry action for state 'Drink difference'. */
 	private void entryAction_main_region_Drink_difference() {
 		sCInterface.raiseEndThirdStep();
+	}
+	
+	/* Entry action for state 'Vanilla'. */
+	private void entryAction_main_region_Vanilla() {
+		sCInterface.raisePourAndMixVanilla();
 	}
 	
 	/* Exit action for state 'Cup Placement'. */
@@ -2302,6 +2359,13 @@ public class MVPStatemachine implements IMVPStatemachine {
 		entryAction_main_region_Drink_difference();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_region_Drink_difference;
+	}
+	
+	/* 'default' enter sequence for state Vanilla */
+	private void enterSequence_main_region_Vanilla_default() {
+		entryAction_main_region_Vanilla();
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Vanilla;
 	}
 	
 	/* 'default' enter sequence for region main region */
@@ -2557,6 +2621,12 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state Vanilla */
+	private void exitSequence_main_region_Vanilla() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region main region */
 	private void exitSequence_main_region() {
 		switch (stateVector[0]) {
@@ -2601,6 +2671,9 @@ public class MVPStatemachine implements IMVPStatemachine {
 			break;
 		case main_region_Drink_difference:
 			exitSequence_main_region_Drink_difference();
+			break;
+		case main_region_Vanilla:
+			exitSequence_main_region_Vanilla();
 			break;
 		default:
 			break;
@@ -3522,8 +3595,32 @@ public class MVPStatemachine implements IMVPStatemachine {
 					enterSequence_main_region_Infusing_default();
 					react();
 				} else {
-					did_transition = false;
+					if (sCInterface.vanilla) {
+						exitSequence_main_region_Drink_difference();
+						enterSequence_main_region_Vanilla_default();
+						react();
+					} else {
+						did_transition = false;
+					}
 				}
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Vanilla_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.giveCup) {
+				exitSequence_main_region_Vanilla();
+				enterSequence_main_region_WaitForCupToBeTaken_default();
+				react();
+			} else {
+				did_transition = false;
 			}
 		}
 		if (did_transition==false) {

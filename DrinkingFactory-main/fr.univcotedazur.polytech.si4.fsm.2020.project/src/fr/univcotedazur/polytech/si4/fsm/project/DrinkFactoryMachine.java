@@ -162,8 +162,7 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	}
 	@Override
 	public void onEndThirdStepRaised() {
-		 theMachine.teaOrNot();
-		
+		 theMachine.teaOrVanillaOrElse();
 	}
 	@Override
 	public void onBeginFirstStepRaised() {
@@ -194,7 +193,11 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	public void onSugarOrSyrupRaised() {
 		theMachine.sugarOrSyrup();
 	}
-		 
+	@Override
+	public void onPourAndMixVanillaRaised() {
+		theMachine.pourAndMixVanilla();
+	}
+
 	
 
 }
@@ -1074,7 +1077,7 @@ public class DrinkFactoryMachine extends JFrame {
 		globalTimer2.start();
 	}
 	
-	public void teaOrNot() {
+	public void teaOrVanillaOrElse() {
 		this.messagesToUser.setText("Boisson prête");
 		if (drinkSelected==Drink.TEA) {
 			theFSM.raiseLetInfuse();
@@ -1082,7 +1085,6 @@ public class DrinkFactoryMachine extends JFrame {
 			ActionListener wait = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//globalTimer1.stop();
 					globalTimer1 = null;
 					theFSM.getSCInterface().raiseGiveCup();
 					takeFullCupButton.setEnabled(true);
@@ -1090,7 +1092,10 @@ public class DrinkFactoryMachine extends JFrame {
 			};
 			globalTimer1 = new Timer(5000,wait);
 			globalTimer1.start();
-		} else {
+		} else if (optionsSelected.contains(Option.VANILLA)) {
+			theFSM.raiseVanilla();
+		}
+		else {
 			theFSM.raiseGiveCup();
 			takeFullCupButton.setEnabled(true);
 		}
@@ -1118,8 +1123,25 @@ public class DrinkFactoryMachine extends JFrame {
 				drinkButtons.get(i).setEnabled(false);
 			}
 		}
+		takeFullCupButton.setEnabled(false);
 		this.messagesToUser.setText(welcomeMessage);
 	}
 	
+	public void pourAndMixVanilla() {
+		this.messagesToUser.setText("Pouring Vanilla and mixing");
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				globalTimer4.stop();
+				globalTimer4 = null;
+				theFSM.getSCInterface().raiseGiveCup();
+				takeFullCupButton.setEnabled(true);
+				messagesToUser.setText("Drink is ready");
+			}
+		};
+		//startPouring and mix
+		globalTimer4 = new Timer(4000,wait);
+		globalTimer4.start();
+	}
 }
 

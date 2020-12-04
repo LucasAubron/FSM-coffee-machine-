@@ -92,6 +92,8 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseSyrup();
 		
+		public void raiseVanilla();
+		
 		public boolean isRaisedVanillaChosed();
 		
 		public boolean isRaisedSyrupChosed();
@@ -154,6 +156,8 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedSugarOrSyrup();
 		
+		public boolean isRaisedPourAndMixVanilla();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -190,6 +194,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onBeginFirstStepRaised();
 		public void onAutomaticCancelRaised();
 		public void onSugarOrSyrupRaised();
+		public void onPourAndMixVanillaRaised();
 		}
 	
 	public SCInterface getSCInterface();

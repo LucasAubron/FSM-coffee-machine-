@@ -68,7 +68,7 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseMilkButton();
 		
-		public void raiseSirupButton();
+		public void raiseSyrupButton();
 		
 		public void raiseCrustButton();
 		
@@ -88,53 +88,15 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseMilkAdded();
 		
-		public void raiseBowlPlacement();
-		
 		public void raiseSugar();
 		
 		public void raiseSyrup();
 		
 		public void raiseVanilla();
 		
-		public void raiseSoup();
-		
-		public void raiseNotASoup();
-		
-		public void raiseCapsIsReady();
-		
-		public void raiseSoupPoured();
-		
-		public void raiseSpicesAdded();
-		
-		public void raiseLockDoor();
-		
-		public void raiseCoolWithAzote();
-		
-		public void raiseCooledEnough();
-		
-		public void raiseUnlockDoor();
-		
-		public void raisePersonnalCupInserted();
-		
-		public void raisePersonnalCupIsPlaced();
-		
-		public void raiseNoPersonnalCup();
-		
-		public boolean isRaisedPersonnalCupIsInserted();
-		
-		public boolean isRaisedCheckPersonnalCup();
-		
-		public boolean isRaisedBowlPlacing();
-		
-		public boolean isRaisedPrepareCaps();
-		
-		public boolean isRaisedAddSpices();
-		
-		public boolean isRaisedBeginFirstStep();
-		
 		public boolean isRaisedVanillaChosed();
 		
-		public boolean isRaisedSirupChosed();
+		public boolean isRaisedSyrupChosed();
 		
 		public boolean isRaisedCrustChosed();
 		
@@ -178,8 +140,6 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedNFCPayment();
 		
-		public boolean isRaisedGiveBackMoney();
-		
 		public boolean isRaisedDoTransaction();
 		
 		public boolean isRaisedEndThirdStep();
@@ -188,25 +148,23 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedPourMilk();
 		
-		public boolean isRaisedPourVanilla();
-		
-		public boolean isRaisedPourSoup();
-		
 		public boolean isRaisedCheckMilkOption();
+		
+		public boolean isRaisedBeginFirstStep();
+		
+		public boolean isRaisedAutomaticCancel();
+		
+		public boolean isRaisedSugarOrSyrup();
+		
+		public boolean isRaisedPourAndMixVanilla();
 		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
 	public interface SCInterfaceListener {
 	
-		public void onPersonnalCupIsInsertedRaised();
-		public void onCheckPersonnalCupRaised();
-		public void onBowlPlacingRaised();
-		public void onPrepareCapsRaised();
-		public void onAddSpicesRaised();
-		public void onBeginFirstStepRaised();
 		public void onVanillaChosedRaised();
-		public void onSirupChosedRaised();
+		public void onSyrupChosedRaised();
 		public void onCrustChosedRaised();
 		public void onBeginWaterHeatRaised();
 		public void onMilkChosedRaised();
@@ -228,14 +186,15 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onCoin50InsertedRaised();
 		public void onCancelRaised();
 		public void onNFCPaymentRaised();
-		public void onGiveBackMoneyRaised();
 		public void onDoTransactionRaised();
 		public void onEndThirdStepRaised();
 		public void onBeginSecondStepRaised();
 		public void onPourMilkRaised();
-		public void onPourVanillaRaised();
-		public void onPourSoupRaised();
 		public void onCheckMilkOptionRaised();
+		public void onBeginFirstStepRaised();
+		public void onAutomaticCancelRaised();
+		public void onSugarOrSyrupRaised();
+		public void onPourAndMixVanillaRaised();
 		}
 	
 	public SCInterface getSCInterface();
