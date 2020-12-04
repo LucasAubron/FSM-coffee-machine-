@@ -754,6 +754,96 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
+		private boolean icedTeaButton;
+		
+		
+		public void raiseIcedTeaButton() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							icedTeaButton = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean icedTea;
+		
+		
+		public void raiseIcedTea() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							icedTea = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean coolWithAzote;
+		
+		
+		public void raiseCoolWithAzote() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							coolWithAzote = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean cooledEnough;
+		
+		
+		public void raiseCooledEnough() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							cooledEnough = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
+		private boolean unlockedDoor;
+		
+		
+		public void raiseUnlockedDoor() {
+			synchronized(MVPStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							unlockedDoor = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
 		private boolean vanillaChosed;
 		
 		
@@ -1330,6 +1420,78 @@ public class MVPStatemachine implements IMVPStatemachine {
 			}
 		}
 		
+		private boolean icedTeaChosed;
+		
+		
+		public boolean isRaisedIcedTeaChosed() {
+			synchronized(MVPStatemachine.this) {
+				return icedTeaChosed;
+			}
+		}
+		
+		protected void raiseIcedTeaChosed() {
+			synchronized(MVPStatemachine.this) {
+				icedTeaChosed = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onIcedTeaChosedRaised();
+				}
+			}
+		}
+		
+		private boolean lockDoor;
+		
+		
+		public boolean isRaisedLockDoor() {
+			synchronized(MVPStatemachine.this) {
+				return lockDoor;
+			}
+		}
+		
+		protected void raiseLockDoor() {
+			synchronized(MVPStatemachine.this) {
+				lockDoor = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onLockDoorRaised();
+				}
+			}
+		}
+		
+		private boolean cool;
+		
+		
+		public boolean isRaisedCool() {
+			synchronized(MVPStatemachine.this) {
+				return cool;
+			}
+		}
+		
+		protected void raiseCool() {
+			synchronized(MVPStatemachine.this) {
+				cool = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onCoolRaised();
+				}
+			}
+		}
+		
+		private boolean startUnlockingDoors;
+		
+		
+		public boolean isRaisedStartUnlockingDoors() {
+			synchronized(MVPStatemachine.this) {
+				return startUnlockingDoors;
+			}
+		}
+		
+		protected void raiseStartUnlockingDoors() {
+			synchronized(MVPStatemachine.this) {
+				startUnlockingDoors = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onStartUnlockingDoorsRaised();
+				}
+			}
+		}
+		
 		protected void clearEvents() {
 			optionButton = false;
 			podPlacement = false;
@@ -1372,6 +1534,11 @@ public class MVPStatemachine implements IMVPStatemachine {
 			sugar = false;
 			syrup = false;
 			vanilla = false;
+			icedTeaButton = false;
+			icedTea = false;
+			coolWithAzote = false;
+			cooledEnough = false;
+			unlockedDoor = false;
 		}
 		protected void clearOutEvents() {
 		
@@ -1407,6 +1574,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		automaticCancel = false;
 		sugarOrSyrup = false;
 		pourAndMixVanilla = false;
+		icedTeaChosed = false;
+		lockDoor = false;
+		cool = false;
+		startUnlockingDoors = false;
 		}
 		
 	}
@@ -1448,6 +1619,10 @@ public class MVPStatemachine implements IMVPStatemachine {
 		main_region_CheckIngredients,
 		main_region_Drink_difference,
 		main_region_Vanilla,
+		main_region_LockDoor,
+		main_region_CoolWithAzote,
+		main_region_TemperatureReached,
+		main_region_UnlockDoors,
 		$NullState$
 	};
 	
@@ -1600,6 +1775,18 @@ public class MVPStatemachine implements IMVPStatemachine {
 				case main_region_Vanilla:
 					main_region_Vanilla_react(true);
 					break;
+				case main_region_LockDoor:
+					main_region_LockDoor_react(true);
+					break;
+				case main_region_CoolWithAzote:
+					main_region_CoolWithAzote_react(true);
+					break;
+				case main_region_TemperatureReached:
+					main_region_TemperatureReached_react(true);
+					break;
+				case main_region_UnlockDoors:
+					main_region_UnlockDoors_react(true);
+					break;
 			default:
 				// $NullState$
 			}
@@ -1731,6 +1918,14 @@ public class MVPStatemachine implements IMVPStatemachine {
 			return stateVector[0] == State.main_region_Drink_difference;
 		case main_region_Vanilla:
 			return stateVector[0] == State.main_region_Vanilla;
+		case main_region_LockDoor:
+			return stateVector[0] == State.main_region_LockDoor;
+		case main_region_CoolWithAzote:
+			return stateVector[0] == State.main_region_CoolWithAzote;
+		case main_region_TemperatureReached:
+			return stateVector[0] == State.main_region_TemperatureReached;
+		case main_region_UnlockDoors:
+			return stateVector[0] == State.main_region_UnlockDoors;
 		default:
 			return false;
 		}
@@ -1935,6 +2130,26 @@ public class MVPStatemachine implements IMVPStatemachine {
 		sCInterface.raiseVanilla();
 	}
 	
+	public synchronized void raiseIcedTeaButton() {
+		sCInterface.raiseIcedTeaButton();
+	}
+	
+	public synchronized void raiseIcedTea() {
+		sCInterface.raiseIcedTea();
+	}
+	
+	public synchronized void raiseCoolWithAzote() {
+		sCInterface.raiseCoolWithAzote();
+	}
+	
+	public synchronized void raiseCooledEnough() {
+		sCInterface.raiseCooledEnough();
+	}
+	
+	public synchronized void raiseUnlockedDoor() {
+		sCInterface.raiseUnlockedDoor();
+	}
+	
 	public synchronized boolean isRaisedVanillaChosed() {
 		return sCInterface.isRaisedVanillaChosed();
 	}
@@ -2061,6 +2276,22 @@ public class MVPStatemachine implements IMVPStatemachine {
 	
 	public synchronized boolean isRaisedPourAndMixVanilla() {
 		return sCInterface.isRaisedPourAndMixVanilla();
+	}
+	
+	public synchronized boolean isRaisedIcedTeaChosed() {
+		return sCInterface.isRaisedIcedTeaChosed();
+	}
+	
+	public synchronized boolean isRaisedLockDoor() {
+		return sCInterface.isRaisedLockDoor();
+	}
+	
+	public synchronized boolean isRaisedCool() {
+		return sCInterface.isRaisedCool();
+	}
+	
+	public synchronized boolean isRaisedStartUnlockingDoors() {
+		return sCInterface.isRaisedStartUnlockingDoors();
 	}
 	
 	/* Entry action for state 'Water heat'. */
@@ -2368,6 +2599,30 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.main_region_Vanilla;
 	}
 	
+	/* 'default' enter sequence for state LockDoor */
+	private void enterSequence_main_region_LockDoor_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_LockDoor;
+	}
+	
+	/* 'default' enter sequence for state CoolWithAzote */
+	private void enterSequence_main_region_CoolWithAzote_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_CoolWithAzote;
+	}
+	
+	/* 'default' enter sequence for state TemperatureReached */
+	private void enterSequence_main_region_TemperatureReached_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_TemperatureReached;
+	}
+	
+	/* 'default' enter sequence for state UnlockDoors */
+	private void enterSequence_main_region_UnlockDoors_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_UnlockDoors;
+	}
+	
 	/* 'default' enter sequence for region main region */
 	private void enterSequence_main_region_default() {
 		react_main_region__entry_Default();
@@ -2627,6 +2882,30 @@ public class MVPStatemachine implements IMVPStatemachine {
 		stateVector[0] = State.$NullState$;
 	}
 	
+	/* Default exit sequence for state LockDoor */
+	private void exitSequence_main_region_LockDoor() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state CoolWithAzote */
+	private void exitSequence_main_region_CoolWithAzote() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state TemperatureReached */
+	private void exitSequence_main_region_TemperatureReached() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state UnlockDoors */
+	private void exitSequence_main_region_UnlockDoors() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region main region */
 	private void exitSequence_main_region() {
 		switch (stateVector[0]) {
@@ -2674,6 +2953,18 @@ public class MVPStatemachine implements IMVPStatemachine {
 			break;
 		case main_region_Vanilla:
 			exitSequence_main_region_Vanilla();
+			break;
+		case main_region_LockDoor:
+			exitSequence_main_region_LockDoor();
+			break;
+		case main_region_CoolWithAzote:
+			exitSequence_main_region_CoolWithAzote();
+			break;
+		case main_region_TemperatureReached:
+			exitSequence_main_region_TemperatureReached();
+			break;
+		case main_region_UnlockDoors:
+			exitSequence_main_region_UnlockDoors();
 			break;
 		default:
 			break;
@@ -3448,7 +3739,16 @@ public class MVPStatemachine implements IMVPStatemachine {
 																		enterSequence_main_region_Choice_and_payment_r1_No_drink_selected_default();
 																		react();
 																	} else {
-																		did_transition = false;
+																		if (sCInterface.icedTeaButton) {
+																			exitSequence_main_region_Choice_and_payment();
+																			sCInterface.raiseIcedTeaChosed();
+																			
+																			entryAction_main_region_Choice_and_payment();
+																			enterSequence_main_region_Choice_and_payment_r1_Drink_selected____not_enough_money_inserted_default();
+																			react();
+																		} else {
+																			did_transition = false;
+																		}
 																	}
 																}
 															}
@@ -3547,12 +3847,20 @@ public class MVPStatemachine implements IMVPStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (sCInterface.giveCup) {
+			if (sCInterface.icedTea) {
 				exitSequence_main_region_Infusing();
-				enterSequence_main_region_WaitForCupToBeTaken_default();
+				sCInterface.raiseLockDoor();
+				
+				enterSequence_main_region_LockDoor_default();
 				react();
 			} else {
-				did_transition = false;
+				if (sCInterface.giveCup) {
+					exitSequence_main_region_Infusing();
+					enterSequence_main_region_WaitForCupToBeTaken_default();
+					react();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		if (did_transition==false) {
@@ -3617,6 +3925,82 @@ public class MVPStatemachine implements IMVPStatemachine {
 		if (try_transition) {
 			if (sCInterface.giveCup) {
 				exitSequence_main_region_Vanilla();
+				enterSequence_main_region_WaitForCupToBeTaken_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_LockDoor_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.coolWithAzote) {
+				exitSequence_main_region_LockDoor();
+				sCInterface.raiseCool();
+				
+				enterSequence_main_region_CoolWithAzote_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_CoolWithAzote_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.cooledEnough) {
+				exitSequence_main_region_CoolWithAzote();
+				sCInterface.raiseStartUnlockingDoors();
+				
+				enterSequence_main_region_TemperatureReached_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_TemperatureReached_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.unlockedDoor) {
+				exitSequence_main_region_TemperatureReached();
+				enterSequence_main_region_UnlockDoors_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_UnlockDoors_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.giveCup) {
+				exitSequence_main_region_UnlockDoors();
 				enterSequence_main_region_WaitForCupToBeTaken_default();
 				react();
 			} else {

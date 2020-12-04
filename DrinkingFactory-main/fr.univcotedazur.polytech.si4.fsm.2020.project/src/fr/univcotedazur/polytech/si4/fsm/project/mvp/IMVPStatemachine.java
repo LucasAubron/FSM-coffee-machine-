@@ -94,6 +94,16 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseVanilla();
 		
+		public void raiseIcedTeaButton();
+		
+		public void raiseIcedTea();
+		
+		public void raiseCoolWithAzote();
+		
+		public void raiseCooledEnough();
+		
+		public void raiseUnlockedDoor();
+		
 		public boolean isRaisedVanillaChosed();
 		
 		public boolean isRaisedSyrupChosed();
@@ -158,6 +168,14 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedPourAndMixVanilla();
 		
+		public boolean isRaisedIcedTeaChosed();
+		
+		public boolean isRaisedLockDoor();
+		
+		public boolean isRaisedCool();
+		
+		public boolean isRaisedStartUnlockingDoors();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -195,6 +213,10 @@ public interface IMVPStatemachine extends ITimerCallback,IStatemachine {
 		public void onAutomaticCancelRaised();
 		public void onSugarOrSyrupRaised();
 		public void onPourAndMixVanillaRaised();
+		public void onIcedTeaChosedRaised();
+		public void onLockDoorRaised();
+		public void onCoolRaised();
+		public void onStartUnlockingDoorsRaised();
 		}
 	
 	public SCInterface getSCInterface();

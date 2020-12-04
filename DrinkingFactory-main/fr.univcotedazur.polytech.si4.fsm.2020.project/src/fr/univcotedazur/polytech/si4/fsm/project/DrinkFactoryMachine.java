@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import fr.univcotedazur.polytech.si4.fsm.project.mvp.IMVPStatemachine.SCInterface;
 import fr.univcotedazur.polytech.si4.fsm.project.mvp.IMVPStatemachine.SCInterfaceListener;
@@ -197,9 +199,28 @@ class MVPControlerInterfaceImplementation implements SCInterfaceListener{
 	public void onPourAndMixVanillaRaised() {
 		theMachine.pourAndMixVanilla();
 	}
-
-	
-
+	@Override
+	public void onIcedTeaChosedRaised() {
+		theMachine.chooseDrink(Drink.ICED_TEA);
+		theMachine.setMoneyGoal(50);
+		theMachine.setOptionButtons(-1, -1, -1);
+		
+	}
+	@Override
+	public void onLockDoorRaised() {
+		theMachine.lockDoor();
+		
+	}
+	@Override
+	public void onCoolRaised() {
+		theMachine.cool();
+		
+	}
+	@Override
+	public void onStartUnlockingDoorsRaised() {
+		theMachine.unlockDoor();
+		
+	}
 }
 
 enum Drink{
@@ -243,6 +264,17 @@ enum Temperature{
 	}
 }
 
+enum IcedTemperature{
+	AMBIENT(0),GENTLE(5),HOT(8),VERY_HOT(12);
+	private final int value;
+	private IcedTemperature(int value) {
+		this.value=value;
+	}
+	public int getValue() {
+		return value;
+	}
+}
+
 
 public class DrinkFactoryMachine extends JFrame {
 	private HashMap<String, Integer> leftOver = new HashMap<String, Integer>();
@@ -267,6 +299,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private Boolean freeOrder=false;
 	private Size size = null;
 	private Temperature temperature = null;
+	private IcedTemperature icedTemperature = null;
 	private int sugarDose;
 	private JSlider sizeSlider;
 	private JSlider temperatureSlider;
@@ -274,6 +307,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private JLabel labelForPictures;
 	private JButton takeFullCupButton;
 	private JButton addCupButton;
+	private JSlider lowTemperatureSlider;
 	  
 	 
 	private static final long serialVersionUID = 2030629304432075314L;
@@ -496,6 +530,20 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setMaximum(2);
 		sizeSlider.setMajorTickSpacing(1);
 		sizeSlider.setBounds(301, 125, 200, 36);
+		sizeSlider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if (drinkSelected == Drink.ICED_TEA) {
+					if (moneyToReach==50) {;
+						setMoneyGoal(75);
+					} else {
+						setMoneyGoal(50);
+					}
+				}
+			}
+			
+		});
 		contentPane.add(sizeSlider);
 
 		temperatureSlider = new JSlider();
@@ -525,6 +573,25 @@ public class DrinkFactoryMachine extends JFrame {
 		icedTeaButton.setForeground(Color.WHITE);
 		icedTeaButton.setBackground(Color.DARK_GRAY);
 		icedTeaButton.setBounds(12, 182, 96, 25);
+		
+
+		icedTeaButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Hashtable<Integer,JLabel> temperatureTable = new Hashtable<Integer,JLabel>();
+				temperatureTable.put(0, new JLabel("0°C"));
+				temperatureTable.put(1, new JLabel("5°C"));
+				temperatureTable.put(2, new JLabel("8°C"));
+				temperatureTable.put(3, new JLabel("12°C"));
+				for (JLabel l  :temperatureTable.values()) {
+					l.setForeground(Color.WHITE);
+				}
+				temperatureSlider.setLabelTable(temperatureTable);
+				sizeSlider.setMaximum(1);
+				theFSM.getSCInterface().raiseIcedTeaButton();
+			}
+		});
+		
 		contentPane.add(icedTeaButton);
 		
 		drinkButtons = new ArrayList<JButton>(Arrays.asList(coffeeButton, expressoButton, teaButton, soupButton, icedTeaButton));
@@ -756,6 +823,20 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void chooseDrink(Drink drink){
+		if (drink!=Drink.ICED_TEA) {
+			Hashtable<Integer,JLabel> temperatureTable = new Hashtable<Integer,JLabel>();
+			temperatureTable.put(0, new JLabel("20°C"));
+			temperatureTable.put(1, new JLabel("35°C"));
+			temperatureTable.put(2, new JLabel("60°C"));
+			temperatureTable.put(3, new JLabel("85°C"));
+			for (JLabel l  :temperatureTable.values()) {
+				l.setForeground(Color.WHITE);
+			}
+			temperatureSlider.setLabelTable(temperatureTable);
+			sizeSlider.setMaximum(2);
+		} else {
+			sizeSlider.setValue(0);
+		}
 		//if for visual purpose only
 		if (globalTimer1!=null) {
 			globalTimer1.stop();
@@ -765,6 +846,7 @@ public class DrinkFactoryMachine extends JFrame {
 		this.optionsSelected.clear();
 		updateMessage();
 		checkIfMoneyGoal();
+		takeFullCupButton.setEnabled(false);	
 	}
 	
 	void cancel(Boolean auto) {
@@ -832,6 +914,7 @@ public class DrinkFactoryMachine extends JFrame {
 		this.moneyInserted -= this.moneyToReach;
 		leftOver.replace(this.drinkSelected.toString(), leftOver.get(this.drinkSelected.toString()), leftOver.get(this.drinkSelected.toString())-1);
 		unsetOptionButtons();
+		takeFullCupButton.setEnabled(false);
 		switch(this.sizeSlider.getValue()) {
 			case 0:
 				size = Size.SHORT;
@@ -846,17 +929,25 @@ public class DrinkFactoryMachine extends JFrame {
 		switch(this.temperatureSlider.getValue()) {
 			case 0:
 				temperature = Temperature.AMBIENT;
+				icedTemperature = IcedTemperature.AMBIENT;
 				break;
 			case 1:
 				temperature = Temperature.GENTLE;
+				icedTemperature = IcedTemperature.GENTLE;
 				break;
 			case 2:
 				temperature = Temperature.HOT;
+				icedTemperature = IcedTemperature.HOT;
 				break;
 			case 3:
 				temperature = Temperature.VERY_HOT;
+				icedTemperature = IcedTemperature.VERY_HOT;
 				break;
+			default:
+				temperature = Temperature.GENTLE;
+				icedTemperature = IcedTemperature.GENTLE;
 		}
+	
 		sugarDose= this.sugarSlider.getValue();
 		if (freeOrder) {
 			String number = cardLabel.getText();
@@ -916,6 +1007,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	void beginWaterHeat() {
+		//if iced tea, temperature wasn't defined
+		if (temperature == null) temperature=Temperature.VERY_HOT;
 		ActionListener waitWaterHeat = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -924,7 +1017,7 @@ public class DrinkFactoryMachine extends JFrame {
 					globalTimer1 = null;
 			}
 		};
-		globalTimer1 = new Timer((int) ((temperature.getValue()*60)+2000),waitWaterHeat);
+		globalTimer1 = new Timer((int) ((temperature.getValue()*400)+2000),waitWaterHeat);
 		globalTimer1.start();
 		
 	}
@@ -940,6 +1033,7 @@ public class DrinkFactoryMachine extends JFrame {
 				theFSM.getSCInterface().raiseSeedGrind();
 				//this.messagesToUser.setText("Broyage des grains");
 				break;
+			case ICED_TEA:
 			case TEA:
 				theFSM.getSCInterface().raiseBagPlacement();
 				//this.messagesToUser.setText("Positionnement du sachet de thé");
@@ -1033,7 +1127,7 @@ public class DrinkFactoryMachine extends JFrame {
 				theFSM.getSCInterface().raiseWaterPoured();
 			}
 		};
-		globalTimer1 = new Timer(size.getValue()*2000+2000,wait);
+		globalTimer1 = new Timer(size.getValue()*4000+2000,wait);
 		globalTimer1.start();
 	}
 	
@@ -1078,37 +1172,46 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void teaOrVanillaOrElse() {
-		this.messagesToUser.setText("Boisson prête");
-		if (drinkSelected==Drink.TEA) {
+		if (drinkSelected==Drink.TEA || drinkSelected==Drink.ICED_TEA) {
 			theFSM.raiseLetInfuse();
 			this.messagesToUser.setText("Infusion");
 			ActionListener wait = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if (globalTimer1!=null) globalTimer1.stop();
 					globalTimer1 = null;
-					theFSM.getSCInterface().raiseGiveCup();
-					takeFullCupButton.setEnabled(true);
+					if (drinkSelected==Drink.ICED_TEA) {
+						theFSM.getSCInterface().raiseIcedTea();
+					}
+					else {
+						theFSM.getSCInterface().raiseGiveCup();
+						takeFullCupButton.setEnabled(true);
+						messagesToUser.setText("Drink is ready");
+					}
 				}
 			};
 			globalTimer1 = new Timer(5000,wait);
 			globalTimer1.start();
-		} else if (optionsSelected.contains(Option.VANILLA)) {
+			} else if (optionsSelected.contains(Option.VANILLA)) {
 			theFSM.raiseVanilla();
-		}
-		else {
-			theFSM.raiseGiveCup();
-			takeFullCupButton.setEnabled(true);
-		}
-	}
+			} else {
+				theFSM.raiseGiveCup();
+				takeFullCupButton.setEnabled(true);
+			}
+	}		
 	
 	public void cleanMachine() {
 		//clean machine !!!!!!
 		this.messagesToUser.setText("<html>Cleaning machine ..." );
+		if (globalTimer1!=null) globalTimer1.stop();
 		globalTimer1 = null;
+		if (globalTimer2!=null) globalTimer2.stop();
 		globalTimer2 = null;
+		if (globalTimer3!=null) globalTimer3.stop();
 		globalTimer3 = null;
+		if (globalTimer4!=null) globalTimer4.stop();
 		globalTimer4 = null;
-		
+		takeFullCupButton.setEnabled(false);
 	}
 	
 	public void checkIngredient() {
@@ -1142,6 +1245,53 @@ public class DrinkFactoryMachine extends JFrame {
 		//startPouring and mix
 		globalTimer4 = new Timer(4000,wait);
 		globalTimer4.start();
+	}
+	
+	
+	public void lockDoor() {
+		messagesToUser.setText("LockingDoor ...");
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (globalTimer3!=null)globalTimer3.stop();
+				globalTimer3 = null;
+				theFSM.getSCInterface().raiseCoolWithAzote();
+			}
+		};
+		globalTimer3 = new Timer(1500,wait);
+		globalTimer3.start();
+	}
+	
+	public void cool() {
+		messagesToUser.setText("Cooling drink ...");
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (globalTimer4!=null) globalTimer4.stop();
+				globalTimer4 = null;
+				theFSM.getSCInterface().raiseCooledEnough();
+			}
+		};
+		//the colder the longer ...
+		globalTimer4 = new Timer(100000/(icedTemperature.getValue()*-1+15),wait);
+		globalTimer4.start();
+	}
+	
+	public void unlockDoor() {
+		messagesToUser.setText("UnlockingDoor ...");
+		ActionListener wait = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (globalTimer3!=null) globalTimer3.stop();
+				globalTimer3 = null;
+				theFSM.getSCInterface().raiseUnlockedDoor();
+				theFSM.getSCInterface().raiseGiveCup();
+				messagesToUser.setText("Drink is ready");
+				takeFullCupButton.setEnabled(true);	
+			}
+		};
+		globalTimer3 = new Timer(1500,wait);
+		globalTimer3.start();
 	}
 }
 

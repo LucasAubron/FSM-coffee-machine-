@@ -1,0 +1,12 @@
+Infusing = (lockDoor -> coolWithAzote -> cooledEnough -> unlockDoor ->Infusing).
+
+Protection = (lockDoor -> coolWithAzote -> cooledEnough -> unlockDoor ->Protection).
+
+HotWaterPoured = (beginWaterHeat -> Soup|beginWaterHeat -> OtherThanSoup),
+Soup = (soup -> waitForWaterHeated -> waterHeated -> waitForWaterPoured -> HotWaterPoured),
+OtherThanSoup = (notASoup -> beginSecondStep -> waitingForWater -> waitForWaterHeated -> waterHeated -> waitForWaterPoured ->HotWaterPoured).
+
+assert PropInfusing = [] (lockDoor ->(<> unlockDoor))
+assert PropHotWater = [] (beginWaterHeated ->(<> waitForWaterPoured))
+assert PropProtection = [] (coolWithAzote ->(<> unlockDoor))
+
